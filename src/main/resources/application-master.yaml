@@ -8,7 +8,7 @@ spring:
     serialization:
       write_dates_as_timestamps: false
   r2dbc:
-    url: ${DB_URL}
+    url: ${DB_URL}_master
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
   liquibase:
