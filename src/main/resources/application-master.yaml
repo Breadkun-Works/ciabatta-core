@@ -1,0 +1,16 @@
+spring:
+  codec:
+    log-request-details: true
+  config:
+    activate:
+      on-profile: master
+  jackson:
+    serialization:
+      write_dates_as_timestamps: false
+  r2dbc:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.yaml
+    enabled: true
