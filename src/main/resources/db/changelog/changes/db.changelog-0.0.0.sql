@@ -1,5 +1,5 @@
 -- liquibase formatted sql
--- changeset chanki5451 : 2024-08-22
+-- changeset chanki5451:2024-08-22
 
 -- CafeMenu
 create table public.cafe_menu
