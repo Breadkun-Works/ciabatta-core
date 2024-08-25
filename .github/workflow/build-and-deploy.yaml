@@ -1,0 +1,73 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - master
+#      - dev
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      TARGET_BRANCH: ${{ github.ref_name }}
+      MASTER_SSH_PRIVATE_KEY: ${{ secrets.MASTER_SSH_PRIVATE_KEY }}
+      MASTER_SSH_HOST: ${{ secrets.MASTER_SSH_HOST }}
+      MASTER_SSH_USERNAME: ${{ secrets.MASTER_SSH_USERNAME }}
+      MASTER_SSH_PORT: ${{ secrets.MASTER_SSH_PORT }}
+      MASTER_DB_URL: ${{ secrets.MASTER_DB_URL }}
+      MASTER_DB_USERNAME: ${{ secrets.MASTER_DB_USERNAME }}
+      MASTER_DB_PASSWORD: ${{ secrets.MASTER_DB_PASSWORD }}
+#      DEV_SSH_PRIVATE_KEY: ${{ secrets.DEV_SSH_PRIVATE_KEY }}
+#      DEV_SSH_HOST: ${{ secrets.DEV_SSH_HOST }}
+#      DEV_SSH_USERNAME: ${{ secrets.DEV_SSH_USERNAME }}
+#      DEV_SSH_PORT: ${{ secrets.DEV_SSH_PORT }}
+#      DEV_DB_URL: ${{ secrets.DEV_DB_URL }}
+#      DEV_DB_USERNAME: ${{ secrets.DEV_DB_USERNAME }}
+#      DEV_DB_PASSWORD: ${{ secrets.DEV_DB_PASSWORD }}
+
+    steps:
+      - name: Checkout the repository code
+      - uses: actions/checkout@v4
+
+      - name: Set up Java 17 and Gradle cache
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Dynamically set active profile from TARGET_BRANCH and build with Gradle
+        run: ./gradlew build --no-daemon -P spring.profiles.active=${{ env.TARGET_BRANCH }}
+
+      - name: Build Docker image and tag by branch
+        run: docker build -t breadkun-backend:${{ env.TARGET_BRANCH }} .
+
+      - name: Save Docker image
+        run: docker save breadkun-backend:${{ env.TARGET_BRANCH }} -o breadkun-backend-${{ env.TARGET_BRANCH }}.tar
+
+      - name: Clean up, Deploy, and Run Docker image
+        uses: easingthemes/ssh-deploy@v5
+        with:
+          SSH_PRIVATE_KEY: ${{ env[env.TARGET_BRANCH | upper + '_SSH_PRIVATE_KEY'] }}
+          REMOTE_HOST: ${{ env[env.TARGET_BRANCH | upper + '_SSH_HOST'] }}
+          REMOTE_USER: ${{ env[env.TARGET_BRANCH | upper + '_SSH_USERNAME'] }}
+          REMOTE_PORT: ${{ env[env.TARGET_BRANCH | upper + '_SSH_PORT'] }}
+          SOURCE: breadkun-backend-${{ env.TARGET_BRANCH }}.tar
+          TARGET: /home/${{ env[env.TARGET_BRANCH | upper + '_SSH_USERNAME'] }}/breadkun-backend-${{ env.TARGET_BRANCH }}.tar
+          SCRIPT_BEFORE: |
+            docker stop breadkun-backend-${{ env.TARGET_BRANCH }}-container || true
+            docker rm breadkun-backend-${{ env.TARGET_BRANCH }}-container || true
+            docker rmi breadkun-backend:${{ env.TARGET_BRANCH }} || true
+            rm -f /home/${{ env[env.TARGET_BRANCH | upper + '_SSH_USERNAME'] }}/breadkun-backend-${{ env.TARGET_BRANCH }}.tar
+          SCRIPT_AFTER: |
+            docker load -i /home/${{ env[env.TARGET_BRANCH | upper + '_SSH_USERNAME'] }}/breadkun-backend-${{ env.TARGET_BRANCH }}.tar
+            docker run -d \
+              --name breadkun-backend-${{ env.TARGET_BRANCH }}-container  \
+              -p 8080:8080 \
+              -e ${env.TARGET_BRANCH | upper + '_DB_URL'}=${{ env[env.TARGET_BRANCH | upper + '_DB_URL'] }} \
+              -e ${env.TARGET_BRANCH | upper + '_DB_USERNAME'}=${{ env[env.TARGET_BRANCH | upper + '_DB_USERNAME'] }} \
+              -e ${env.TARGET_BRANCH | upper + '_DB_PASSWORD'}=${{ env[env.TARGET_BRANCH | upper + '_DB_PASSWORD'] }} \
+              breadkun-backend:${{ env.TARGET_BRANCH }}
+            sudo docker update --restart always breadkun-backend-${{ env.TARGET_BRANCH }}-container
