@@ -26,7 +26,7 @@ jobs:
       - name: Set environment variables based on branch
         run: |
           if [ "${{ env.TARGET_BRANCH }}" == "master" ]; then
-            echo "SSH_PRIVATE_KEY=${{ secrets.MASTER_SSH_PRIVATE_KEY }}" >> $GITHUB_ENV
+            echo "SSH_PRIVATE_KEY=${{ secrets.MASTER_SSH_PRIVATE_KEY }}" | sed 's/\r$//' >> $GITHUB_ENV
             echo "REMOTE_HOST=${{ secrets.MASTER_SSH_HOST }}" >> $GITHUB_ENV
             echo "REMOTE_USER=${{ secrets.MASTER_SSH_USERNAME }}" >> $GITHUB_ENV
             echo "REMOTE_PORT=${{ secrets.MASTER_SSH_PORT }}" >> $GITHUB_ENV
