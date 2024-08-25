@@ -45,7 +45,7 @@ jobs:
         run: docker save breadkun-backend:${{ env.TARGET_BRANCH }} -o breadkun-backend-${{ env.TARGET_BRANCH }}.tar
 
       - name: Clean up, Deploy, and Run Docker image
-        uses: easingthemes/ssh-deploy@v5
+        uses: easingthemes/ssh-deploy@v5.1.0
         with:
           SSH_PRIVATE_KEY: ${{ env.SSH_PRIVATE_KEY }}
           REMOTE_HOST: ${{ env.REMOTE_HOST }}
