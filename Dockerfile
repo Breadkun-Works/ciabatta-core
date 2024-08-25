@@ -1,4 +1,4 @@
-FROM openjdk:17-jre-alpine
+FROM eclipse-temurin:17-jre-alpine
 
 # 작업 디렉토리 설정
 WORKDIR /app
