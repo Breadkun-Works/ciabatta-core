@@ -33,14 +33,13 @@ jobs:
             echo "DB_URL=${{ secrets.MASTER_DB_URL }}" >> $GITHUB_ENV
             echo "DB_USERNAME=${{ secrets.MASTER_DB_USERNAME }}" >> $GITHUB_ENV
             echo "DB_PASSWORD=${{ secrets.MASTER_DB_PASSWORD }}" >> $GITHUB_ENV
+          else
+            echo "TARGET_BRANCH is not 'master', skipping environment variable setup"
           fi
-          echo "TARGET_BRANCH is set to: ${{ env.TARGET_BRANCH }}"
-          echo "DB_URL is set to: ${{ env.DB_URL }}"
 
       - name: Build and Run tests with environment variables
         run: |
           UPPERCASE_BRANCH=$(echo "${{ env.TARGET_BRANCH }}" | tr '[:lower:]' '[:upper:]')
-          echo "UPPERCASE_BRANCH is set to: ${UPPERCASE_BRANCH}"
           ./gradlew build test --no-daemon \
             -Dspring.profiles.active=${{ env.TARGET_BRANCH }} \
             -D${UPPERCASE_BRANCH}_DB_URL=${{ env.DB_URL }} \
