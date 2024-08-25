@@ -38,6 +38,9 @@ jobs:
       - name: Dynamically set active profile from TARGET_BRANCH and build with Gradle
         run: ./gradlew build --no-daemon -Dspring.profiles.active=${{ env.TARGET_BRANCH }} -Ddb.url=${{ env.DB_URL }} -Ddb.username=${{ env.DB_USERNAME }} -Ddb.password=${{ env.DB_PASSWORD }}
 
+      - name: Run tests with environment variables
+        run: ./gradlew test --no-daemon -Dspring.profiles.active=${{ env.TARGET_BRANCH }} -Ddb.url=${{ env.DB_URL }} -Ddb.username=${{ env.DB_USERNAME }} -Ddb.password=${{ env.DB_PASSWORD }}
+
       - name: Build Docker image and tag by branch
         run: docker build -t breadkun-backend:${{ env.TARGET_BRANCH }} .
 
