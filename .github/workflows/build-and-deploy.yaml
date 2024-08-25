@@ -22,11 +22,10 @@ jobs:
 
       - name: Build and Run tests with environment variables
         run: |
-          ./gradlew build test --no-daemon \
-            -Dspring.profiles.active=master \
-            -DMASTER_DB_URL=${{ secrets.MASTER_DB_URL }} \
-            -DMASTER_DB_USERNAME=${{ secrets.MASTER_DB_USERNAME }} \
-            -DMASTER_DB_PASSWORD=${{ secrets.MASTER_DB_PASSWORD }}
+          export MASTER_DB_URL=${{ secrets.MASTER_DB_URL }}
+          export MASTER_DB_USERNAME=${{ secrets.MASTER_DB_USERNAME }}
+          export MASTER_DB_PASSWORD=${{ secrets.MASTER_DB_PASSWORD }}
+          ./gradlew build test --no-daemon -Dspring.profiles.active=master
 
       - name: Build Docker image and tag by branch
         run: docker build -t breadkun-backend:master .
