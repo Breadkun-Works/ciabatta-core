@@ -9,9 +9,6 @@ jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
 
-    env:
-      TARGET_BRANCH: ${{ github.ref_name }}
-
     steps:
       - name: Checkout the repository code
         uses: actions/checkout@v4
@@ -23,65 +20,41 @@ jobs:
           distribution: 'temurin'
           cache: 'gradle'
 
-      - name: Set environment variables based on branch
-        run: |
-          echo "Running environment setup for branch: ${{ env.TARGET_BRANCH }}"
-          if [ "${{ env.TARGET_BRANCH }}" == "master" ]; then
-            echo "SSH_PRIVATE_KEY=${{ secrets.MASTER_SSH_PRIVATE_KEY }}" >> $GITHUB_ENV
-            echo "REMOTE_HOST=${{ secrets.MASTER_SSH_HOST }}" >> $GITHUB_ENV
-            echo "REMOTE_USER=${{ secrets.MASTER_SSH_USERNAME }}" >> $GITHUB_ENV
-            echo "REMOTE_PORT=${{ secrets.MASTER_SSH_PORT }}" >> $GITHUB_ENV
-            echo "DB_URL=${{ secrets.MASTER_DB_URL }}" >> $GITHUB_ENV
-            echo "DB_USERNAME=${{ secrets.MASTER_DB_USERNAME }}" >> $GITHUB_ENV
-            echo "DB_PASSWORD=${{ secrets.MASTER_DB_PASSWORD }}" >> $GITHUB_ENV
-            echo "Branch is master, environment variables set."
-          else
-            echo "TARGET_BRANCH is not 'master', skipping environment variable setup"
-          fi
-          echo "SSH_PRIVATE_KEY set to: ${SSH_PRIVATE_KEY}"
-          echo "REMOTE_HOST set to: ${REMOTE_HOST}"
-          echo "REMOTE_USER set to: ${REMOTE_USER}"
-          echo "REMOTE_PORT set to: ${REMOTE_PORT}"
-          echo "DB_URL set to: ${DB_URL}"
-          echo "DB_USERNAME set to: ${DB_USERNAME}"
-          echo "DB_PASSWORD set to: ${DB_PASSWORD}"
-
       - name: Build and Run tests with environment variables
         run: |
-          UPPERCASE_BRANCH=$(echo "${{ env.TARGET_BRANCH }}" | tr '[:lower:]' '[:upper:]')
           ./gradlew build test --no-daemon \
-            -Dspring.profiles.active=${{ env.TARGET_BRANCH }} \
-            -D${UPPERCASE_BRANCH}_DB_URL=${{ env.DB_URL }} \
-            -D${UPPERCASE_BRANCH}_DB_USERNAME=${{ env.DB_USERNAME }} \
-            -D${UPPERCASE_BRANCH}_DB_PASSWORD=${{ env.DB_PASSWORD }}
+            -Dspring.profiles.active=master \
+            -DMASTER_DB_URL=${{ secrets.MASTER_DB_URL }} \
+            -DMASTER_DB_USERNAME=${{ secrets.MASTER_DB_USERNAME }}\
+            -DMASTER_DB_PASSWORD=${{ secrets.MASTER_DB_PASSWORD }}
 
       - name: Build Docker image and tag by branch
-        run: docker build -t breadkun-backend:${{ env.TARGET_BRANCH }} .
+        run: docker build -t breadkun-backend:master .
 
       - name: Save Docker image
-        run: docker save breadkun-backend:${{ env.TARGET_BRANCH }} -o breadkun-backend-${{ env.TARGET_BRANCH }}.tar
+        run: docker save breadkun-backend:master -o breadkun-backend-master.tar
 
       - name: Clean up, Deploy, and Run Docker image
         uses: easingthemes/ssh-deploy@v5.1.0
         with:
-          SSH_PRIVATE_KEY: ${{ env.SSH_PRIVATE_KEY }}
-          REMOTE_HOST: ${{ env.REMOTE_HOST }}
-          REMOTE_USER: ${{ env.REMOTE_USER }}
-          REMOTE_PORT: ${{ env.REMOTE_PORT }}
-          SOURCE: breadkun-backend-${{ env.TARGET_BRANCH }}.tar
-          TARGET: /home/${{ env.REMOTE_USER }}/breadkun-backend-${{ env.TARGET_BRANCH }}.tar
+          SSH_PRIVATE_KEY: ${{ secrets.MASTER_SSH_PRIVATE_KEY }}
+          REMOTE_HOST: ${{ secrets.MASTER_SSH_HOST }}
+          REMOTE_USER: ${{ secrets.MASTER_SSH_USERNAME }}
+          REMOTE_PORT: ${{ secrets.MASTER_SSH_PORT }}
+          SOURCE: breadkun-backend-master.tar
+          TARGET: /home/${{ secrets.MASTER_SSH_USERNAME }}/breadkun-backend-master.tar
           SCRIPT_BEFORE: |
-            docker stop breadkun-backend-${{ env.TARGET_BRANCH }}-container || true
-            docker rm breadkun-backend-${{ env.TARGET_BRANCH }}-container || true
-            docker rmi breadkun-backend:${{ env.TARGET_BRANCH }} || true
-            rm -f /home/${{ env.REMOTE_USER }}/breadkun-backend-${{ env.TARGET_BRANCH }}.tar
+            docker stop breadkun-backend-master-container || true
+            docker rm breadkun-backend-master-container || true
+            docker rmi breadkun-backend:master || true
+            rm -f /home/${{ secrets.MASTER_SSH_USERNAME }}/breadkun-backend-master.tar
           SCRIPT_AFTER: |
-            docker load -i /home/${{ env.REMOTE_USER }}/breadkun-backend-${{ env.TARGET_BRANCH }}.tar
+            docker load -i /home/${{ secrets.MASTER_SSH_USERNAME }}/breadkun-backend-master.tar
             docker run -d \
-              --name breadkun-backend-${{ env.TARGET_BRANCH }}-container  \
+              --name breadkun-backend-master-container  \
               -p 8080:8080 \
-              -e DB_URL=${{ env.DB_URL }} \
-              -e DB_USERNAME=${{ env.DB_USERNAME }} \
-              -e DB_PASSWORD=${{ env.DB_PASSWORD }} \
-              breadkun-backend:${{ env.TARGET_BRANCH }}
-            sudo docker update --restart always breadkun-backend-${{ env.TARGET_BRANCH }}-container
+              -e DB_URL=${{ secrets.MASTER_DB_URL }} \
+              -e DB_USERNAME=${{ secrets.MASTER_DB_USERNAME }} \
+              -e DB_PASSWORD=${{ secrets.MASTER_DB_PASSWORD }} \
+              breadkun-backend:master
+            sudo docker update --restart always breadkun-backend-master-container
