@@ -1,15 +1,17 @@
 -- liquibase formatted sql
--- changeset chanki5451:2024-08-22
+-- changeset chanki5451:2024-08-26
 
--- CafeMenu
+-- CafeMenu 테이블 생성
 create table public.cafe_menu
 (
-    id          int generated always as identity primary key,
-    name        varchar(70)          not null,
-    description varchar(255),
-    price       int                  not null,
-    category    varchar(50)          not null,
-    available   boolean default true not null
+    id             int generated always as identity primary key,
+    name           varchar(70)          not null,
+    description    varchar(255),
+    price          int                  not null,
+    category       varchar(50)          not null,
+    available      boolean default true not null,
+    image_filename varchar(100),
+    image_url      varchar(255)
 );
 comment on column public.cafe_menu.id is '카페 메뉴 ID';
 comment on column public.cafe_menu.name is '메뉴 이름';
@@ -17,8 +19,10 @@ comment on column public.cafe_menu.description is '메뉴 설명';
 comment on column public.cafe_menu.price is '메뉴 가격';
 comment on column public.cafe_menu.category is '메뉴 카테고리';
 comment on column public.cafe_menu.available is '판매 가능 여부';
+comment on column public.cafe_menu.image_filename is '이미지 파일 이름';
+comment on column public.cafe_menu.image_url is '이미지 URL 경로';
 
--- CafeCart
+-- CafeCart 테이블 생성
 create table public.cafe_cart
 (
     id            int generated always as identity primary key,
@@ -37,7 +41,7 @@ comment on column public.cafe_cart.expires_at is '장바구니 만료 시간';
 comment on column public.cafe_cart.shared_url is '장바구니 공유 URL';
 comment on column public.cafe_cart.created_by_id is '작성자 UUID';
 
--- CafeCartItem
+-- CafeCartItem 테이블 생성
 create table public.cafe_cart_item
 (
     id              int generated always as identity primary key,
