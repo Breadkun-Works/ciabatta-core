@@ -13,6 +13,13 @@ jobs:
       - name: Checkout the repository code
         uses: actions/checkout@v4
 
+      - name: Debug Check Liquibase
+        run: |
+          echo "Checking secrets..."
+          if [ -z "${{ secrets.MASTER_DB_URL }}" ]; then echo "MASTER_DB_URL is empty"; else echo "MASTER_DB_URL is set"; fi
+          if [ -z "${{ secrets.DATABASE_USERNAME }}" ]; then echo "DATABASE_USERNAME is empty"; else echo "DATABASE_USERNAME is set"; fi
+          if [ -z "${{ secrets.DATABASE_PASSWORD }}" ]; then echo "DATABASE_PASSWORD is empty"; else echo "DATABASE_PASSWORD is set"; fi
+
       - name: Liquibase Update
         uses: liquibase-github-actions/update@v4.29.1
         with:
@@ -21,3 +28,5 @@ jobs:
           username: ${{ secrets.DATABASE_USERNAME }}
           password: ${{ secrets.DATABASE_PASSWORD }}
           logLevel: INFO
+
+          
