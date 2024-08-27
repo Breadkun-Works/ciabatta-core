@@ -1,5 +1,7 @@
 package com.breadkun.backend.domain.cafe.model
 
+import com.breadkun.backend.domain.cafe.model.enum.CafeMenuCategory
+import com.breadkun.backend.domain.cafe.model.enum.DrinkTemperature
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table
 
@@ -10,7 +12,8 @@ data class CafeMenu(
     val name: String,
     val description: String?,
     val price: Int,
-    val category: String,
+    val category: CafeMenuCategory,
+    val drinkTemperature: DrinkTemperature,
     val available: Boolean = true,
     val imageFilename: String?,
     val imageUrl: String?
