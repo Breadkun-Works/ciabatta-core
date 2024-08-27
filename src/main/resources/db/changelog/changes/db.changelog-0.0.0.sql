@@ -4,20 +4,22 @@
 -- CafeMenu 테이블 생성
 create table public.cafe_menu
 (
-    id             int generated always as identity primary key,
-    name           varchar(70)          not null,
-    description    varchar(255),
-    price          int                  not null,
-    category       varchar(50)          not null,
-    available      boolean default true not null,
-    image_filename varchar(100),
-    image_url      varchar(255)
+    id                  int generated always as identity primary key,
+    name                varchar(70)          not null,
+    description         varchar(255),
+    price               int                  not null,
+    category            varchar(50)          not null,
+    drink_temperature varchar(10)          not null,
+    available           boolean default true not null,
+    image_filename      varchar(100),
+    image_url           varchar(255)
 );
 comment on column public.cafe_menu.id is '카페 메뉴 ID';
 comment on column public.cafe_menu.name is '메뉴 이름';
 comment on column public.cafe_menu.description is '메뉴 설명';
 comment on column public.cafe_menu.price is '메뉴 가격';
 comment on column public.cafe_menu.category is '메뉴 카테고리';
+comment on column public.cafe_menu.drink_temperature is '음료 제공 온도';
 comment on column public.cafe_menu.available is '판매 가능 여부';
 comment on column public.cafe_menu.image_filename is '이미지 파일 이름';
 comment on column public.cafe_menu.image_url is '이미지 URL 경로';
