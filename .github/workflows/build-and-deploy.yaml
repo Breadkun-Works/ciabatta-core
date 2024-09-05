@@ -51,7 +51,7 @@ jobs:
             docker load -i /home/${{ secrets.MASTER_SSH_USERNAME }}/breadkun-backend-master.tar
             docker run -d \
               --name breadkun-backend-master-container  \
-              -p 8080:8080 \
+              -p 65477:65477 \
               -e MASTER_DB_URL=${{ secrets.MASTER_DB_URL }} \
               -e MASTER_DB_USERNAME=${{ secrets.MASTER_DB_USERNAME }} \
               -e MASTER_DB_PASSWORD=${{ secrets.MASTER_DB_PASSWORD }} \
