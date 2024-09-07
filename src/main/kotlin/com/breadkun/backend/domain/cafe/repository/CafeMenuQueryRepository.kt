@@ -1,25 +1,25 @@
 package com.breadkun.backend.domain.cafe.repository
 
+import com.breadkun.backend.domain.cafe.dto.response.CafeMenuBoardResponseDTO
+import com.breadkun.backend.domain.cafe.dto.response.CafeMenuOptionDTO
 import com.breadkun.backend.domain.cafe.model.CafeMenu
 import com.breadkun.backend.domain.cafe.model.enum.CafeLocation
 import com.breadkun.backend.domain.cafe.model.enum.CafeMenuCategory
+import com.fasterxml.jackson.databind.ObjectMapper
+import io.r2dbc.postgresql.codec.Json
 import kotlinx.coroutines.reactor.awaitSingle
-import org.springframework.data.domain.Sort
-import org.springframework.data.r2dbc.core.R2dbcEntityTemplate
-import org.springframework.data.relational.core.query.Criteria
-import org.springframework.data.relational.core.query.Query
 import org.springframework.r2dbc.core.DatabaseClient
 import org.springframework.stereotype.Repository
 
 interface CafeMenuQueryRepository {
     suspend fun findById(id: String): CafeMenu?
-    suspend fun findByMultipleOptionsWithPaging(
+    suspend fun findByMultipleOptionsWithGrouping(
         cafeLocation: CafeLocation?,
         name: String?,
         category: CafeMenuCategory?,
         page: Int?,
         size: Int?
-    ): List<CafeMenu>
+    ): List<CafeMenuBoardResponseDTO>
 
     suspend fun countByMultipleOptionsWithGrouping(
         cafeLocation: CafeLocation?,
@@ -31,42 +31,74 @@ interface CafeMenuQueryRepository {
 @Repository
 class CafeMenuQueryRepositoryImpl(
     private val cafeMenuCoroutineCrudRepository: CafeMenuCoroutineCrudRepository,
-    private val template: R2dbcEntityTemplate,
-    private val databaseClient: DatabaseClient
+    private val databaseClient: DatabaseClient,
+    private val objectMapper: ObjectMapper
 ) : CafeMenuQueryRepository {
     override suspend fun findById(id: String): CafeMenu? {
         return cafeMenuCoroutineCrudRepository.findById(id)
     }
 
-    override suspend fun findByMultipleOptionsWithPaging(
+    override suspend fun findByMultipleOptionsWithGrouping(
         cafeLocation: CafeLocation?,
         name: String?,
         category: CafeMenuCategory?,
         page: Int?,
         size: Int?
-    ): List<CafeMenu> {
-        var criteria = Criteria.empty()
+    ): List<CafeMenuBoardResponseDTO> {
+        val baseQuery = """
+            WITH grouped_data AS (
+                SELECT cafe_location, name, category,
+                    json_agg(
+                        json_build_object(
+                            'drinkTemperature', drink_temperature,
+                            'id', id,
+                            'available', available,
+                            'price', price,
+                            'description', description,
+                            'imageFilename', image_filename,
+                            'imageUrl', image_url
+                        )
+                        ORDER BY drink_temperature
+                    ) AS options
+                FROM 
+                    public.cafe_menu
+                WHERE 1=1
+                ${if (cafeLocation != null) "AND cafe_location = :cafeLocation" else ""}
+                ${if (name != null) "AND name LIKE :name" else ""}
+                ${if (category != null) "AND category = :category" else ""}
+                GROUP BY cafe_location, category, name
+            )
+            SELECT * FROM grouped_data
+            ORDER BY cafe_location, category, name
+            ${if (page != null && size != null) "LIMIT :size OFFSET :offset" else ""};
+        """.trimIndent()
 
-        if (cafeLocation != null) {
-            criteria = criteria.and("cafe_location").`is`(cafeLocation.name)
-        }
-        if (name != null) {
-            criteria = criteria.and("name").like("%$name%")
-        }
-        if (category != null) {
-            criteria = criteria.and("category").`is`(category.name)
-        }
-
-        val query = Query.query(criteria)
+        var querySpec = databaseClient.sql(baseQuery)
+        cafeLocation?.let { querySpec = querySpec.bind("cafeLocation", it.name) }
+        name?.let { querySpec = querySpec.bind("name", "%$it%") }
+        category?.let { querySpec = querySpec.bind("category", it.name) }
 
         if (page != null && size != null) {
-            query.limit(size).offset((page * size).toLong())
+            querySpec = querySpec.bind("size", size).bind("offset", page * size)
         }
 
-        query.sort(Sort.by(Sort.Order.asc("cafe_location"), Sort.Order.asc("name"), Sort.Order.asc("category")))
-
-        return template.select(query, CafeMenu::class.java).collectList().awaitSingle()
+        return querySpec.map { row, _ ->
+            val options: List<CafeMenuOptionDTO> = objectMapper.readValue(
+                (row["options"] as Json).asString(),
+                objectMapper.typeFactory.constructCollectionType(List::class.java, CafeMenuOptionDTO::class.java)
+            )
+            CafeMenuBoardResponseDTO(
+                cafeLocation = CafeLocation.valueOf(row["cafe_location"] as String),
+                name = row["name"] as String,
+                category = CafeMenuCategory.valueOf(row["category"] as String),
+                options = options
+            )
+        }
+            .all()
+            .collectList()
+            .awaitSingle()
     }
+
 
     override suspend fun countByMultipleOptionsWithGrouping(
         cafeLocation: CafeLocation?,
@@ -74,41 +106,24 @@ class CafeMenuQueryRepositoryImpl(
         category: CafeMenuCategory?
     ): Long {
         val baseQuery = """
-        SELECT COUNT(*) AS count
-        FROM (
-            SELECT cafe_location, name, category
-            FROM cafe_menu
-            WHERE 1=1
-    """.trimIndent()
+            SELECT COUNT(*) AS count
+            FROM (
+                SELECT cafe_location, name, category
+                FROM cafe_menu
+                WHERE 1=1
+                ${if (cafeLocation != null) "AND cafe_location = :cafeLocation" else ""}
+                ${if (name != null) "AND name LIKE :name" else ""}
+                ${if (category != null) "AND category = :category" else ""}
+                GROUP BY cafe_location, name, category
+            ) AS grouped_data
+        """.trimIndent()
 
-        val queryBuilder = StringBuilder(baseQuery)
+        var querySpec = databaseClient.sql(baseQuery)
+        cafeLocation?.let { querySpec = querySpec.bind("cafeLocation", it.name) }
+        name?.let { querySpec = querySpec.bind("name", "%$it%") }
+        category?.let { querySpec = querySpec.bind("category", it.name) }
 
-        cafeLocation?.let {
-            queryBuilder.append(" AND cafe_location = :cafeLocation")
-        }
-        name?.let {
-            queryBuilder.append(" AND name LIKE :name")
-        }
-        category?.let {
-            queryBuilder.append(" AND category = :category")
-        }
-
-        queryBuilder.append(" GROUP BY cafe_location, name, category) AS grouped_data")
-
-        val sqlSpec = databaseClient.sql(queryBuilder.toString())
-
-        var boundSqlSpec = sqlSpec
-        cafeLocation?.let {
-            boundSqlSpec = boundSqlSpec.bind("cafeLocation", it.name)
-        }
-        name?.let {
-            boundSqlSpec = boundSqlSpec.bind("name", "%$it%")
-        }
-        category?.let {
-            boundSqlSpec = boundSqlSpec.bind("category", it.name)
-        }
-
-        return boundSqlSpec
+        return querySpec
             .map { row, _ -> row["count"] as Long }
             .one()
             .awaitSingle()

@@ -1,6 +1,5 @@
 package com.breadkun.backend.domain.cafe.dto.response
 
-import com.breadkun.backend.domain.cafe.model.CafeMenu
 import com.breadkun.backend.domain.cafe.model.enum.CafeLocation
 import com.breadkun.backend.domain.cafe.model.enum.CafeMenuCategory
 import com.breadkun.backend.domain.cafe.model.enum.DrinkTemperature
@@ -18,32 +17,7 @@ data class CafeMenuBoardResponseDTO(
 
     @Schema(description = "메뉴의 옵션 리스트")
     val options: List<CafeMenuOptionDTO>
-) {
-    companion object {
-        fun fromModel(cafeMenus: List<CafeMenu>): List<CafeMenuBoardResponseDTO> {
-            return cafeMenus
-                .groupBy { GroupingKey(it.cafeLocation, it.name, it.category) }
-                .map { (key, groupedMenus) ->
-                    CafeMenuBoardResponseDTO(
-                        cafeLocation = key.cafeLocation,
-                        name = key.name,
-                        category = key.category,
-                        options = groupedMenus.map { menu ->
-                            CafeMenuOptionDTO(
-                                id = menu.id,
-                                drinkTemperature = menu.drinkTemperature,
-                                available = menu.available,
-                                price = menu.price,
-                                description = menu.description,
-                                imageFilename = menu.imageFilename,
-                                imageUrl = menu.imageUrl
-                            )
-                        }
-                    )
-                }
-        }
-    }
-}
+)
 
 data class CafeMenuOptionDTO(
     @Schema(description = "음료의 온도", example = "HOT")
@@ -66,10 +40,4 @@ data class CafeMenuOptionDTO(
 
     @Schema(description = "이미지의 URL", example = "http://example.com/americano.png")
     val imageUrl: String?
-)
-
-data class GroupingKey(
-    val cafeLocation: CafeLocation,
-    val name: String,
-    val category: CafeMenuCategory
 )

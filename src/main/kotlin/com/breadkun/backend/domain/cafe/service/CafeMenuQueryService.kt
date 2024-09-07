@@ -5,10 +5,10 @@ import com.breadkun.backend.domain.cafe.model.CafeMenu
 import com.breadkun.backend.domain.cafe.model.enum.CafeLocation
 import com.breadkun.backend.domain.cafe.model.enum.CafeMenuCategory
 import com.breadkun.backend.domain.cafe.repository.CafeMenuQueryRepository
+import com.breadkun.backend.global.common.util.PaginationUtils
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import org.springframework.data.domain.PageImpl
-import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 
 interface CafeMenuQueryService {
@@ -37,16 +37,26 @@ class CafeMenuQueryServiceImpl(
         page: Int?,
         size: Int?
     ): PageImpl<CafeMenuBoardResponseDTO> = coroutineScope {
+        val pageable = PaginationUtils.validatePagination(page, size)
+
         val totalCountDeferred =
             async { cafeMenuQueryRepository.countByMultipleOptionsWithGrouping(cafeLocation, name, category) }
         val cafeMenuListDeferred =
-            async { cafeMenuQueryRepository.findByMultipleOptionsWithPaging(cafeLocation, name, category, page, size) }
+            async {
+                cafeMenuQueryRepository.findByMultipleOptionsWithGrouping(
+                    cafeLocation,
+                    name,
+                    category,
+                    if (pageable.isPaged) pageable.pageNumber else null,
+                    if (pageable.isPaged) pageable.pageSize else null
+                )
+            }
 
         val totalCount = totalCountDeferred.await()
         val cafeMenuList = cafeMenuListDeferred.await()
 
-        val data = CafeMenuBoardResponseDTO.fromModel(cafeMenuList)
+        val safePageable = PaginationUtils.safePageable(pageable, totalCount)
 
-        PageImpl(data, PageRequest.of(page ?: 0, size ?: data.size), totalCount)
+        PageImpl(cafeMenuList, safePageable, totalCount)
     }
 }

@@ -21,7 +21,6 @@ repositories {
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
-//	implementation("org.springframework.boot:spring-boot-starter-data-jpa") // Liquibase update를 위한 의존성
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -29,16 +28,15 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 	implementation("org.liquibase:liquibase-core")
-//	spring-jdbc는 주로 동기식 JDBC 접근을 위해 사용되며, 리액티브 환경에서는 필요하지 않음
-//	리액티브 프로그래밍에서 JDBC 대신 R2DBC를 사용하므로, spring-jdbc가 불필요
-//	implementation("org.springframework:spring-jdbc")
 	implementation("org.springdoc:springdoc-openapi-webflux-ui:1.8.0")
-	runtimeOnly("org.postgresql:postgresql")
-	runtimeOnly("org.postgresql:r2dbc-postgresql")
+	implementation("org.postgresql:r2dbc-postgresql")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+//	implementation("org.springframework.boot:spring-boot-starter-data-jpa") // Liquibase update 위한 의존성
+//	implementation("org.springframework:spring-jdbc") // R2DBC 사용 지향
+//	runtimeOnly("org.postgresql:postgresql") //	JDBC-postgreSQL 드라이버
 }
 
 kotlin {
