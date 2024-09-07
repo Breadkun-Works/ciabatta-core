@@ -21,8 +21,9 @@ class CafeMenuCommandHandler(
     }
 
     suspend fun updateCafeMenu(request: ServerRequest): ServerResponse {
+        val id = request.pathVariable("id")
         val cafeMenuUpdateDTO = request.awaitBody<CafeMenuUpdateDTO>()
-        val updatedMenu = cafeMenuCommandService.updateCafeMenu(cafeMenuUpdateDTO)
+        val updatedMenu = cafeMenuCommandService.updateCafeMenu(id, cafeMenuUpdateDTO)
         return updatedMenu?.let { ResponseUtils.ok(updatedMenu) } ?: ServerResponse.notFound().buildAndAwait()
     }
 

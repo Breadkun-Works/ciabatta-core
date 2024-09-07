@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 
 interface CafeMenuCommandService {
     suspend fun createCafeMenu(dto: CafeMenuCreateDTO): CafeMenu
-    suspend fun updateCafeMenu(dto: CafeMenuUpdateDTO): CafeMenu?
+    suspend fun updateCafeMenu(id: String, dto: CafeMenuUpdateDTO): CafeMenu?
     suspend fun deleteCafeMenuById(id: String): String?
 }
 
@@ -22,9 +22,9 @@ class CafeMenuCommandServiceImpl(
         return cafeMenuCommandRepository.save(test)
     }
 
-    override suspend fun updateCafeMenu(dto: CafeMenuUpdateDTO): CafeMenu? {
-        return cafeMenuQueryService.findCafeMenuById(dto.id)?.let {
-            cafeMenuCommandRepository.update(dto.toModel(it))
+    override suspend fun updateCafeMenu(id: String, dto: CafeMenuUpdateDTO): CafeMenu? {
+        return cafeMenuQueryService.findCafeMenuById(id)?.let {
+            cafeMenuCommandRepository.update(dto.toModel(id, it))
         }
     }
 

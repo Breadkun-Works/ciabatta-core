@@ -6,16 +6,11 @@ import com.breadkun.backend.domain.cafe.model.enum.CafeMenuCategory
 import com.breadkun.backend.domain.cafe.model.enum.DrinkTemperature
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
-import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Positive
 import jakarta.validation.constraints.Size
 import java.time.LocalDateTime
 
 data class CafeMenuUpdateDTO(
-    @field:NotNull(message = "ID는 필수입니다.")
-    @Schema(description = "메뉴의 고유 ID")
-    val id: String,
-
     @Schema(description = "카페의 위치", example = "KANGCHON")
     val cafeLocation: CafeLocation? = null,
 
@@ -52,7 +47,7 @@ data class CafeMenuUpdateDTO(
     @Schema(description = "수정자 ID")
     val updatedById: String,
 ) {
-    fun toModel(existingMenu: CafeMenu): CafeMenu {
+    fun toModel(id: String, existingMenu: CafeMenu): CafeMenu {
         return CafeMenu(
             id = id,
             cafeLocation = cafeLocation ?: existingMenu.cafeLocation,
