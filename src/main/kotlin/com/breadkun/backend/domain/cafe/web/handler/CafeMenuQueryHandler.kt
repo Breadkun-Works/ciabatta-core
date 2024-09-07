@@ -16,11 +16,11 @@ class CafeMenuQueryHandler(
     suspend fun getCafeMenuBoardByOptions(request: ServerRequest): ServerResponse {
         val cafeLocation =
             request.queryParam("cafeLocation").getOrNull()?.takeIf { it.isNotBlank() }?.let { CafeLocation.valueOf(it) }
-        val name = request.queryParam("name").getOrNull()
+        val name = request.queryParam("name").getOrNull()?.trim()
         val category =
             request.queryParam("category").getOrNull()?.takeIf { it.isNotBlank() }?.let { CafeMenuCategory.valueOf(it) }
-        val page = request.queryParam("page").getOrNull()?.toInt()
-        val size = request.queryParam("size").getOrNull()?.toInt()
+        val page = request.queryParam("page").getOrNull()?.takeIf { it.isNotBlank() }?.toInt()
+        val size = request.queryParam("size").getOrNull()?.takeIf { it.isNotBlank() }?.toInt()
 
         val result = cafeMenuQueryService.getCafeMenuBoardByOptions(cafeLocation, name, category, page, size)
 
