@@ -1,5 +1,6 @@
 package com.breadkun.backend.domain.cafe.dto.request
 
+import com.breadkun.backend.domain.cafe.dto.response.CafeMenuDTO
 import com.breadkun.backend.domain.cafe.model.CafeMenu
 import com.breadkun.backend.domain.cafe.model.enum.CafeLocation
 import com.breadkun.backend.domain.cafe.model.enum.CafeMenuCategory
@@ -47,7 +48,7 @@ data class CafeMenuUpdateDTO(
     @Schema(description = "수정자 ID")
     val updatedById: String,
 ) {
-    fun toModel(id: String, existingMenu: CafeMenu): CafeMenu {
+    fun toModel(id: String, existingMenu: CafeMenuDTO): CafeMenu {
         return CafeMenu(
             id = id,
             cafeLocation = cafeLocation ?: existingMenu.cafeLocation,

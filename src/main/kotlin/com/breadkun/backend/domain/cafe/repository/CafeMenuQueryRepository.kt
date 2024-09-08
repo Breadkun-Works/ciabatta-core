@@ -1,7 +1,7 @@
 package com.breadkun.backend.domain.cafe.repository
 
-import com.breadkun.backend.domain.cafe.dto.response.CafeMenuBoardResponseDTO
-import com.breadkun.backend.domain.cafe.dto.response.CafeMenuOptionDTO
+import com.breadkun.backend.domain.cafe.dto.response.CafeMenuBoardDTO
+import com.breadkun.backend.domain.cafe.dto.response.CafeMenuBoardOptionDTO
 import com.breadkun.backend.domain.cafe.model.CafeMenu
 import com.breadkun.backend.domain.cafe.model.enum.CafeLocation
 import com.breadkun.backend.domain.cafe.model.enum.CafeMenuCategory
@@ -19,7 +19,7 @@ interface CafeMenuQueryRepository {
         category: CafeMenuCategory?,
         page: Int?,
         size: Int?
-    ): List<CafeMenuBoardResponseDTO>
+    ): List<CafeMenuBoardDTO>
 
     suspend fun countByMultipleOptionsWithGrouping(
         cafeLocation: CafeLocation?,
@@ -44,7 +44,7 @@ class CafeMenuQueryRepositoryImpl(
         category: CafeMenuCategory?,
         page: Int?,
         size: Int?
-    ): List<CafeMenuBoardResponseDTO> {
+    ): List<CafeMenuBoardDTO> {
         val baseQuery = """
             WITH grouped_data AS (
                 SELECT cafe_location, name, category,
@@ -83,11 +83,11 @@ class CafeMenuQueryRepositoryImpl(
         }
 
         return querySpec.map { row, _ ->
-            val options: List<CafeMenuOptionDTO> = objectMapper.readValue(
+            val options: List<CafeMenuBoardOptionDTO> = objectMapper.readValue(
                 (row["options"] as Json).asString(),
-                objectMapper.typeFactory.constructCollectionType(List::class.java, CafeMenuOptionDTO::class.java)
+                objectMapper.typeFactory.constructCollectionType(List::class.java, CafeMenuBoardOptionDTO::class.java)
             )
-            CafeMenuBoardResponseDTO(
+            CafeMenuBoardDTO(
                 cafeLocation = CafeLocation.valueOf(row["cafe_location"] as String),
                 name = row["name"] as String,
                 category = CafeMenuCategory.valueOf(row["category"] as String),
