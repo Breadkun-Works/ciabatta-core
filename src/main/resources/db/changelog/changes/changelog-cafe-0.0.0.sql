@@ -1,5 +1,5 @@
 -- liquibase formatted sql
--- changeset chanki5451:2024-09-04
+-- changeset chanki5451:2024-09-08
 
 -- CafeMenu 테이블 생성
 create table public.cafe_menu
@@ -59,7 +59,6 @@ comment on column public.cafe_cart.shared_url is '장바구니 공유 URL';
 create table public.cafe_cart_item
 (
     id              varchar(36) primary key                      not null,
-    cafe_location   varchar(50)                                  not null,
     cafe_cart_id    varchar(36) references public.cafe_cart (id) not null,
     cafe_menu_id    varchar(36) references public.cafe_menu (id) not null,
     quantity        int                                          not null,
@@ -68,7 +67,6 @@ create table public.cafe_cart_item
     created_by_name varchar(30)                                  not null
 );
 comment on column public.cafe_cart_item.id is '카페 장바구니 항목 ID';
-comment on column public.cafe_cart_item.cafe_location is '카페 이름';
 comment on column public.cafe_cart_item.cafe_cart_id is '참조된 카페 장바구니 ID';
 comment on column public.cafe_cart_item.cafe_menu_id is '참조된 카페 메뉴 항목 ID';
 comment on column public.cafe_cart_item.quantity is '담긴 수량';
