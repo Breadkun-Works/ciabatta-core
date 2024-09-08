@@ -19,11 +19,11 @@ server:
 
 springdoc:
   swagger-ui:
-    # Swagger UI에 접근하려면 /api-docs 로 이동
     path: /api-docs
-    disable-swagger-default-url: true
-  # Swagger UI 내에서 그룹의 API를 확인할 수 있으며,
-  # 이때 해당 API는 paths-to-match 경로에 있는 엔드포인트들이 포함됩니다.
   group-configs:
-    - group: CafeMenu
-      paths-to-match: /api/cafe/menus/**
+    - group: cafe-menu
+      paths-to-match:
+        - /api/cafe/menus/**
+    - group: cafe-cart
+      paths-to-match:
+        - /api/cafe/carts/**

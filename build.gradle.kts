@@ -28,7 +28,7 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 	implementation("org.liquibase:liquibase-core")
-	implementation("org.springdoc:springdoc-openapi-webflux-ui:1.8.0")
+	implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.6.0")
 	implementation("org.postgresql:r2dbc-postgresql")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")
