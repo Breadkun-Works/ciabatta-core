@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository
 interface CafeMenuCommandRepository {
     suspend fun save(cafeMenu: CafeMenu): CafeMenu
     suspend fun update(cafeMenu: CafeMenu): CafeMenu
-    suspend fun deleteById(id: String): String
+    suspend fun deleteById(cafeMenuId: String): String
 }
 
 @Repository
@@ -24,8 +24,8 @@ class CafeMenuCommandRepositoryImpl(
         return cafeMenuCoroutineCrudRepository.save(cafeMenu)
     }
 
-    override suspend fun deleteById(id: String): String {
-        cafeMenuCoroutineCrudRepository.deleteById(id)
-        return id
+    override suspend fun deleteById(cafeMenuId: String): String {
+        cafeMenuCoroutineCrudRepository.deleteById(cafeMenuId)
+        return cafeMenuId
     }
 }

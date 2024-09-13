@@ -11,25 +11,28 @@ import org.springframework.web.reactive.function.server.awaitBody
 import org.springframework.web.reactive.function.server.buildAndAwait
 
 @Component
-class CafeMenuCommandHandler(
+class AdminCafeMenuCommandHandler(
     private val cafeMenuCommandService: CafeMenuCommandService
 ) {
     suspend fun createCafeMenu(request: ServerRequest): ServerResponse {
         val cafeMenuCreateDTO = request.awaitBody<CafeMenuCreateDTO>()
         val createdMenu = cafeMenuCommandService.createCafeMenu(cafeMenuCreateDTO)
+
         return ResponseUtils.ok(createdMenu)
     }
 
     suspend fun updateCafeMenu(request: ServerRequest): ServerResponse {
-        val id = request.pathVariable("id")
+        val cafeMenuId = request.pathVariable("cafeMenuId")
         val cafeMenuUpdateDTO = request.awaitBody<CafeMenuUpdateDTO>()
-        val updatedMenu = cafeMenuCommandService.updateCafeMenu(id, cafeMenuUpdateDTO)
+        val updatedMenu = cafeMenuCommandService.updateCafeMenu(cafeMenuId, cafeMenuUpdateDTO)
+
         return updatedMenu?.let { ResponseUtils.ok(updatedMenu) } ?: ServerResponse.notFound().buildAndAwait()
     }
 
     suspend fun deleteCafeMenuById(request: ServerRequest): ServerResponse {
-        val id = request.pathVariable("id")
-        val deletedId = cafeMenuCommandService.deleteCafeMenuById(id)
+        val cafeMenuId = request.pathVariable("cafeMenuId")
+        val deletedId = cafeMenuCommandService.deleteCafeMenuById(cafeMenuId)
+
         return deletedId?.let { ResponseUtils.ok(it) } ?: ServerResponse.notFound().buildAndAwait()
     }
 }

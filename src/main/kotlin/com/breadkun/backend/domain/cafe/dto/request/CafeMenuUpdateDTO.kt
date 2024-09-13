@@ -48,9 +48,9 @@ data class CafeMenuUpdateDTO(
     @Schema(description = "수정자 ID")
     val updatedById: String,
 ) {
-    fun toModel(id: String, existingMenu: CafeMenuDTO): CafeMenu {
+    fun toModel(cafeMenuId: String, existingMenu: CafeMenuDTO): CafeMenu {
         return CafeMenu(
-            id = id,
+            id = cafeMenuId,
             cafeLocation = cafeLocation ?: existingMenu.cafeLocation,
             name = name ?: existingMenu.name,
             price = price ?: existingMenu.price,

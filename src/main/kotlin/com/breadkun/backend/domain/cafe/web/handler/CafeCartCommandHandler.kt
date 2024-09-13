@@ -15,6 +15,7 @@ class CafeCartCommandHandler (
     suspend fun createCafeCart(request: ServerRequest): ServerResponse {
         val cafeCartCreateDTO = request.awaitBody<CafeCartCreateDTO>()
         val createdCart = cafeCartCommandService.createCafeCart(cafeCartCreateDTO)
+
         return ResponseUtils.ok(createdCart)
     }
 }

@@ -39,7 +39,7 @@ data class CafeCartCreateDTO(
             createdAt = createdAt,
             expiresAt = createdAt.plusHours(3),
             createdById = createdById,
-            sharedUrl = "https://breadkun.com/cafe/cart/$id"
+            sharedUrl = "https://breadkun.com/cafe/carts/$id"
         )
     }
 }

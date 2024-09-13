@@ -12,7 +12,7 @@ import org.springframework.data.domain.PageImpl
 import org.springframework.stereotype.Service
 
 interface CafeMenuQueryService {
-    suspend fun findCafeMenuById(id: String): CafeMenuDTO?
+    suspend fun findCafeMenuById(cafeMenuId: String): CafeMenuDTO?
     suspend fun getCafeMenuBoardByOptions(
         cafeLocation: CafeLocation?,
         name: String?,
@@ -26,8 +26,8 @@ interface CafeMenuQueryService {
 class CafeMenuQueryServiceImpl(
     private val cafeMenuQueryRepository: CafeMenuQueryRepository,
 ) : CafeMenuQueryService {
-    override suspend fun findCafeMenuById(id: String): CafeMenuDTO? {
-        return cafeMenuQueryRepository.findById(id)
+    override suspend fun findCafeMenuById(cafeMenuId: String): CafeMenuDTO? {
+        return cafeMenuQueryRepository.findById(cafeMenuId)
             ?.let {
                 CafeMenuDTO.fromModel(it)
             }

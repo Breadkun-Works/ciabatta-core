@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service
 
 interface CafeMenuCommandService {
     suspend fun createCafeMenu(dto: CafeMenuCreateDTO): CafeMenuDTO
-    suspend fun updateCafeMenu(id: String, dto: CafeMenuUpdateDTO): CafeMenuDTO?
-    suspend fun deleteCafeMenuById(id: String): String?
+    suspend fun updateCafeMenu(cafeMenuId: String, dto: CafeMenuUpdateDTO): CafeMenuDTO?
+    suspend fun deleteCafeMenuById(cafeMenuId: String): String?
 }
 
 @Service
@@ -24,20 +24,20 @@ class CafeMenuCommandServiceImpl(
             }
     }
 
-    override suspend fun updateCafeMenu(id: String, dto: CafeMenuUpdateDTO): CafeMenuDTO? {
-        return cafeMenuQueryService.findCafeMenuById(id)
+    override suspend fun updateCafeMenu(cafeMenuId: String, dto: CafeMenuUpdateDTO): CafeMenuDTO? {
+        return cafeMenuQueryService.findCafeMenuById(cafeMenuId)
             ?.let { existingMenu ->
-                cafeMenuCommandRepository.update(dto.toModel(id, existingMenu))
+                cafeMenuCommandRepository.update(dto.toModel(cafeMenuId, existingMenu))
             }
             ?.let { updatedMenu ->
                 CafeMenuDTO.fromModel(updatedMenu)
             }
     }
 
-    override suspend fun deleteCafeMenuById(id: String): String? {
-        return cafeMenuQueryService.findCafeMenuById(id)
+    override suspend fun deleteCafeMenuById(cafeMenuId: String): String? {
+        return cafeMenuQueryService.findCafeMenuById(cafeMenuId)
             ?.let {
-                cafeMenuCommandRepository.deleteById(id)
+                cafeMenuCommandRepository.deleteById(cafeMenuId)
             }
     }
 }
