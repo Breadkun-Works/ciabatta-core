@@ -5,10 +5,11 @@ import com.breadkun.backend.domain.cafe.dto.response.CafeMenuDTO
 import com.breadkun.backend.domain.cafe.model.enum.CafeLocation
 import com.breadkun.backend.domain.cafe.model.enum.CafeMenuCategory
 import com.breadkun.backend.domain.cafe.repository.CafeMenuQueryRepository
-import com.breadkun.backend.global.common.util.PaginationUtils
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
 interface CafeMenuQueryService {
@@ -17,8 +18,7 @@ interface CafeMenuQueryService {
         cafeLocation: CafeLocation?,
         name: String?,
         category: CafeMenuCategory?,
-        page: Int?,
-        size: Int?
+        pageable: Pageable
     ): PageImpl<CafeMenuBoardDTO>
 }
 
@@ -37,25 +37,29 @@ class CafeMenuQueryServiceImpl(
         cafeLocation: CafeLocation?,
         name: String?,
         category: CafeMenuCategory?,
-        page: Int?,
-        size: Int?
+        pageable: Pageable
     ): PageImpl<CafeMenuBoardDTO> = coroutineScope {
-        val pageable = PaginationUtils.validatePagination(page, size)
-
-        val totalCountDeferred =
+        val totalCountDeferred = if (pageable.isPaged) {
             async { cafeMenuQueryRepository.countByMultipleOptionsWithGrouping(cafeLocation, name, category) }
-        val cafeMenuListDeferred =
-            async {
-                cafeMenuQueryRepository.findByMultipleOptionsWithGrouping(
-                    cafeLocation, name, category,
-                    if (pageable.isPaged) pageable.pageNumber else null,
-                    if (pageable.isPaged) pageable.pageSize else null
-                )
-            }
+        } else {
+            null
+        }
 
-        val totalCount = totalCountDeferred.await()
+        val cafeMenuListDeferred = async {
+            cafeMenuQueryRepository.findByMultipleOptionsWithGrouping(
+                cafeLocation, name, category,
+                if (pageable.isPaged) pageable.pageNumber else null,
+                if (pageable.isPaged) pageable.pageSize else null
+            )
+        }
+
+        val totalCount = totalCountDeferred?.await() ?: cafeMenuListDeferred.await().size.toLong()
         val cafeMenuList = cafeMenuListDeferred.await()
 
-        PageImpl(cafeMenuList, PaginationUtils.safePageable(pageable, totalCount), totalCount)
+        PageImpl(
+            cafeMenuList,
+            if (pageable.isPaged) pageable else PageRequest.of(0, cafeMenuList.size),
+            totalCount
+        )
     }
 }

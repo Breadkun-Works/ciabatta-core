@@ -14,12 +14,4 @@ object PaginationUtils {
             Pageable.unpaged()
         }
     }
-
-    fun safePageable(pageable: Pageable, totalCount: Long): Pageable {
-        return if (pageable.isPaged) {
-            pageable
-        } else {
-            PageRequest.of(0, totalCount.toInt()) // 전체 데이터 반환 시 기본값 설정
-        }
-    }
 }

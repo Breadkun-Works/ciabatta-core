@@ -3,6 +3,7 @@ package com.breadkun.backend.domain.cafe.web.handler
 import com.breadkun.backend.domain.cafe.model.enum.CafeLocation
 import com.breadkun.backend.domain.cafe.model.enum.CafeMenuCategory
 import com.breadkun.backend.domain.cafe.service.CafeMenuQueryService
+import com.breadkun.backend.global.common.util.PaginationUtils
 import com.breadkun.backend.global.common.util.ResponseUtils
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.ServerRequest
@@ -22,8 +23,14 @@ class CafeMenuQueryHandler(
         val page = request.queryParam("page").getOrNull()?.takeIf { it.isNotBlank() }?.toInt()
         val size = request.queryParam("size").getOrNull()?.takeIf { it.isNotBlank() }?.toInt()
 
-        val result = cafeMenuQueryService.getCafeMenuBoardByOptions(cafeLocation, name, category, page, size)
+        val pageable = PaginationUtils.validatePagination(page, size)
 
-        return ResponseUtils.ok(result)
+        val result = cafeMenuQueryService.getCafeMenuBoardByOptions(cafeLocation, name, category, pageable)
+
+        return if (pageable.isPaged) {
+            ResponseUtils.ok(result)
+        } else {
+            ResponseUtils.ok(result.content)
+        }
     }
 }
