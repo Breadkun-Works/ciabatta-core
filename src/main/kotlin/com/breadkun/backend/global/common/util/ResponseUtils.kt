@@ -1,34 +1,33 @@
 package com.breadkun.backend.global.common.util
 
+import com.breadkun.backend.global.common.model.ApiResponse
+import com.breadkun.backend.global.common.model.MetaData
 import org.springframework.data.domain.PageImpl
 import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.function.server.bodyValueAndAwait
-import org.springframework.web.reactive.function.server.buildAndAwait
 
 object ResponseUtils {
-    suspend fun ok(): ServerResponse {
+    suspend fun <T> ok(data: T): ServerResponse {
+        val meta = MetaData(
+            totalItems = if (data is Collection<*>) data.size else 1
+        )
         return ServerResponse
             .ok()
             .contentType(MediaType.APPLICATION_JSON)
-            .buildAndAwait()
-    }
-
-    suspend fun <T : Any> ok(body: T): ServerResponse {
-        return ServerResponse
-            .ok()
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValueAndAwait(body)
+            .bodyValueAndAwait(ApiResponse(success = true, meta = meta, data = data))
     }
 
     suspend fun <T> ok(pageable: PageImpl<T>): ServerResponse {
+        val meta = MetaData(
+            totalItems = pageable.totalElements.toInt(),
+            totalPages = pageable.totalPages,
+            pageSize = pageable.size,
+            currentPage = pageable.number
+        )
         return ServerResponse
             .ok()
             .contentType(MediaType.APPLICATION_JSON)
-            .header("Total-Elements", pageable.totalElements.toString())
-            .header("Total-Pages", pageable.totalPages.toString())
-            .header("Page-Size", pageable.size.toString())
-            .header("Current-Page", pageable.number.toString())
-            .bodyValueAndAwait(pageable.content)
+            .bodyValueAndAwait(ApiResponse(success = true, meta = meta, data = pageable.content))
     }
 }

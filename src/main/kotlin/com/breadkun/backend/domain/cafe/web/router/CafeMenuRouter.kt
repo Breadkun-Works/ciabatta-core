@@ -8,12 +8,12 @@ import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.server.coRouter
 
 @Configuration
-class CafeMenuRouterConfig(
+class CafeMenuRouter(
     private val cafeMenuQueryHandler: CafeMenuQueryHandler,
     private val adminCafeMenuCommandHandler: AdminCafeMenuCommandHandler
 ) {
     @Bean
-    fun cafeMenuRouter() = coRouter {
+    fun cafeMenuRoutes() = coRouter {
         "/api/cafe/menus".nest {
             accept(MediaType.valueOf("application/vnd.breadkun.v1+json")).nest {
                 GET("/board", cafeMenuQueryHandler::getCafeMenuBoardByOptions)
@@ -22,7 +22,7 @@ class CafeMenuRouterConfig(
     }
 
     @Bean
-    fun adminCafeMenuRouter() = coRouter {
+    fun adminCafeMenuRoutes() = coRouter {
         "/api/admin/cafe/menus".nest {
             accept(MediaType.valueOf("application/vnd.breadkun.v1+json")).nest {
                 POST("", adminCafeMenuCommandHandler::createCafeMenu)

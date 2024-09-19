@@ -8,12 +8,12 @@ import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.server.coRouter
 
 @Configuration
-class CafeCartRouterConfig(
+class CafeCartRouter(
     private val cafeCartCommandHandler: CafeCartCommandHandler,
     private val cafeCartQueryHandler: CafeCartQueryHandler
 ) {
     @Bean
-    fun cafeCartRouter() = coRouter {
+    fun cafeCartRoutes() = coRouter {
         "/api/cafe/carts".nest {
             accept(MediaType.valueOf("application/vnd.breadkun.v1+json")).nest {
                 GET("/active", cafeCartQueryHandler::findActiveCafeCartByCreatedById)

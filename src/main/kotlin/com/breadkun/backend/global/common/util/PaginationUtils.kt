@@ -19,7 +19,7 @@ object PaginationUtils {
         return if (pageable.isPaged) {
             pageable
         } else {
-            PageRequest.of(0, totalCount.toInt())  // 전체 데이터 반환 시 기본값 설정
+            PageRequest.of(0, totalCount.toInt()) // 전체 데이터 반환 시 기본값 설정
         }
     }
 }
