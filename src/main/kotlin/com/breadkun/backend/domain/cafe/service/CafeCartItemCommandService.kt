@@ -7,7 +7,11 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 fun interface CafeCartItemCommandService {
-    suspend fun createCafeCartItems(dtos: List<CafeCartItemCreateDTO>): List<CafeCartItemDTO>
+    suspend fun createCafeCartItems(
+        cartId: String,
+        userUUID: String,
+        dtos: List<CafeCartItemCreateDTO>
+    ): List<CafeCartItemDTO>
 }
 
 @Service
@@ -15,8 +19,12 @@ class CafeCartItemCommandServiceImpl(
     private val cafeCartItemCommandRepository: CafeCartItemCommandRepository
 ) : CafeCartItemCommandService {
     @Transactional
-    override suspend fun createCafeCartItems(dtos: List<CafeCartItemCreateDTO>): List<CafeCartItemDTO> {
-        return cafeCartItemCommandRepository.saveAll(dtos.map { it.toModel() })
+    override suspend fun createCafeCartItems(
+        cartId: String,
+        userUUID: String,
+        dtos: List<CafeCartItemCreateDTO>
+    ): List<CafeCartItemDTO> {
+        return cafeCartItemCommandRepository.saveAll(dtos.map { it.toModel(cartId, userUUID) })
             .map {
                 CafeCartItemDTO.fromModel(it)
             }
