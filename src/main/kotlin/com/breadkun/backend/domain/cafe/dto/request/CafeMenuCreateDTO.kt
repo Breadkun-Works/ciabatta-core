@@ -45,12 +45,8 @@ data class CafeMenuCreateDTO(
     @field:Size(max = 255, message = "이미지 URL은 255자 이내여야 합니다.")
     @Schema(description = "이미지의 URL", example = "http://example.com/americano.png")
     val imageUrl: String? = null,
-
-    @field:NotBlank(message = "생성자 ID는 필수입니다.")
-    @Schema(description = "생성자 ID")
-    val createdById: String,
 ) {
-    fun toModel(): CafeMenu {
+    fun toModel(userID: String): CafeMenu {
         return CafeMenu(
             id = UUID.randomUUID().toString(),
             cafeLocation = cafeLocation,
@@ -63,7 +59,7 @@ data class CafeMenuCreateDTO(
             imageFilename = imageFilename,
             imageUrl = imageUrl,
             createdAt = LocalDateTime.now(),
-            createdById = createdById,
+            createdById = userID,
             updatedAt = null,
             updatedById = null
         )
