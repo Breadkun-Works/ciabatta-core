@@ -17,9 +17,10 @@ class CafeCartQueryServiceImpl(
     override suspend fun findActiveCafeCartById(cafeCartId: String): CafeCartDTO? {
         val currentTime = LocalDateTime.now()
 
-        return cafeCartQueryRepository.findActiveById(cafeCartId, currentTime)?.let {
-            CafeCartDTO.fromModel(it)
-        }
+        return cafeCartQueryRepository.findActiveById(cafeCartId, currentTime)
+            ?.let {
+                CafeCartDTO.fromModel(it)
+            }
     }
 
     override suspend fun findActiveCafeCartByOptions(createdById: String?): List<CafeCartDTO> {
