@@ -6,7 +6,6 @@ import com.breadkun.backend.domain.cafe.model.enum.CafeLocation
 import com.breadkun.backend.domain.cafe.model.enum.CafeMenuCategory
 import com.breadkun.backend.domain.cafe.model.enum.DrinkTemperature
 import io.swagger.v3.oas.annotations.media.Schema
-import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Positive
 import jakarta.validation.constraints.Size
 import java.time.LocalDateTime
@@ -42,15 +41,11 @@ data class CafeMenuUpdateDTO(
 
     @field:Size(max = 255, message = "이미지 URL은 255자 이내여야 합니다.")
     @Schema(description = "이미지의 URL", example = "http://example.com/americano.png")
-    val imageUrl: String? = null,
-
-    @field:NotBlank(message = "수정자 ID는 필수입니다.")
-    @Schema(description = "수정자 ID")
-    val updatedById: String,
+    val imageUrl: String? = null
 ) {
-    fun toModel(id: String, existingMenu: CafeMenuDTO): CafeMenu {
+    fun toModel(cafeMenuId: String, userID: String, existingMenu: CafeMenuDTO): CafeMenu {
         return CafeMenu(
-            id = id,
+            id = cafeMenuId,
             cafeLocation = cafeLocation ?: existingMenu.cafeLocation,
             name = name ?: existingMenu.name,
             price = price ?: existingMenu.price,
@@ -63,7 +58,7 @@ data class CafeMenuUpdateDTO(
             createdAt = existingMenu.createdAt,
             createdById = existingMenu.createdById,
             updatedAt = LocalDateTime.now(),
-            updatedById = updatedById
+            updatedById = userID
         )
     }
 }

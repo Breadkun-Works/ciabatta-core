@@ -22,12 +22,8 @@ data class CafeCartCreateDTO(
     @field:Size(max = 255, message = "장바구니 설명은 255자 이내여야 합니다.")
     @Schema(description = "장바구니에 대한 설명", example = "빵돌이가 쏜다!")
     val description: String? = null,
-
-    @field:NotBlank(message = "생성자 ID는 필수입니다.")
-    @Schema(description = "생성자 ID")
-    val createdById: String
 ) {
-    fun toModel(): CafeCart {
+    fun toModel(userUUID: String): CafeCart {
         val id = UUID.randomUUID().toString()
         val createdAt = LocalDateTime.now()
 
@@ -38,8 +34,8 @@ data class CafeCartCreateDTO(
             description = description,
             createdAt = createdAt,
             expiresAt = createdAt.plusHours(3),
-            createdById = createdById,
-            sharedUrl = "https://breadkun.com/cafe/cart/$id"
+            createdById = userUUID,
+            sharedUrl = "https://breadkun.com/cafe/carts/$id"
         )
     }
 }
