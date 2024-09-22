@@ -8,9 +8,9 @@ import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.function.server.bodyValueAndAwait
 
 object ResponseUtils {
-    suspend fun <T> ok(data: T): ServerResponse {
+    suspend fun <T> ok(data: T?): ServerResponse {
         val meta = MetaData(
-            totalItems = if (data is Collection<*>) data.size else 1
+            totalItems = if (data == null) 0 else if (data is Collection<*>) data.size else 1
         )
         return ServerResponse
             .ok()

@@ -9,13 +9,7 @@ import java.time.LocalDateTime
 
 interface CafeMenuCoroutineCrudRepository : CoroutineCrudRepository<CafeMenu, String> {}
 
-interface CafeCartCoroutineCrudRepository : CoroutineCrudRepository<CafeCart, String> {
-    fun findByCreatedByIdAndCreatedAtLessThanEqualAndExpiresAtGreaterThanEqual(
-        createdById: String,
-        currentTimeForCreatedAt: LocalDateTime,
-        currentTimeForExpiresAt: LocalDateTime
-    ): Flow<CafeCart>
-}
+interface CafeCartCoroutineCrudRepository : CoroutineCrudRepository<CafeCart, String> {}
 
 interface CafeCartItemCoroutineCrudRepository : CoroutineCrudRepository<CafeCartItem, String> {
     fun findByCafeCartId(cafeCartId: String): Flow<CafeCartItem>

@@ -16,7 +16,9 @@ fun interface CafeCartItemCommandService {
 
 @Service
 class CafeCartItemCommandServiceImpl(
-    private val cafeCartItemCommandRepository: CafeCartItemCommandRepository
+    private val cafeCartItemCommandRepository: CafeCartItemCommandRepository,
+    private val cafeMenuQueryService: CafeMenuQueryService,
+    private val cafeCartQueryService: CafeCartQueryService
 ) : CafeCartItemCommandService {
     @Transactional
     override suspend fun createCafeCartItems(
