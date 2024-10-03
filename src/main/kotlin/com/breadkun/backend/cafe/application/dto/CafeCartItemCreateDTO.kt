@@ -1,4 +1,4 @@
-package com.breadkun.backend.cafe.application.dto.request
+package com.breadkun.backend.cafe.application.dto
 
 import com.breadkun.backend.cafe.infrastructure.persistence.entity.CafeCartItemEntity
 import io.swagger.v3.oas.annotations.media.Schema

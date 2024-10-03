@@ -1,7 +1,7 @@
 package com.breadkun.backend.cafe.infrastructure.web.handler
 
-import com.breadkun.backend.cafe.application.dto.request.CafeMenuCreateDTO
-import com.breadkun.backend.cafe.application.dto.request.CafeMenuUpdateDTO
+import com.breadkun.backend.cafe.application.dto.CafeMenuCreateDTO
+import com.breadkun.backend.cafe.application.dto.CafeMenuUpdateDTO
 import com.breadkun.backend.cafe.application.port.input.CafeMenuCommandUseCase
 import com.breadkun.backend.global.common.util.ResponseUtils
 import org.springframework.stereotype.Component

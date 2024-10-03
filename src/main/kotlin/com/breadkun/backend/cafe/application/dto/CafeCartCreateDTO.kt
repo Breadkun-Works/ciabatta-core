@@ -1,4 +1,4 @@
-package com.breadkun.backend.cafe.application.dto.request
+package com.breadkun.backend.cafe.application.dto
 
 import com.breadkun.backend.cafe.infrastructure.persistence.entity.CafeCartEntity
 import com.breadkun.backend.global.common.enums.Location

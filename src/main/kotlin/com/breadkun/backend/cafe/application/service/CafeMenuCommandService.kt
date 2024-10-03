@@ -1,7 +1,7 @@
 package com.breadkun.backend.cafe.application.service
 
-import com.breadkun.backend.cafe.application.dto.request.CafeMenuCreateDTO
-import com.breadkun.backend.cafe.application.dto.request.CafeMenuUpdateDTO
+import com.breadkun.backend.cafe.application.dto.CafeMenuCreateDTO
+import com.breadkun.backend.cafe.application.dto.CafeMenuUpdateDTO
 import com.breadkun.backend.cafe.domain.model.CafeMenu
 import com.breadkun.backend.cafe.application.port.input.CafeMenuCommandUseCase
 import com.breadkun.backend.cafe.application.port.input.CafeMenuQueryUseCase

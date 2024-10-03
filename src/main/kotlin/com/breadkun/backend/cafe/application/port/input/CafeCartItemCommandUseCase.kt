@@ -1,6 +1,6 @@
 package com.breadkun.backend.cafe.application.port.input
 
-import com.breadkun.backend.cafe.application.dto.request.CafeCartItemCreateDTO
+import com.breadkun.backend.cafe.application.dto.CafeCartItemCreateDTO
 import com.breadkun.backend.cafe.domain.model.CafeCartItem
 
 fun interface CafeCartItemCommandUseCase {

@@ -1,38 +1,35 @@
-package com.breadkun.backend.cafe.application.dto.request
+package com.breadkun.backend.cafe.application.dto
 
+import com.breadkun.backend.cafe.domain.model.CafeMenu
 import com.breadkun.backend.cafe.infrastructure.persistence.entity.CafeMenuEntity
 import com.breadkun.backend.global.common.enums.Location
 import com.breadkun.backend.cafe.domain.model.enums.CafeMenuCategory
 import com.breadkun.backend.cafe.domain.model.enums.DrinkTemperature
 import io.swagger.v3.oas.annotations.media.Schema
-import jakarta.validation.constraints.NotBlank
-import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Positive
 import jakarta.validation.constraints.Size
 import java.time.LocalDateTime
-import java.util.*
 
-data class CafeMenuCreateDTO(
-    @field:NotNull(message = "카페 위치는 필수입니다.")
+data class CafeMenuUpdateDTO(
     @Schema(description = "카페의 위치", example = "KANGCHON")
-    val cafeLocation: Location,
+    val cafeLocation: Location? = null,
 
-    @field:NotBlank(message = "메뉴 이름은 필수입니다.")
     @field:Size(max = 70, message = "메뉴 이름은 70자 이내여야 합니다.")
     @Schema(description = "메뉴의 이름", example = "아메리카노")
-    val name: String,
+    val name: String? = null,
 
     @field:Positive(message = "메뉴 가격은 양수여야 합니다.")
     @Schema(description = "메뉴의 가격", example = "4500")
-    val price: Int,
+    val price: Int? = null,
 
-    @field:NotNull(message = "카테고리는 필수입니다.")
     @Schema(description = "메뉴의 카테고리", example = "COFFEE")
-    val category: CafeMenuCategory,
+    val category: CafeMenuCategory? = null,
 
-    @field:NotNull(message = "음료 온도는 필수입니다.")
     @Schema(description = "음료의 온도", example = "HOT")
-    val drinkTemperature: DrinkTemperature,
+    val drinkTemperature: DrinkTemperature? = null,
+
+    @Schema(description = "판매 가능 여부", example = "true")
+    val available: Boolean? = null,
 
     @field:Size(max = 255, message = "메뉴 설명은 255자 이내여야 합니다.")
     @Schema(description = "메뉴에 대한 설명", example = "신선한 원두로 만든 아메리카노")
@@ -44,24 +41,24 @@ data class CafeMenuCreateDTO(
 
     @field:Size(max = 255, message = "이미지 URL은 255자 이내여야 합니다.")
     @Schema(description = "이미지의 URL", example = "http://example.com/americano.png")
-    val imageUrl: String? = null,
+    val imageUrl: String? = null
 ) {
-    fun toModel(userID: String): CafeMenuEntity {
+    fun toModel(cafeMenuId: String, userID: String, existingMenu: CafeMenu): CafeMenuEntity {
         return CafeMenuEntity(
-            id = UUID.randomUUID().toString(),
-            cafeLocation = cafeLocation,
-            name = name,
-            price = price,
-            category = category,
-            drinkTemperature = drinkTemperature,
-            available = true,
-            description = description,
-            imageFilename = imageFilename,
-            imageUrl = imageUrl,
-            createdAt = LocalDateTime.now(),
-            createdById = userID,
-            updatedAt = null,
-            updatedById = null
+            id = cafeMenuId,
+            cafeLocation = cafeLocation ?: existingMenu.cafeLocation,
+            name = name ?: existingMenu.name,
+            price = price ?: existingMenu.price,
+            category = category ?: existingMenu.category,
+            drinkTemperature = drinkTemperature ?: existingMenu.drinkTemperature,
+            available = available ?: existingMenu.available,
+            description = description ?: existingMenu.description,
+            imageFilename = imageFilename ?: existingMenu.imageFilename,
+            imageUrl = imageUrl ?: existingMenu.imageUrl,
+            createdAt = existingMenu.createdAt,
+            createdById = existingMenu.createdById,
+            updatedAt = LocalDateTime.now(),
+            updatedById = userID
         )
     }
 }
