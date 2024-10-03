@@ -51,7 +51,7 @@ class CafeMenuQueryAdapter(
                 ${if (cafeLocation != null) "AND cafe_location = :cafeLocation" else ""}
                 ${if (name != null) "AND name LIKE :name" else ""}
                 ${if (category != null) "AND category = :category" else ""}
-                GROUP BY cafe_location, category, name
+                GROUP BY cafe_location, name, category
             )
             SELECT * FROM grouped_data
             ORDER BY cafe_location, category, name
