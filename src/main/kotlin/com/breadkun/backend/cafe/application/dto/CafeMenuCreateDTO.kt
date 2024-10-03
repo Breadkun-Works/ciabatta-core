@@ -1,6 +1,5 @@
 package com.breadkun.backend.cafe.application.dto
 
-import com.breadkun.backend.cafe.infrastructure.persistence.entity.CafeMenuEntity
 import com.breadkun.backend.global.common.enums.Location
 import com.breadkun.backend.cafe.domain.model.enums.CafeMenuCategory
 import com.breadkun.backend.cafe.domain.model.enums.DrinkTemperature
@@ -9,8 +8,6 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Positive
 import jakarta.validation.constraints.Size
-import java.time.LocalDateTime
-import java.util.*
 
 data class CafeMenuCreateDTO(
     @field:NotNull(message = "카페 위치는 필수입니다.")
@@ -45,23 +42,4 @@ data class CafeMenuCreateDTO(
     @field:Size(max = 255, message = "이미지 URL은 255자 이내여야 합니다.")
     @Schema(description = "이미지의 URL", example = "http://example.com/americano.png")
     val imageUrl: String? = null,
-) {
-    fun toModel(userID: String): CafeMenuEntity {
-        return CafeMenuEntity(
-            id = UUID.randomUUID().toString(),
-            cafeLocation = cafeLocation,
-            name = name,
-            price = price,
-            category = category,
-            drinkTemperature = drinkTemperature,
-            available = true,
-            description = description,
-            imageFilename = imageFilename,
-            imageUrl = imageUrl,
-            createdAt = LocalDateTime.now(),
-            createdById = userID,
-            updatedAt = null,
-            updatedById = null
-        )
-    }
-}
+)

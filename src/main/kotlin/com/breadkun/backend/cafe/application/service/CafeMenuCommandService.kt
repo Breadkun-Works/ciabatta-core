@@ -14,19 +14,19 @@ class CafeMenuCommandService(
     private val cafeMenuQueryUseCase: CafeMenuQueryUseCase
 ) : CafeMenuCommandUseCase {
     override suspend fun createCafeMenu(userID: String, dto: CafeMenuCreateDTO): CafeMenu {
-        return cafeMenuCommandPort.save(dto.toModel(userID))
+        return cafeMenuCommandPort.save(CafeMenu.fromCreateDTO(userID, dto).toEntity())
             .let {
-                CafeMenu.fromModel(it)
+                CafeMenu.fromEntity(it)
             }
     }
 
     override suspend fun updateCafeMenu(cafeMenuId: String, userID: String, dto: CafeMenuUpdateDTO): CafeMenu? {
         return cafeMenuQueryUseCase.findCafeMenuById(cafeMenuId)
             ?.let { existingMenu ->
-                cafeMenuCommandPort.update(dto.toModel(cafeMenuId, userID, existingMenu))
+                cafeMenuCommandPort.update(CafeMenu.fromUpdateDTO(cafeMenuId, userID, existingMenu, dto).toEntity())
             }
             ?.let { updatedMenu ->
-                CafeMenu.fromModel(updatedMenu)
+                CafeMenu.fromEntity(updatedMenu)
             }
     }
 

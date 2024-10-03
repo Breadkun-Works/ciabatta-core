@@ -1,14 +1,11 @@
 package com.breadkun.backend.cafe.application.dto
 
-import com.breadkun.backend.cafe.domain.model.CafeMenu
-import com.breadkun.backend.cafe.infrastructure.persistence.entity.CafeMenuEntity
 import com.breadkun.backend.global.common.enums.Location
 import com.breadkun.backend.cafe.domain.model.enums.CafeMenuCategory
 import com.breadkun.backend.cafe.domain.model.enums.DrinkTemperature
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.Positive
 import jakarta.validation.constraints.Size
-import java.time.LocalDateTime
 
 data class CafeMenuUpdateDTO(
     @Schema(description = "카페의 위치", example = "KANGCHON")
@@ -42,23 +39,4 @@ data class CafeMenuUpdateDTO(
     @field:Size(max = 255, message = "이미지 URL은 255자 이내여야 합니다.")
     @Schema(description = "이미지의 URL", example = "http://example.com/americano.png")
     val imageUrl: String? = null
-) {
-    fun toModel(cafeMenuId: String, userID: String, existingMenu: CafeMenu): CafeMenuEntity {
-        return CafeMenuEntity(
-            id = cafeMenuId,
-            cafeLocation = cafeLocation ?: existingMenu.cafeLocation,
-            name = name ?: existingMenu.name,
-            price = price ?: existingMenu.price,
-            category = category ?: existingMenu.category,
-            drinkTemperature = drinkTemperature ?: existingMenu.drinkTemperature,
-            available = available ?: existingMenu.available,
-            description = description ?: existingMenu.description,
-            imageFilename = imageFilename ?: existingMenu.imageFilename,
-            imageUrl = imageUrl ?: existingMenu.imageUrl,
-            createdAt = existingMenu.createdAt,
-            createdById = existingMenu.createdById,
-            updatedAt = LocalDateTime.now(),
-            updatedById = userID
-        )
-    }
-}
+)

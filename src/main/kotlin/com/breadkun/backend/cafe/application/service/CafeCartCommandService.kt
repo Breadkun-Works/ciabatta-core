@@ -11,9 +11,9 @@ class CafeCartCommandService(
     private val cafeCartCommandPort: CafeCartCommandPort
 ) : CafeCartCommandUseCase {
     override suspend fun createCafeCart(userUUID: String, dto: CafeCartCreateDTO): CafeCart {
-        return cafeCartCommandPort.save(dto.toModel(userUUID))
+        return cafeCartCommandPort.save(CafeCart.fromCreateDTO(userUUID, dto).toEntity())
             .let {
-                CafeCart.fromModel(it)
+                CafeCart.fromEntity(it)
             }
     }
 }

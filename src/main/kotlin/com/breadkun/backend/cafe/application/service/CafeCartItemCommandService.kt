@@ -25,9 +25,9 @@ class CafeCartItemCommandService(
     ): List<CafeCartItem> {
         validateCartAndMenuExistenceAndLocationMatch(cartId, dtos)
 
-        return cafeCartItemCommandPort.saveAll(dtos.map { it.toModel(cartId, userUUID) })
+        return cafeCartItemCommandPort.saveAll(dtos.map { CafeCartItem.fromCreateDTO(cartId, userUUID, it).toEntity() })
             .map {
-                CafeCartItem.fromModel(it)
+                CafeCartItem.fromEntity(it)
             }
     }
 

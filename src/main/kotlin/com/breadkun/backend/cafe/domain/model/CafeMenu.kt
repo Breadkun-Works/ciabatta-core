@@ -1,11 +1,14 @@
 package com.breadkun.backend.cafe.domain.model
 
+import com.breadkun.backend.cafe.application.dto.CafeMenuCreateDTO
+import com.breadkun.backend.cafe.application.dto.CafeMenuUpdateDTO
 import com.breadkun.backend.cafe.infrastructure.persistence.entity.CafeMenuEntity
 import com.breadkun.backend.global.common.enums.Location
 import com.breadkun.backend.cafe.domain.model.enums.CafeMenuCategory
 import com.breadkun.backend.cafe.domain.model.enums.DrinkTemperature
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
+import java.util.*
 
 data class CafeMenu(
     @Schema(description = "메뉴의 고유 ID")
@@ -50,8 +53,27 @@ data class CafeMenu(
     @Schema(description = "수정일")
     val updatedById: String?
 ) {
+    fun toEntity(): CafeMenuEntity {
+        return CafeMenuEntity(
+            id = id,
+            cafeLocation = cafeLocation,
+            name = name,
+            price = price,
+            category = category,
+            drinkTemperature = drinkTemperature,
+            available = available,
+            description = description,
+            imageFilename = imageFilename,
+            imageUrl = imageUrl,
+            createdAt = createdAt,
+            createdById = createdById,
+            updatedAt = updatedAt,
+            updatedById = updatedById
+        )
+    }
+
     companion object {
-        fun fromModel(cafeMenuEntity: CafeMenuEntity): CafeMenu {
+        fun fromEntity(cafeMenuEntity: CafeMenuEntity): CafeMenu {
             return CafeMenu(
                 id = cafeMenuEntity.id,
                 cafeLocation = cafeMenuEntity.cafeLocation,
@@ -67,6 +89,52 @@ data class CafeMenu(
                 createdById = cafeMenuEntity.createdById,
                 updatedAt = cafeMenuEntity.updatedAt,
                 updatedById = cafeMenuEntity.updatedById
+            )
+        }
+
+        fun fromCreateDTO(
+            userID: String,
+            cafeMenuCreateDTO: CafeMenuCreateDTO
+        ): CafeMenu {
+            return CafeMenu(
+                id = UUID.randomUUID().toString(),
+                cafeLocation = cafeMenuCreateDTO.cafeLocation,
+                name = cafeMenuCreateDTO.name,
+                price = cafeMenuCreateDTO.price,
+                category = cafeMenuCreateDTO.category,
+                drinkTemperature = cafeMenuCreateDTO.drinkTemperature,
+                available = true,
+                description = cafeMenuCreateDTO.description,
+                imageFilename = cafeMenuCreateDTO.imageFilename,
+                imageUrl = cafeMenuCreateDTO.imageUrl,
+                createdAt = LocalDateTime.now(),
+                createdById = userID,
+                updatedAt = null,
+                updatedById = null
+            )
+        }
+
+        fun fromUpdateDTO(
+            cafeMenuId: String,
+            userID: String,
+            existingMenu: CafeMenu,
+            cafeMenuUpdateDTO: CafeMenuUpdateDTO
+        ): CafeMenu {
+            return CafeMenu(
+                id = cafeMenuId,
+                cafeLocation = cafeMenuUpdateDTO.cafeLocation ?: existingMenu.cafeLocation,
+                name = cafeMenuUpdateDTO.name ?: existingMenu.name,
+                price = cafeMenuUpdateDTO.price ?: existingMenu.price,
+                category = cafeMenuUpdateDTO.category ?: existingMenu.category,
+                drinkTemperature = cafeMenuUpdateDTO.drinkTemperature ?: existingMenu.drinkTemperature,
+                available = cafeMenuUpdateDTO.available ?: existingMenu.available,
+                description = cafeMenuUpdateDTO.description ?: existingMenu.description,
+                imageFilename = cafeMenuUpdateDTO.imageFilename ?: existingMenu.imageFilename,
+                imageUrl = cafeMenuUpdateDTO.imageUrl ?: existingMenu.imageUrl,
+                createdAt = existingMenu.createdAt,
+                createdById = existingMenu.createdById,
+                updatedAt = LocalDateTime.now(),
+                updatedById = userID
             )
         }
     }

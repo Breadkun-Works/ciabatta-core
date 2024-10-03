@@ -15,7 +15,7 @@ class CafeCartQueryService(
 
         return cafeCartQueryPort.findActiveById(cafeCartId, currentTime)
             ?.let {
-                CafeCart.fromModel(it)
+                CafeCart.fromEntity(it)
             }
     }
 
@@ -24,7 +24,7 @@ class CafeCartQueryService(
 
         return cafeCartQueryPort.findActiveByMultipleOptions(createdById, currentTime)
             .map {
-                CafeCart.fromModel(it)
+                CafeCart.fromEntity(it)
             }
     }
 }

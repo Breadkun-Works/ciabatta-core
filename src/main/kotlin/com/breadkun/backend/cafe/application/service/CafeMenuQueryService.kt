@@ -20,7 +20,7 @@ class CafeMenuQueryService(
     override suspend fun findCafeMenuById(cafeMenuId: String): CafeMenu? {
         return cafeMenuQueryPort.findById(cafeMenuId)
             ?.let {
-                CafeMenu.fromModel(it)
+                CafeMenu.fromEntity(it)
             }
     }
 

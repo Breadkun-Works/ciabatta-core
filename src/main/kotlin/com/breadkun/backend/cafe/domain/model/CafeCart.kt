@@ -1,9 +1,11 @@
 package com.breadkun.backend.cafe.domain.model
 
+import com.breadkun.backend.cafe.application.dto.CafeCartCreateDTO
 import com.breadkun.backend.cafe.infrastructure.persistence.entity.CafeCartEntity
 import com.breadkun.backend.global.common.enums.Location
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
+import java.util.*
 
 data class CafeCart(
     @Schema(description = "장바구니의 고유 ID")
@@ -30,8 +32,21 @@ data class CafeCart(
     @Schema(description = "공유 URL")
     val sharedUrl: String
 ) {
+    fun toEntity(): CafeCartEntity {
+        return CafeCartEntity(
+            id = id,
+            cafeLocation = cafeLocation,
+            title = title,
+            description = description,
+            createdAt = createdAt,
+            expiresAt = expiresAt,
+            createdById = createdById,
+            sharedUrl = sharedUrl
+        )
+    }
+
     companion object {
-        fun fromModel(cafeCartEntity: CafeCartEntity): CafeCart {
+        fun fromEntity(cafeCartEntity: CafeCartEntity): CafeCart {
             return CafeCart(
                 id = cafeCartEntity.id,
                 cafeLocation = cafeCartEntity.cafeLocation,
@@ -41,6 +56,22 @@ data class CafeCart(
                 expiresAt = cafeCartEntity.expiresAt,
                 createdById = cafeCartEntity.createdById,
                 sharedUrl = cafeCartEntity.sharedUrl
+            )
+        }
+
+        fun fromCreateDTO(userUUID: String, cafeCartCreateDTO: CafeCartCreateDTO): CafeCart {
+            val id = UUID.randomUUID().toString()
+            val createdAt = LocalDateTime.now()
+
+            return CafeCart(
+                id = id,
+                cafeLocation = cafeCartCreateDTO.cafeLocation,
+                title = cafeCartCreateDTO.title,
+                description = cafeCartCreateDTO.description,
+                createdAt = createdAt,
+                expiresAt = createdAt.plusHours(3),
+                createdById = userUUID,
+                sharedUrl = "https://breadkun.com/cafe/carts/$id"
             )
         }
     }

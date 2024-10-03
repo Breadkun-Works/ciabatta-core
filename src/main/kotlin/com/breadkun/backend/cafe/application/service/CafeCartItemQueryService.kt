@@ -14,7 +14,7 @@ class CafeCartItemQueryService(
     ): List<CafeCartItem> {
         return cafeCartItemQueryPort.findByCafeCartId(cafeCartId)
             .map {
-                CafeCartItem.fromModel(it)
+                CafeCartItem.fromEntity(it)
             }
     }
 }
