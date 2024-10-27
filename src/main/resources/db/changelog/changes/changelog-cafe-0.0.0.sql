@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- changeset chanki5451:2024-10-28-001-create-cafe-menu context:local,dev,master labels:create
--- comment: "CafeMenu 테이블 생성"
+-- comment: CafeMenu 테이블 생성
 
 -- CafeMenu 테이블 생성
 create table public.cafe_menu
@@ -39,7 +39,7 @@ comment on column public.cafe_menu.updated_at is '메뉴 수정 시각';
 comment on column public.cafe_menu.updated_by_id is '메뉴 수정자 ID';
 
 -- changeset chanki5451:2024-10-28-002-create-cafe-cart context:local,dev,master labels:create
--- comment: "CafeCart 테이블 생성"
+-- comment: CafeCart 테이블 생성
 
 -- CafeCart 테이블 생성
 create table public.cafe_cart
@@ -63,7 +63,7 @@ comment on column public.cafe_cart.created_by_id is '작성자 UUID';
 comment on column public.cafe_cart.shared_url is '장바구니 공유 URL';
 
 -- changeset chanki5451:2024-10-28-003-create-cafe-cart-item context:local,dev,master labels:create
--- comment: "CafeCartItem 테이블 생성"
+-- comment: CafeCartItem 테이블 생성
 
 -- CafeCartItem 테이블 생성
 create table public.cafe_cart_item
