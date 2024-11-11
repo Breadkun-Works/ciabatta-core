@@ -71,6 +71,7 @@ create table public.cafe_cart_item
     id              varchar(36) primary key                      not null,
     cafe_cart_id    varchar(36) references public.cafe_cart (id) not null,
     cafe_menu_id    varchar(36) references public.cafe_menu (id) not null,
+    is_personal_cup boolean                                      not null,
     quantity        int                                          not null,
     created_at      timestamp                                    not null,
     created_by_id   varchar(36)                                  not null,
@@ -79,6 +80,7 @@ create table public.cafe_cart_item
 comment on column public.cafe_cart_item.id is '카페 장바구니 항목 ID';
 comment on column public.cafe_cart_item.cafe_cart_id is '참조된 카페 장바구니 ID';
 comment on column public.cafe_cart_item.cafe_menu_id is '참조된 카페 메뉴 항목 ID';
+comment on column public.cafe_cart_item.is_personal_cup is '개인컵 사용 여부';
 comment on column public.cafe_cart_item.quantity is '담긴 수량';
 comment on column public.cafe_cart_item.created_at is '항목 생성 시각';
 comment on column public.cafe_cart_item.created_by_id is '작성자 UUID';
