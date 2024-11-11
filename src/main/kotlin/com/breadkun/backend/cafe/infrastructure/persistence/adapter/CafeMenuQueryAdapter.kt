@@ -39,6 +39,7 @@ class CafeMenuQueryAdapter(
                             'id', id,
                             'available', available,
                             'price', price,
+                            'deposit', deposit,
                             'description', description,
                             'imageFilename', image_filename,
                             'imageUrl', image_url

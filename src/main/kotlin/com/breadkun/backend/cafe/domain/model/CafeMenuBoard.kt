@@ -32,6 +32,9 @@ data class CafeMenuBoardOptionDTO(
     @Schema(description = "메뉴 가격")
     val price: Int,
 
+    @Schema(description = "컵 보증금")
+    val deposit: Int,
+
     @Schema(description = "메뉴에 대한 설명")
     val description: String?,
 
