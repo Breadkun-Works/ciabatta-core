@@ -1,5 +1,6 @@
 package com.breadkun.backend.domain.model
 
+import com.breadkun.backend.application.dto.CafeCartItemCreateDTO
 import com.breadkun.backend.infrastructure.persistence.entity.CafeCartItemEntity
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
@@ -55,7 +56,7 @@ data class CafeCartItem(
         fun fromCreateDTO(
             cartId: String,
             userUUID: String,
-            cafeCartItemCreateDTO: com.breadkun.backend.application.dto.CafeCartItemCreateDTO
+            cafeCartItemCreateDTO: CafeCartItemCreateDTO
         ): CafeCartItem {
             return CafeCartItem(
                 id = UUID.randomUUID().toString(),

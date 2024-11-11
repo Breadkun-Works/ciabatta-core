@@ -1,5 +1,6 @@
 package com.breadkun.backend.domain.model
 
+import com.breadkun.backend.application.dto.CafeCartCreateDTO
 import com.breadkun.backend.infrastructure.persistence.entity.CafeCartEntity
 import com.breadkun.backend.global.common.enums.Location
 import io.swagger.v3.oas.annotations.media.Schema
@@ -31,8 +32,8 @@ data class CafeCart(
     @Schema(description = "공유 URL")
     val sharedUrl: String
 ) {
-    fun toEntity(): com.breadkun.backend.infrastructure.persistence.entity.CafeCartEntity {
-        return com.breadkun.backend.infrastructure.persistence.entity.CafeCartEntity(
+    fun toEntity(): CafeCartEntity {
+        return CafeCartEntity(
             id = id,
             cafeLocation = cafeLocation,
             title = title,
@@ -45,7 +46,7 @@ data class CafeCart(
     }
 
     companion object {
-        fun fromEntity(cafeCartEntity: com.breadkun.backend.infrastructure.persistence.entity.CafeCartEntity): CafeCart {
+        fun fromEntity(cafeCartEntity: CafeCartEntity): CafeCart {
             return CafeCart(
                 id = cafeCartEntity.id,
                 cafeLocation = cafeCartEntity.cafeLocation,
@@ -58,7 +59,7 @@ data class CafeCart(
             )
         }
 
-        fun fromCreateDTO(userUUID: String, cafeCartCreateDTO: com.breadkun.backend.application.dto.CafeCartCreateDTO): CafeCart {
+        fun fromCreateDTO(userUUID: String, cafeCartCreateDTO: CafeCartCreateDTO): CafeCart {
             val id = UUID.randomUUID().toString()
             val createdAt = LocalDateTime.now()
 

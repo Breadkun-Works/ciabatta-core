@@ -1,5 +1,6 @@
 package com.breadkun.backend.domain.model
 
+import com.breadkun.backend.application.dto.CafeMenuCreateDTO
 import com.breadkun.backend.application.dto.CafeMenuUpdateDTO
 import com.breadkun.backend.infrastructure.persistence.entity.CafeMenuEntity
 import com.breadkun.backend.global.common.enums.Location
@@ -98,7 +99,7 @@ data class CafeMenu(
 
         fun fromCreateDTO(
             userID: String,
-            cafeMenuCreateDTO: com.breadkun.backend.application.dto.CafeMenuCreateDTO
+            cafeMenuCreateDTO: CafeMenuCreateDTO
         ): CafeMenu {
             return CafeMenu(
                 id = UUID.randomUUID().toString(),
