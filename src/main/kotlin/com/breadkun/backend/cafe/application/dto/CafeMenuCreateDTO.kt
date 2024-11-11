@@ -23,6 +23,10 @@ data class CafeMenuCreateDTO(
     @Schema(description = "메뉴의 가격", example = "4500")
     val price: Int,
 
+    @field:Positive(message = "컵 보증금은 양수여야 합니다.")
+    @Schema(description = "컵 보증금")
+    val deposit: Int,
+
     @field:NotNull(message = "카테고리는 필수입니다.")
     @Schema(description = "메뉴의 카테고리", example = "COFFEE")
     val category: CafeMenuCategory,

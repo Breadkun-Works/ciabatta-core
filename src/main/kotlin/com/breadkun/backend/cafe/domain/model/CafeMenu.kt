@@ -23,6 +23,9 @@ data class CafeMenu(
     @Schema(description = "메뉴 가격")
     val price: Int,
 
+    @Schema(description = "컵 보증금")
+    val deposit: Int,
+
     @Schema(description = "메뉴의 카테고리")
     val category: CafeMenuCategory,
 
@@ -59,6 +62,7 @@ data class CafeMenu(
             cafeLocation = cafeLocation,
             name = name,
             price = price,
+            deposit = deposit,
             category = category,
             drinkTemperature = drinkTemperature,
             available = available,
@@ -79,6 +83,7 @@ data class CafeMenu(
                 cafeLocation = cafeMenuEntity.cafeLocation,
                 name = cafeMenuEntity.name,
                 price = cafeMenuEntity.price,
+                deposit = cafeMenuEntity.deposit,
                 category = cafeMenuEntity.category,
                 drinkTemperature = cafeMenuEntity.drinkTemperature,
                 available = cafeMenuEntity.available,
@@ -101,6 +106,7 @@ data class CafeMenu(
                 cafeLocation = cafeMenuCreateDTO.cafeLocation,
                 name = cafeMenuCreateDTO.name,
                 price = cafeMenuCreateDTO.price,
+                deposit = cafeMenuCreateDTO.deposit,
                 category = cafeMenuCreateDTO.category,
                 drinkTemperature = cafeMenuCreateDTO.drinkTemperature,
                 available = true,
@@ -125,6 +131,7 @@ data class CafeMenu(
                 cafeLocation = cafeMenuUpdateDTO.cafeLocation ?: existingMenu.cafeLocation,
                 name = cafeMenuUpdateDTO.name ?: existingMenu.name,
                 price = cafeMenuUpdateDTO.price ?: existingMenu.price,
+                deposit = cafeMenuUpdateDTO.deposit ?: existingMenu.deposit,
                 category = cafeMenuUpdateDTO.category ?: existingMenu.category,
                 drinkTemperature = cafeMenuUpdateDTO.drinkTemperature ?: existingMenu.drinkTemperature,
                 available = cafeMenuUpdateDTO.available ?: existingMenu.available,

@@ -18,6 +18,8 @@ data class CafeMenuEntity(
 
     val price: Int,
 
+    val deposit: Int,
+
     val category: CafeMenuCategory,
 
     val drinkTemperature: DrinkTemperature,
