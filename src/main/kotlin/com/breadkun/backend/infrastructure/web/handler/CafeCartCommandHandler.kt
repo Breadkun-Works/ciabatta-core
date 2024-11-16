@@ -13,7 +13,9 @@ import org.springframework.web.reactive.function.server.bodyValueAndAwait
 class CafeCartCommandHandler(
     private val cafeCartCommandUseCase: CafeCartCommandUseCase
 ) {
-    suspend fun createCafeCart(request: ServerRequest): ServerResponse {
+    suspend fun createCafeCart(
+        request: ServerRequest
+    ): ServerResponse {
         val userUUID = request.headers().firstHeader("X-User-UUID")
             ?: return ServerResponse.badRequest().bodyValueAndAwait("Missing X-User-UUID header")
         val cafeCartCreateDTO = request.awaitBody<CafeCartCreateDTO>()

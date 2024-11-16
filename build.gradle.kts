@@ -27,16 +27,16 @@ dependencies {
 	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
-	implementation("org.liquibase:liquibase-core")
-	implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.6.0")
 	implementation("org.postgresql:r2dbc-postgresql")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-//	implementation("org.springframework.boot:spring-boot-starter-data-jpa") // Liquibase update 위한 의존성
-//	implementation("org.springframework:spring-jdbc") // R2DBC 사용 지향
-//	runtimeOnly("org.postgresql:postgresql") //	JDBC-postgreSQL 드라이버
+	// implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.6.0") // 포스트맨으로 이사~
+	// implementation("org.liquibase:liquibase-core") // Liquibase는 CI/CD 파이프라인에서만 동작
+	// implementation("org.springframework.boot:spring-boot-starter-data-jpa") // Liquibase update 위한 의존성
+	// implementation("org.springframework:spring-jdbc") // R2DBC 사용 지향
+	// runtimeOnly("org.postgresql:postgresql") //	JDBC-postgreSQL 드라이버
 }
 
 kotlin {
