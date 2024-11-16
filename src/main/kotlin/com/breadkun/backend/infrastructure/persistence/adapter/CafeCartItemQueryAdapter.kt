@@ -10,7 +10,9 @@ import org.springframework.stereotype.Repository
 class CafeCartItemQueryAdapter(
     private val cafeCartItemCoroutineCrudRepository: CafeCartItemCoroutineCrudRepository
 ) : CafeCartItemQueryPort {
-    override suspend fun findByCafeCartId(cafeCartId: String): List<CafeCartItemEntity> {
+    override suspend fun findByCafeCartId(
+        cafeCartId: String
+    ): List<CafeCartItemEntity> {
         return cafeCartItemCoroutineCrudRepository.findByCafeCartId(cafeCartId).toList()
     }
 }

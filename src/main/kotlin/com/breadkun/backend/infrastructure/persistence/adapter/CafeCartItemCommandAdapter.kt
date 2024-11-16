@@ -11,7 +11,9 @@ import reactor.core.publisher.Flux
 class CafeCartItemCommandRepositoryImpl(
     private val template: R2dbcEntityTemplate
 ) : CafeCartItemCommandPort {
-    override suspend fun saveAll(cafeCartItemEntities: List<CafeCartItemEntity>): List<CafeCartItemEntity> {
+    override suspend fun saveAll(
+        cafeCartItemEntities: List<CafeCartItemEntity>
+    ): List<CafeCartItemEntity> {
         return Flux.fromIterable(cafeCartItemEntities)
             .flatMap { cafeCartItem ->
                 template.insert(CafeCartItemEntity::class.java).using(cafeCartItem)

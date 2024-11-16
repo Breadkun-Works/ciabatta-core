@@ -11,7 +11,9 @@ import org.springframework.web.reactive.function.server.*
 class AdminCafeMenuCommandHandler(
     private val cafeMenuCommandUseCase: CafeMenuCommandUseCase
 ) {
-    suspend fun createCafeMenu(request: ServerRequest): ServerResponse {
+    suspend fun createCafeMenu(
+        request: ServerRequest
+    ): ServerResponse {
         val userID = request.headers().firstHeader("X-User-ID")
             ?: return ServerResponse.badRequest().bodyValueAndAwait("Missing X-User-ID header")
         val cafeMenuCreateDTO = request.awaitBody<CafeMenuCreateDTO>()
@@ -21,7 +23,9 @@ class AdminCafeMenuCommandHandler(
         return ResponseUtils.ok(createdMenu)
     }
 
-    suspend fun updateCafeMenu(request: ServerRequest): ServerResponse {
+    suspend fun updateCafeMenu(
+        request: ServerRequest
+    ): ServerResponse {
         val cafeMenuId = request.pathVariable("cafeMenuId")
         val userID = request.headers().firstHeader("X-User-ID")
             ?: return ServerResponse.badRequest().bodyValueAndAwait("Missing X-User-ID header")
@@ -32,7 +36,9 @@ class AdminCafeMenuCommandHandler(
         return updatedMenu?.let { ResponseUtils.ok(it) } ?: ServerResponse.notFound().buildAndAwait()
     }
 
-    suspend fun deleteCafeMenuById(request: ServerRequest): ServerResponse {
+    suspend fun deleteCafeMenuById(
+        request: ServerRequest
+    ): ServerResponse {
         val cafeMenuId = request.pathVariable("cafeMenuId")
         val deletedId = cafeMenuCommandUseCase.deleteCafeMenuById(cafeMenuId)
 

@@ -1,6 +1,6 @@
 package com.breadkun.backend.infrastructure.persistence.entity
 
-import com.breadkun.backend.global.common.enums.Location
+import com.breadkun.backend.global.common.enums.GlobalEnums
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table
 import java.time.LocalDateTime
@@ -10,7 +10,7 @@ data class CafeCartEntity(
     @Id
     val id: String,
 
-    val cafeLocation: Location,
+    val cafeLocation: GlobalEnums.Location,
 
     val title: String,
 

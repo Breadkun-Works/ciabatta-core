@@ -1,8 +1,7 @@
 package com.breadkun.backend.infrastructure.persistence.entity
 
-import com.breadkun.backend.global.common.enums.Location
-import com.breadkun.backend.domain.model.enums.CafeMenuCategory
-import com.breadkun.backend.domain.model.enums.DrinkTemperature
+import com.breadkun.backend.domain.model.enums.CafeEnums
+import com.breadkun.backend.global.common.enums.GlobalEnums
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table
 import java.time.LocalDateTime
@@ -12,7 +11,7 @@ data class CafeMenuEntity(
     @Id
     val id: String,
 
-    val cafeLocation: Location,
+    val cafeLocation: GlobalEnums.Location,
 
     val name: String,
 
@@ -20,9 +19,9 @@ data class CafeMenuEntity(
 
     val deposit: Int,
 
-    val category: CafeMenuCategory,
+    val category: CafeEnums.Menu.Category,
 
-    val drinkTemperature: DrinkTemperature,
+    val drinkTemperature: CafeEnums.Menu.Temperature,
 
     val available: Boolean,
 

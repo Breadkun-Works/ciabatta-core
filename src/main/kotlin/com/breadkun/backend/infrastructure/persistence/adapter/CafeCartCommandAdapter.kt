@@ -10,7 +10,9 @@ import org.springframework.stereotype.Repository
 class CafeCartCommandAdapter(
     private val template: R2dbcEntityTemplate
 ) : CafeCartCommandPort {
-    override suspend fun save(cafeCartEntity: CafeCartEntity): CafeCartEntity {
+    override suspend fun save(
+        cafeCartEntity: CafeCartEntity
+    ): CafeCartEntity {
         return template.insert(CafeCartEntity::class.java).using(cafeCartEntity).awaitSingle()
     }
 }

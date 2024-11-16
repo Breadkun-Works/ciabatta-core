@@ -18,7 +18,7 @@ class CafeCartQueryAdapter(
     override suspend fun findActiveById(
         cafeCartId: String,
         currentTime: LocalDateTime
-    ): com.breadkun.backend.infrastructure.persistence.entity.CafeCartEntity?{
+    ): CafeCartEntity? {
         val criteriaList = mutableListOf<Criteria>()
         criteriaList.add(Criteria.where("created_at").lessThanOrEquals(currentTime))
         criteriaList.add(Criteria.where("expires_at").greaterThanOrEquals(currentTime))
@@ -28,14 +28,14 @@ class CafeCartQueryAdapter(
 
         val query = Query.query(criteria)
 
-        return r2dbcEntityTemplate.select(query, com.breadkun.backend.infrastructure.persistence.entity.CafeCartEntity::class.java)
+        return r2dbcEntityTemplate.select(query, CafeCartEntity::class.java)
             .awaitFirstOrNull()
     }
 
     override suspend fun findActiveByMultipleOptions(
         createdById: String?,
         currentTime: LocalDateTime
-    ): List<com.breadkun.backend.infrastructure.persistence.entity.CafeCartEntity> {
+    ): List<CafeCartEntity> {
         val criteriaList = mutableListOf<Criteria>()
         criteriaList.add(Criteria.where("created_at").lessThanOrEquals(currentTime))
         criteriaList.add(Criteria.where("expires_at").greaterThanOrEquals(currentTime))
@@ -48,7 +48,7 @@ class CafeCartQueryAdapter(
         val query = Query.query(criteria)
             .sort(Sort.by(Sort.Order.desc("expires_at")))
 
-        return r2dbcEntityTemplate.select(query, com.breadkun.backend.infrastructure.persistence.entity.CafeCartEntity::class.java)
+        return r2dbcEntityTemplate.select(query, CafeCartEntity::class.java)
             .collectList()
             .awaitSingle()
     }

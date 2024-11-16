@@ -1,10 +1,11 @@
 package com.breadkun.backend.application.service
 
+import com.breadkun.backend.application.port.input.CafeMenuQueryUseCase
 import com.breadkun.backend.domain.model.CafeMenuBoard
 import com.breadkun.backend.domain.model.CafeMenu
 import com.breadkun.backend.application.port.output.CafeMenuQueryPort
-import com.breadkun.backend.global.common.enums.Location
-import com.breadkun.backend.domain.model.enums.CafeMenuCategory
+import com.breadkun.backend.domain.model.enums.CafeEnums
+import com.breadkun.backend.global.common.enums.GlobalEnums
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import org.springframework.data.domain.PageImpl
@@ -15,8 +16,10 @@ import org.springframework.stereotype.Service
 @Service
 class CafeMenuQueryService(
     private val cafeMenuQueryPort: CafeMenuQueryPort,
-) : com.breadkun.backend.application.port.input.CafeMenuQueryUseCase {
-    override suspend fun findCafeMenuById(cafeMenuId: String): CafeMenu? {
+) : CafeMenuQueryUseCase {
+    override suspend fun findCafeMenuById(
+        cafeMenuId: String
+    ): CafeMenu? {
         return cafeMenuQueryPort.findById(cafeMenuId)
             ?.let {
                 CafeMenu.fromEntity(it)
@@ -24,9 +27,9 @@ class CafeMenuQueryService(
     }
 
     override suspend fun getCafeMenuBoardByOptions(
-        cafeLocation: Location?,
+        cafeLocation: GlobalEnums.Location?,
         name: String?,
-        category: CafeMenuCategory?,
+        category: CafeEnums.Menu.Category?,
         pageable: Pageable
     ): PageImpl<CafeMenuBoard> = coroutineScope {
         val totalCountDeferred = if (pageable.isPaged) {

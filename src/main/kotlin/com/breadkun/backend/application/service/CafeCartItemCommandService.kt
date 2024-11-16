@@ -1,7 +1,11 @@
 package com.breadkun.backend.application.service
 
+import com.breadkun.backend.application.dto.CafeCartItemCreateDTO
+import com.breadkun.backend.application.port.input.CafeCartItemCommandUseCase
 import com.breadkun.backend.domain.model.CafeCartItem
 import com.breadkun.backend.application.port.input.CafeCartQueryUseCase
+import com.breadkun.backend.application.port.input.CafeMenuQueryUseCase
+import com.breadkun.backend.application.port.output.CafeCartItemCommandPort
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -9,15 +13,15 @@ import org.springframework.web.server.ResponseStatusException
 
 @Service
 class CafeCartItemCommandService(
-    private val cafeCartItemCommandPort: com.breadkun.backend.application.port.output.CafeCartItemCommandPort,
+    private val cafeCartItemCommandPort: CafeCartItemCommandPort,
     private val cafeCartQueryUseCase: CafeCartQueryUseCase,
-    private val cafeMenuQueryUseCase: com.breadkun.backend.application.port.input.CafeMenuQueryUseCase
-) : com.breadkun.backend.application.port.input.CafeCartItemCommandUseCase {
+    private val cafeMenuQueryUseCase: CafeMenuQueryUseCase
+) : CafeCartItemCommandUseCase {
     @Transactional
     override suspend fun createCafeCartItems(
         cartId: String,
         userUUID: String,
-        dtos: List<com.breadkun.backend.application.dto.CafeCartItemCreateDTO>
+        dtos: List<CafeCartItemCreateDTO>
     ): List<CafeCartItem> {
         validateCartAndMenuExistenceAndLocationMatch(cartId, dtos)
 
@@ -29,7 +33,7 @@ class CafeCartItemCommandService(
 
     private suspend fun validateCartAndMenuExistenceAndLocationMatch(
         cartId: String,
-        dtos: List<com.breadkun.backend.application.dto.CafeCartItemCreateDTO>
+        dtos: List<CafeCartItemCreateDTO>
     ) {
         val cafeCart = cafeCartQueryUseCase.findActiveCafeCartById(cartId)
             ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "CafeCart not found with id: $cartId")

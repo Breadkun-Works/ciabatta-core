@@ -10,7 +10,9 @@ import java.time.LocalDateTime
 class CafeCartQueryService(
     private val cafeCartQueryPort: CafeCartQueryPort
 ) : CafeCartQueryUseCase {
-    override suspend fun findActiveCafeCartById(cafeCartId: String): CafeCart? {
+    override suspend fun findActiveCafeCartById(
+        cafeCartId: String
+    ): CafeCart? {
         val currentTime = LocalDateTime.now()
 
         return cafeCartQueryPort.findActiveById(cafeCartId, currentTime)
@@ -19,7 +21,9 @@ class CafeCartQueryService(
             }
     }
 
-    override suspend fun findActiveCafeCartsByOptions(createdById: String?): List<CafeCart> {
+    override suspend fun findActiveCafeCartsByOptions(
+        createdById: String?
+    ): List<CafeCart> {
         val currentTime = LocalDateTime.now()
 
         return cafeCartQueryPort.findActiveByMultipleOptions(createdById, currentTime)

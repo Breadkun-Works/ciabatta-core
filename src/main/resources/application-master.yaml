@@ -11,9 +11,6 @@ spring:
     url: r2dbc:postgresql://${MASTER_DB_URL}
     username: ${MASTER_DB_USERNAME}
     password: ${MASTER_DB_PASSWORD}
-  liquibase:
-    change-log: classpath:/db/changelog/db.changelog-master.yaml
-    enabled: true
 
 logging:
   level:

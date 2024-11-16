@@ -5,5 +5,7 @@ import kotlinx.coroutines.flow.Flow
 import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 
 interface CafeCartItemCoroutineCrudRepository : CoroutineCrudRepository<CafeCartItemEntity, String> {
-    fun findByCafeCartId(cafeCartId: String): Flow<CafeCartItemEntity>
+    fun findByCafeCartId(
+        cafeCartId: String
+    ): Flow<CafeCartItemEntity>
 }

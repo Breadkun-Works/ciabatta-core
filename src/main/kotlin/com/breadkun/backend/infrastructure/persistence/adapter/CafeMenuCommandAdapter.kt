@@ -12,15 +12,21 @@ class CafeMenuCommandAdapter(
     private val cafeMenuCoroutineCrudRepository: CafeMenuCoroutineCrudRepository,
     private val template: R2dbcEntityTemplate
 ) : CafeMenuCommandPort {
-    override suspend fun save(cafeMenuEntity: CafeMenuEntity): CafeMenuEntity {
+    override suspend fun save(
+        cafeMenuEntity: CafeMenuEntity
+    ): CafeMenuEntity {
         return template.insert(CafeMenuEntity::class.java).using(cafeMenuEntity).awaitSingle()
     }
 
-    override suspend fun update(cafeMenuEntity: CafeMenuEntity): CafeMenuEntity {
+    override suspend fun update(
+        cafeMenuEntity: CafeMenuEntity
+    ): CafeMenuEntity {
         return cafeMenuCoroutineCrudRepository.save(cafeMenuEntity)
     }
 
-    override suspend fun deleteById(cafeMenuId: String): String {
+    override suspend fun deleteById(
+        cafeMenuId: String
+    ): String {
         cafeMenuCoroutineCrudRepository.deleteById(cafeMenuId)
         return cafeMenuId
     }

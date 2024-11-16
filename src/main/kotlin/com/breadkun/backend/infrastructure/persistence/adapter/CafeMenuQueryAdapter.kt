@@ -3,9 +3,9 @@ package com.breadkun.backend.infrastructure.persistence.adapter
 import com.breadkun.backend.domain.model.CafeMenuBoard
 import com.breadkun.backend.domain.model.CafeMenuBoardOptionDTO
 import com.breadkun.backend.application.port.output.CafeMenuQueryPort
+import com.breadkun.backend.domain.model.enums.CafeEnums
+import com.breadkun.backend.global.common.enums.GlobalEnums
 import com.breadkun.backend.infrastructure.persistence.entity.CafeMenuEntity
-import com.breadkun.backend.global.common.enums.Location
-import com.breadkun.backend.domain.model.enums.CafeMenuCategory
 import com.breadkun.backend.infrastructure.persistence.repository.CafeMenuCoroutineCrudRepository
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.r2dbc.postgresql.codec.Json
@@ -19,14 +19,16 @@ class CafeMenuQueryAdapter(
     private val databaseClient: DatabaseClient,
     private val objectMapper: ObjectMapper
 ) : CafeMenuQueryPort {
-    override suspend fun findById(id: String): CafeMenuEntity? {
+    override suspend fun findById(
+        id: String
+    ): CafeMenuEntity? {
         return cafeMenuCoroutineCrudRepository.findById(id)
     }
 
     override suspend fun findByMultipleOptionsWithGrouping(
-        cafeLocation: Location?,
+        cafeLocation: GlobalEnums.Location?,
         name: String?,
-        category: CafeMenuCategory?,
+        category: CafeEnums.Menu.Category?,
         page: Int?,
         size: Int?
     ): List<CafeMenuBoard> {
@@ -74,9 +76,9 @@ class CafeMenuQueryAdapter(
                 objectMapper.typeFactory.constructCollectionType(List::class.java, CafeMenuBoardOptionDTO::class.java)
             )
             CafeMenuBoard(
-                cafeLocation = Location.valueOf(row["cafe_location"] as String),
+                cafeLocation = GlobalEnums.Location.valueOf(row["cafe_location"] as String),
                 name = row["name"] as String,
-                category = CafeMenuCategory.valueOf(row["category"] as String),
+                category = CafeEnums.Menu.Category.valueOf(row["category"] as String),
                 options = options
             )
         }
@@ -87,9 +89,9 @@ class CafeMenuQueryAdapter(
 
 
     override suspend fun countByMultipleOptionsWithGrouping(
-        cafeLocation: Location?,
+        cafeLocation: GlobalEnums.Location?,
         name: String?,
-        category: CafeMenuCategory?
+        category: CafeEnums.Menu.Category?
     ): Long {
         val baseQuery = """
             SELECT COUNT(*) AS count
