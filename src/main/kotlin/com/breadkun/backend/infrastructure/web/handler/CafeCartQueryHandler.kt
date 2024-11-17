@@ -11,22 +11,22 @@ import kotlin.jvm.optionals.getOrNull
 class CafeCartQueryHandler(
     private val cafeCartQueryUseCase: CafeCartQueryUseCase
 ) {
-    suspend fun findActiveCafeCartById(
-        request: ServerRequest
-    ): ServerResponse {
-        val cafeCartId = request.pathVariable("cafeCartId")
-
-        val result = cafeCartQueryUseCase.findActiveCafeCartById(cafeCartId)
-
-        return ResponseUtils.ok(result)
-    }
-
     suspend fun findActiveCafeCartsByOptions(
         request: ServerRequest
     ): ServerResponse {
         val createdById = request.queryParam("createdById").getOrNull()?.takeIf { it.isNotBlank() }
 
         val result = cafeCartQueryUseCase.findActiveCafeCartsByOptions(createdById)
+
+        return ResponseUtils.ok(result)
+    }
+
+    suspend fun findActiveCafeCartById(
+        request: ServerRequest
+    ): ServerResponse {
+        val cafeCartId = request.pathVariable("cafeCartId")
+
+        val result = cafeCartQueryUseCase.findActiveCafeCartById(cafeCartId)
 
         return ResponseUtils.ok(result)
     }

@@ -15,23 +15,6 @@ import java.time.LocalDateTime
 class CafeCartQueryAdapter(
     private val r2dbcEntityTemplate: R2dbcEntityTemplate
 ) : CafeCartQueryPort {
-    override suspend fun findActiveById(
-        cafeCartId: String,
-        currentTime: LocalDateTime
-    ): CafeCartEntity? {
-        val criteriaList = mutableListOf<Criteria>()
-        criteriaList.add(Criteria.where("created_at").lessThanOrEquals(currentTime))
-        criteriaList.add(Criteria.where("expires_at").greaterThanOrEquals(currentTime))
-        criteriaList.add(Criteria.where("id").`is`(cafeCartId))
-
-        val criteria = Criteria.from(criteriaList)
-
-        val query = Query.query(criteria)
-
-        return r2dbcEntityTemplate.select(query, CafeCartEntity::class.java)
-            .awaitFirstOrNull()
-    }
-
     override suspend fun findActiveByMultipleOptions(
         createdById: String?,
         currentTime: LocalDateTime
@@ -51,5 +34,22 @@ class CafeCartQueryAdapter(
         return r2dbcEntityTemplate.select(query, CafeCartEntity::class.java)
             .collectList()
             .awaitSingle()
+    }
+
+    override suspend fun findActiveById(
+        cafeCartId: String,
+        currentTime: LocalDateTime
+    ): CafeCartEntity? {
+        val criteriaList = mutableListOf<Criteria>()
+        criteriaList.add(Criteria.where("created_at").lessThanOrEquals(currentTime))
+        criteriaList.add(Criteria.where("expires_at").greaterThanOrEquals(currentTime))
+        criteriaList.add(Criteria.where("id").`is`(cafeCartId))
+
+        val criteria = Criteria.from(criteriaList)
+
+        val query = Query.query(criteria)
+
+        return r2dbcEntityTemplate.select(query, CafeCartEntity::class.java)
+            .awaitFirstOrNull()
     }
 }
