@@ -1,6 +1,7 @@
 package com.breadkun.backend.domain.model
 
 import com.breadkun.backend.application.dto.CafeCartCreateDTO
+import com.breadkun.backend.domain.model.enums.CafeEnums
 import com.breadkun.backend.global.common.enums.GlobalEnums
 import com.breadkun.backend.infrastructure.persistence.entity.CafeCartEntity
 import java.time.LocalDateTime
@@ -23,6 +24,15 @@ data class CafeCart(
 
     val sharedUrl: String
 ) {
+    val status: CafeEnums.Cart.Status
+        get() {
+            val now = LocalDateTime.now()
+            return when {
+                now.isBefore(expiresAt) -> CafeEnums.Cart.Status.ACTIVE
+                else -> CafeEnums.Cart.Status.INACTIVE
+            }
+        }
+
     fun toEntity(
     ): CafeCartEntity {
         return CafeCartEntity(

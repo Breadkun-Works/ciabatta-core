@@ -17,4 +17,13 @@ sealed interface CafeEnums {
             ICED("아이스")
         }
     }
+
+    interface Cart : CafeEnums {
+        enum class Status(
+            val label: String
+        ) : Cart {
+            ACTIVE("활성"),
+            INACTIVE("비활성")
+        }
+    }
 }
