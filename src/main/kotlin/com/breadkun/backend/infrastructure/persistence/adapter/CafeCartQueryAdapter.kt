@@ -1,6 +1,8 @@
 package com.breadkun.backend.infrastructure.persistence.adapter
 
 import com.breadkun.backend.application.port.output.CafeCartQueryPort
+import com.breadkun.backend.domain.model.enums.CafeEnums
+import com.breadkun.backend.global.common.enums.GlobalEnums
 import com.breadkun.backend.infrastructure.persistence.entity.CafeCartEntity
 import kotlinx.coroutines.reactive.awaitFirstOrNull
 import kotlinx.coroutines.reactive.awaitSingle
@@ -15,30 +17,24 @@ import java.time.LocalDateTime
 class CafeCartQueryAdapter(
     private val r2dbcEntityTemplate: R2dbcEntityTemplate
 ) : CafeCartQueryPort {
-    override suspend fun findActiveById(
-        cafeCartId: String,
-        currentTime: LocalDateTime
-    ): CafeCartEntity? {
-        val criteriaList = mutableListOf<Criteria>()
-        criteriaList.add(Criteria.where("created_at").lessThanOrEquals(currentTime))
-        criteriaList.add(Criteria.where("expires_at").greaterThanOrEquals(currentTime))
-        criteriaList.add(Criteria.where("id").`is`(cafeCartId))
-
-        val criteria = Criteria.from(criteriaList)
-
-        val query = Query.query(criteria)
-
-        return r2dbcEntityTemplate.select(query, CafeCartEntity::class.java)
-            .awaitFirstOrNull()
-    }
-
-    override suspend fun findActiveByMultipleOptions(
+    override suspend fun findByMultipleOptions(
+        cafeLocation: GlobalEnums.Location?,
+        status: CafeEnums.Cart.Status?,
         createdById: String?,
         currentTime: LocalDateTime
     ): List<CafeCartEntity> {
         val criteriaList = mutableListOf<Criteria>()
-        criteriaList.add(Criteria.where("created_at").lessThanOrEquals(currentTime))
-        criteriaList.add(Criteria.where("expires_at").greaterThanOrEquals(currentTime))
+
+        cafeLocation?.let {
+            criteriaList.add(Criteria.where("cafe_location").`is`(it.name))
+        }
+        status?.let {
+            val statusCriteria = when (it) {
+                CafeEnums.Cart.Status.ACTIVE -> Criteria.where("expires_at").greaterThan(currentTime)
+                CafeEnums.Cart.Status.INACTIVE -> Criteria.where("expires_at").lessThanOrEquals(currentTime)
+            }
+            criteriaList.add(statusCriteria)
+        }
         createdById?.let {
             criteriaList.add(Criteria.where("created_by_id").`is`(it))
         }
@@ -51,5 +47,20 @@ class CafeCartQueryAdapter(
         return r2dbcEntityTemplate.select(query, CafeCartEntity::class.java)
             .collectList()
             .awaitSingle()
+    }
+
+    override suspend fun findById(
+        cafeCartId: String
+    ): CafeCartEntity? {
+        val criteriaList = mutableListOf<Criteria>()
+
+        criteriaList.add(Criteria.where("id").`is`(cafeCartId))
+
+        val criteria = Criteria.from(criteriaList)
+
+        val query = Query.query(criteria)
+
+        return r2dbcEntityTemplate.select(query, CafeCartEntity::class.java)
+            .awaitFirstOrNull()
     }
 }

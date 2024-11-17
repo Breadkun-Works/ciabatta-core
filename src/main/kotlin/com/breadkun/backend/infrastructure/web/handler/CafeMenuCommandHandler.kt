@@ -20,7 +20,7 @@ class AdminCafeMenuCommandHandler(
 
         val createdMenu = cafeMenuCommandUseCase.createCafeMenu(userID, cafeMenuCreateDTO)
 
-        return ResponseUtils.ok(createdMenu)
+        return ResponseUtils.created(createdMenu)
     }
 
     suspend fun updateCafeMenu(
@@ -42,6 +42,6 @@ class AdminCafeMenuCommandHandler(
         val cafeMenuId = request.pathVariable("cafeMenuId")
         val deletedId = cafeMenuCommandUseCase.deleteCafeMenuById(cafeMenuId)
 
-        return deletedId?.let { ResponseUtils.ok(it) } ?: ServerResponse.notFound().buildAndAwait()
+        return deletedId?.let { ResponseUtils.noContent() } ?: ServerResponse.notFound().buildAndAwait()
     }
 }
