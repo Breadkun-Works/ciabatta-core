@@ -12,6 +12,10 @@ interface CafeMenuQueryUseCase {
         cafeMenuId: String
     ): CafeMenu?
 
+    suspend fun findCafeMenusByIds(
+        cafeMenuIds: Set<String>
+    ): List<CafeMenu>
+
     suspend fun getCafeMenuBoardByOptions(
         cafeLocation: GlobalEnums.Location?,
         name: String?,

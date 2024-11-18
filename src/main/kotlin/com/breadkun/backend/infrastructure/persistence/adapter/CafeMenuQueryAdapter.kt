@@ -9,6 +9,7 @@ import com.breadkun.backend.infrastructure.persistence.entity.CafeMenuEntity
 import com.breadkun.backend.infrastructure.persistence.repository.CafeMenuCoroutineCrudRepository
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.r2dbc.postgresql.codec.Json
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.r2dbc.core.DatabaseClient
 import org.springframework.stereotype.Repository
@@ -23,6 +24,14 @@ class CafeMenuQueryAdapter(
         id: String
     ): CafeMenuEntity? {
         return cafeMenuCoroutineCrudRepository.findById(id)
+    }
+
+    override suspend fun findByIds(
+        ids: Set<String>
+    ): List<CafeMenuEntity> {
+        if (ids.isEmpty()) return emptyList()
+
+        return cafeMenuCoroutineCrudRepository.findByIds(ids).toList()
     }
 
     override suspend fun findByMultipleOptionsWithGrouping(
@@ -86,7 +95,6 @@ class CafeMenuQueryAdapter(
             .collectList()
             .awaitSingle()
     }
-
 
     override suspend fun countByMultipleOptionsWithGrouping(
         cafeLocation: GlobalEnums.Location?,

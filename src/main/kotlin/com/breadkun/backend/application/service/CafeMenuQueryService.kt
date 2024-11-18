@@ -26,6 +26,13 @@ class CafeMenuQueryService(
             }
     }
 
+    override suspend fun findCafeMenusByIds(
+        cafeMenuIds: Set<String>
+    ): List<CafeMenu> {
+        return cafeMenuQueryPort.findByIds(cafeMenuIds).takeIf { it.isNotEmpty() }?.map { CafeMenu.fromEntity(it) }
+            ?: emptyList()
+    }
+
     override suspend fun getCafeMenuBoardByOptions(
         cafeLocation: GlobalEnums.Location?,
         name: String?,
