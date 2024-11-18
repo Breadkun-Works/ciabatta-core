@@ -7,6 +7,7 @@ fun interface CafeCartItemCommandUseCase {
     suspend fun createCafeCartItems(
         cartId: String,
         userUUID: String,
+        userName: String,
         dtos: List<CafeCartItemCreateDTO>
     ): List<CafeCartItem>
 }

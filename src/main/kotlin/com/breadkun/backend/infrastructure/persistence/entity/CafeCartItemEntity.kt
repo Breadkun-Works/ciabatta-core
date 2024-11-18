@@ -13,6 +13,8 @@ data class CafeCartItemEntity(
 
     val cafeMenuId: String,
 
+    val isPersonalCup: Boolean,
+
     val quantity: Int,
 
     val createdAt: LocalDateTime,

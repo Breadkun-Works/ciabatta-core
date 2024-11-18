@@ -7,9 +7,9 @@ data class CafeCartItemCreateDTO(
     @field:NotBlank(message = "카페 메뉴 ID는 필수입니다.")
     val cafeMenuId: String,
 
-    @field:Positive(message = "개수는 양수여야 합니다.")
-    val quantity: Int,
+    @field:NotBlank(message = "개인컵 사용 여부는 필수입니다.")
+    val isPersonalCup: Boolean,
 
-    @field:NotBlank(message = "생성자 이름은 필수입니다.")
-    val createdByName: String
+    @field:Positive(message = "개수는 양수여야 합니다.")
+    val quantity: Int
 )
