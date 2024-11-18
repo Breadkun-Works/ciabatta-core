@@ -19,9 +19,13 @@ class CafeCartItemCommandHandler(
         val cartId = request.pathVariable("cartId")
         val userUUID = request.headers().firstHeader("X-User-UUID")
             ?: return ServerResponse.badRequest().bodyValueAndAwait("Missing X-User-UUID header")
+        val userName = request.headers().firstHeader("X-User-Name")
+            ?: return ServerResponse.badRequest().bodyValueAndAwait("Missing X-User-Name header")
+
         val cafeCartItemCreateDTOs = request.awaitBody<List<CafeCartItemCreateDTO>>()
 
-        val createdCartItems = cafeCartItemCommandUseCase.createCafeCartItems(cartId, userUUID, cafeCartItemCreateDTOs)
+        val createdCartItems =
+            cafeCartItemCommandUseCase.createCafeCartItems(cartId, userUUID, userName, cafeCartItemCreateDTOs)
 
         return ResponseUtils.ok(createdCartItems)
     }

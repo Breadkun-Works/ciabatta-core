@@ -12,6 +12,8 @@ data class CafeCartItem(
 
     val cafeMenuId: String,
 
+    val isPersonalCup: Boolean,
+
     val quantity: Int,
 
     val createdAt: LocalDateTime,
@@ -26,6 +28,7 @@ data class CafeCartItem(
             id = id,
             cafeCartId = cafeCartId,
             cafeMenuId = cafeMenuId,
+            isPersonalCup = isPersonalCup,
             quantity = quantity,
             createdAt = createdAt,
             createdById = createdById,
@@ -41,6 +44,7 @@ data class CafeCartItem(
                 id = cafeCartItemEntity.id,
                 cafeCartId = cafeCartItemEntity.cafeCartId,
                 cafeMenuId = cafeCartItemEntity.cafeMenuId,
+                isPersonalCup = cafeCartItemEntity.isPersonalCup,
                 quantity = cafeCartItemEntity.quantity,
                 createdAt = cafeCartItemEntity.createdAt,
                 createdById = cafeCartItemEntity.createdById,
@@ -51,16 +55,18 @@ data class CafeCartItem(
         fun fromCreateDTO(
             cartId: String,
             userUUID: String,
+            userName: String,
             cafeCartItemCreateDTO: CafeCartItemCreateDTO
         ): CafeCartItem {
             return CafeCartItem(
                 id = UUID.randomUUID().toString(),
                 cafeCartId = cartId,
                 cafeMenuId = cafeCartItemCreateDTO.cafeMenuId,
+                isPersonalCup = cafeCartItemCreateDTO.isPersonalCup,
                 quantity = cafeCartItemCreateDTO.quantity,
                 createdAt = LocalDateTime.now(),
                 createdById = userUUID,
-                createdByName = cafeCartItemCreateDTO.createdByName
+                createdByName = userName
             )
         }
     }

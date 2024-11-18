@@ -6,6 +6,7 @@ import com.breadkun.backend.domain.model.CafeCartItem
 import com.breadkun.backend.application.port.input.CafeCartQueryUseCase
 import com.breadkun.backend.application.port.input.CafeMenuQueryUseCase
 import com.breadkun.backend.application.port.output.CafeCartItemCommandPort
+import com.breadkun.backend.domain.model.enums.CafeEnums
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -21,11 +22,14 @@ class CafeCartItemCommandService(
     override suspend fun createCafeCartItems(
         cartId: String,
         userUUID: String,
+        userName: String,
         dtos: List<CafeCartItemCreateDTO>
     ): List<CafeCartItem> {
         validateCartAndMenuExistenceAndLocationMatch(cartId, dtos)
 
-        return cafeCartItemCommandPort.saveAll(dtos.map { CafeCartItem.fromCreateDTO(cartId, userUUID, it).toEntity() })
+        return cafeCartItemCommandPort.saveAll(dtos.map {
+            CafeCartItem.fromCreateDTO(cartId, userUUID, userName, it).toEntity()
+        })
             .map {
                 CafeCartItem.fromEntity(it)
             }
@@ -35,17 +39,24 @@ class CafeCartItemCommandService(
         cartId: String,
         dtos: List<CafeCartItemCreateDTO>
     ) {
-        val cafeCart = cafeCartQueryUseCase.findActiveCafeCartById(cartId)
+        val cafeCart = cafeCartQueryUseCase.findCafeCartById(cartId)
             ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "CafeCart not found with id: $cartId")
 
-        dtos.forEach { dto ->
+        if (cafeCart.status != CafeEnums.Cart.Status.ACTIVE) {
+            throw ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, "CafeCart must be ACTIVE")
+        }
+
+        for (dto in dtos) {
             val cafeMenu = cafeMenuQueryUseCase.findCafeMenuById(dto.cafeMenuId)
                 ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "CafeMenu not found with id: ${dto.cafeMenuId}")
 
-            require(cafeCart.cafeLocation == cafeMenu.cafeLocation) {
-                "CafeCart location and CafeMenu location do not match. " +
-                        "Cart location: ${cafeCart.cafeLocation}, " +
-                        "Menu location: ${cafeMenu.cafeLocation}"
+            if (cafeCart.cafeLocation != cafeMenu.cafeLocation) {
+                throw ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "CafeCart location and CafeMenu location do not match. " +
+                            "Cart location: ${cafeCart.cafeLocation}, " +
+                            "Menu location: ${cafeMenu.cafeLocation}"
+                )
             }
         }
     }
