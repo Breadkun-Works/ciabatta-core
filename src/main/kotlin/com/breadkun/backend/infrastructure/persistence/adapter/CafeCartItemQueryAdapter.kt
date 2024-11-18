@@ -13,6 +13,6 @@ class CafeCartItemQueryAdapter(
     override suspend fun findByCafeCartId(
         cafeCartId: String
     ): List<CafeCartItemEntity> {
-        return cafeCartItemCoroutineCrudRepository.findByCafeCartId(cafeCartId).toList()
+        return cafeCartItemCoroutineCrudRepository.findByCafeCartIdOrderByCreatedAtAsc(cafeCartId).toList()
     }
 }

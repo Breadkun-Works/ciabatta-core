@@ -1,7 +1,9 @@
 package com.breadkun.backend.domain.model
 
 import com.breadkun.backend.application.dto.CafeCartItemCreateDTO
+import com.breadkun.backend.domain.model.enums.CafeEnums
 import com.breadkun.backend.infrastructure.persistence.entity.CafeCartItemEntity
+import com.fasterxml.jackson.annotation.JsonInclude
 import java.time.LocalDateTime
 import java.util.*
 
@@ -22,6 +24,27 @@ data class CafeCartItem(
 
     val createdByName: String
 ) {
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var name: String? = null
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var price: Int? = null
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var totalPrice: Int? = null
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var category: CafeEnums.Menu.Category? = null
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var drinkTemperature: CafeEnums.Menu.Temperature? = null
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var imageFilename: String? = null
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var imageUrl: String? = null
+
     fun toEntity(
     ): CafeCartItemEntity {
         return CafeCartItemEntity(
@@ -34,6 +57,20 @@ data class CafeCartItem(
             createdById = createdById,
             createdByName = createdByName
         )
+    }
+
+    fun attachDetails(
+        cafeMenu: CafeMenu
+    ): CafeCartItem {
+        return this.apply {
+            name = cafeMenu.name
+            price = if (isPersonalCup) cafeMenu.price else cafeMenu.price + cafeMenu.deposit
+            totalPrice = price!! * quantity
+            category = cafeMenu.category
+            drinkTemperature = cafeMenu.drinkTemperature
+            imageFilename = cafeMenu.imageFilename
+            imageUrl = cafeMenu.imageUrl
+        }
     }
 
     companion object {

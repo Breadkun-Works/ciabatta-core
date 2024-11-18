@@ -32,8 +32,10 @@ class CafeCartQueryHandler(
         request: ServerRequest
     ): ServerResponse {
         val cafeCartId = request.pathVariable("cafeCartId")
+        val include = request.queryParam("include").getOrNull()?.takeIf { it.isNotBlank() }
+            ?.let { GlobalEnums.IncludeOption.valueOf(it) }
 
-        val result = cafeCartQueryUseCase.findCafeCartById(cafeCartId)
+        val result = cafeCartQueryUseCase.findCafeCartById(cafeCartId, include)
 
         return ResponseUtils.ok(result)
     }

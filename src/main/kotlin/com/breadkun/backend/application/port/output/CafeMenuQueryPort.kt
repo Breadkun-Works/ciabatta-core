@@ -10,6 +10,10 @@ interface CafeMenuQueryPort {
         id: String
     ): CafeMenuEntity?
 
+    suspend fun findByIds(
+        ids: Set<String>
+    ): List<CafeMenuEntity>
+
     suspend fun findByMultipleOptionsWithGrouping(
         cafeLocation: GlobalEnums.Location?,
         name: String?,
