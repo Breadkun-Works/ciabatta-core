@@ -32,9 +32,9 @@ class CafeMenuQueryHandler(
         val result = cafeMenuQueryUseCase.getCafeMenuBoardByOptions(cafeLocation, name, category, pageable)
 
         return if (pageable.isPaged) {
-            ResponseUtils.ok(result)
+            ResponseUtils.ok(result, "cafeMenuBoard")
         } else {
-            ResponseUtils.ok(result.content)
+            ResponseUtils.ok(result.content, "cafeMenuBoard")
         }
     }
 }

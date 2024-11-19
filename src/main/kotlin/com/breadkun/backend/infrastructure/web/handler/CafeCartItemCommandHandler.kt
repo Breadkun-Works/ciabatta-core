@@ -27,6 +27,6 @@ class CafeCartItemCommandHandler(
         val createdCartItems =
             cafeCartItemCommandUseCase.createCafeCartItems(cartId, userUUID, userName, cafeCartItemCreateDTOs)
 
-        return ResponseUtils.ok(createdCartItems)
+        return ResponseUtils.ok(createdCartItems,"cafeCartItem")
     }
 }

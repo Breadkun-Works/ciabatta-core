@@ -25,7 +25,7 @@ class CafeCartQueryHandler(
 
         val result = cafeCartQueryUseCase.findCafeCartsByOptions(cafeLocation, status, createdById)
 
-        return ResponseUtils.ok(result)
+        return ResponseUtils.ok(result, "cafeCart")
     }
 
     suspend fun findCafeCartById(
@@ -37,6 +37,6 @@ class CafeCartQueryHandler(
 
         val result = cafeCartQueryUseCase.findCafeCartById(cafeCartId, include)
 
-        return ResponseUtils.ok(result)
+        return ResponseUtils.ok(result, "cafeCart")
     }
 }
