@@ -7,6 +7,7 @@ import com.breadkun.backend.application.port.input.CafeCartQueryUseCase
 import com.breadkun.backend.application.port.input.CafeMenuQueryUseCase
 import com.breadkun.backend.application.port.output.CafeCartItemCommandPort
 import com.breadkun.backend.domain.model.enums.CafeEnums
+import com.breadkun.backend.global.common.dto.DeleteIdsDTO
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -33,6 +34,12 @@ class CafeCartItemCommandService(
             .map {
                 CafeCartItem.fromEntity(it)
             }
+    }
+
+    override suspend fun deleteCafeCartItems(
+        dto: DeleteIdsDTO
+    ) {
+        return cafeCartItemCommandPort.deleteAll(dto.ids)
     }
 
     private suspend fun validateCartAndMenuExistenceAndLocationMatch(

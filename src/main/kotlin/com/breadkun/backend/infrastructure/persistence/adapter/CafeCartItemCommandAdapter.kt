@@ -2,6 +2,7 @@ package com.breadkun.backend.infrastructure.persistence.adapter
 
 import com.breadkun.backend.application.port.output.CafeCartItemCommandPort
 import com.breadkun.backend.infrastructure.persistence.entity.CafeCartItemEntity
+import com.breadkun.backend.infrastructure.persistence.repository.CafeCartItemCoroutineCrudRepository
 import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate
 import org.springframework.stereotype.Repository
@@ -9,7 +10,8 @@ import reactor.core.publisher.Flux
 
 @Repository
 class CafeCartItemCommandRepositoryImpl(
-    private val template: R2dbcEntityTemplate
+    private val template: R2dbcEntityTemplate,
+    private val cafeCartItemCoroutineCrudRepository: CafeCartItemCoroutineCrudRepository
 ) : CafeCartItemCommandPort {
     override suspend fun saveAll(
         cafeCartItemEntities: List<CafeCartItemEntity>
@@ -20,5 +22,11 @@ class CafeCartItemCommandRepositoryImpl(
             }
             .collectList()
             .awaitSingle()
+    }
+
+    override suspend fun deleteAll(
+        ids: List<String>
+    ) {
+        return cafeCartItemCoroutineCrudRepository.deleteAllByIds(ids)
     }
 }

@@ -2,6 +2,7 @@ package com.breadkun.backend.infrastructure.web.handler
 
 import com.breadkun.backend.application.dto.CafeCartItemCreateDTO
 import com.breadkun.backend.application.port.input.CafeCartItemCommandUseCase
+import com.breadkun.backend.global.common.dto.DeleteIdsDTO
 import com.breadkun.backend.global.common.util.ResponseUtils
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.ServerRequest
@@ -27,6 +28,16 @@ class CafeCartItemCommandHandler(
         val createdCartItems =
             cafeCartItemCommandUseCase.createCafeCartItems(cafeCartId, userUUID, userName, cafeCartItemCreateDTOs)
 
-        return ResponseUtils.ok(createdCartItems,"cafeCartItem")
+        return ResponseUtils.ok(createdCartItems, "cafeCartItem")
+    }
+
+    suspend fun deleteCafeCartItems(
+        request: ServerRequest
+    ): ServerResponse {
+        val dto = request.awaitBody<DeleteIdsDTO>()
+
+        cafeCartItemCommandUseCase.deleteCafeCartItems(dto)
+
+        return ResponseUtils.noContent()
     }
 }
