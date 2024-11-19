@@ -19,6 +19,7 @@ class CafeCartRouter(
                 GET("", cafeCartQueryHandler::findCafeCartsByOptions)
                 GET("/{cafeCartId}", cafeCartQueryHandler::findCafeCartById)
                 POST("", cafeCartCommandHandler::createCafeCart)
+                POST("/delete", cafeCartCommandHandler::deleteCafeCarts)
             }
         }
     }
