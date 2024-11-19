@@ -27,9 +27,9 @@ data class CafeMenu(
 
     val description: String?,
 
-    val imageFilename: String?,
+    val imageFilename: String,
 
-    val imageUrl: String?,
+    val imageUrl: String,
 
     val createdAt: LocalDateTime,
 
