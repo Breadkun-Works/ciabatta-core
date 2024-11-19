@@ -30,9 +30,11 @@ data class CafeMenuCreateDTO(
     @field:Size(max = 255, message = "메뉴 설명은 255자 이내여야 합니다.")
     val description: String? = null,
 
+    @field:NotBlank(message = "이미지 파일은 필수입니다.")
     @field:Size(max = 100, message = "이미지 파일 이름은 100자 이내여야 합니다.")
-    val imageFilename: String? = null,
+    val imageFilename: String,
 
+    @field:NotBlank(message = "이미지 파일 경로는 필수입니다.")
     @field:Size(max = 255, message = "이미지 URL은 255자 이내여야 합니다.")
-    val imageUrl: String? = null,
+    val imageUrl: String,
 )
