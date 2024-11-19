@@ -25,18 +25,16 @@ class CafeCartQueryHandler(
 
         val result = cafeCartQueryUseCase.findCafeCartsByOptions(cafeLocation, status, createdById)
 
-        return ResponseUtils.ok(result)
+        return ResponseUtils.ok(result, "cafeCart")
     }
 
     suspend fun findCafeCartById(
         request: ServerRequest
     ): ServerResponse {
         val cafeCartId = request.pathVariable("cafeCartId")
-        val include = request.queryParam("include").getOrNull()?.takeIf { it.isNotBlank() }
-            ?.let { GlobalEnums.IncludeOption.valueOf(it) }
 
-        val result = cafeCartQueryUseCase.findCafeCartById(cafeCartId, include)
+        val result = cafeCartQueryUseCase.findCafeCartById(cafeCartId)
 
-        return ResponseUtils.ok(result)
+        return ResponseUtils.ok(result, "cafeCart")
     }
 }

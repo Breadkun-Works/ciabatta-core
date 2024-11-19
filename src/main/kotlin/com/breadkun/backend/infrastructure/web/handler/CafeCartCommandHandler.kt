@@ -21,6 +21,6 @@ class CafeCartCommandHandler(
         val cafeCartCreateDTO = request.awaitBody<CafeCartCreateDTO>()
         val createdCart = cafeCartCommandUseCase.createCafeCart(userUUID, cafeCartCreateDTO)
 
-        return ResponseUtils.created(createdCart)
+        return ResponseUtils.created(createdCart, "cafeCart")
     }
 }
