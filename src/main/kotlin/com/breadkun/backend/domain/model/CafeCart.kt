@@ -4,7 +4,6 @@ import com.breadkun.backend.application.dto.CafeCartCreateDTO
 import com.breadkun.backend.domain.model.enums.CafeEnums
 import com.breadkun.backend.global.common.enums.GlobalEnums
 import com.breadkun.backend.infrastructure.persistence.entity.CafeCartEntity
-import com.fasterxml.jackson.annotation.JsonInclude
 import java.time.LocalDateTime
 import java.util.*
 
@@ -33,9 +32,6 @@ data class CafeCart(
                 else -> CafeEnums.Cart.Status.INACTIVE
             }
         }
-
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    var items: List<CafeCartItem>? = null
 
     fun toEntity(
     ): CafeCartEntity {

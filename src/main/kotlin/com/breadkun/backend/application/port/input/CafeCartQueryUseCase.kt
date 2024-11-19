@@ -12,7 +12,6 @@ interface CafeCartQueryUseCase {
     ): List<CafeCart>
 
     suspend fun findCafeCartById(
-        cafeCartId: String,
-        include: GlobalEnums.IncludeOption?
+        cafeCartId: String
     ): CafeCart?
 }

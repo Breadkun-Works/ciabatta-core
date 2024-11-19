@@ -39,7 +39,7 @@ class CafeCartItemCommandService(
         cartId: String,
         dtos: List<CafeCartItemCreateDTO>
     ) {
-        val cafeCart = cafeCartQueryUseCase.findCafeCartById(cartId, null)
+        val cafeCart = cafeCartQueryUseCase.findCafeCartById(cartId)
             ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "CafeCart not found with id: $cartId")
 
         if (cafeCart.status != CafeEnums.Cart.Status.ACTIVE) {

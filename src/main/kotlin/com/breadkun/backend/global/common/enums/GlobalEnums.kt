@@ -11,7 +11,6 @@ interface GlobalEnums {
     enum class IncludeOption(
         val label: String
     ) : GlobalEnums {
-        CHILDREN("자식 데이터 포함"),
         DETAILS("상세(참조) 데이터 포함")
     }
 }

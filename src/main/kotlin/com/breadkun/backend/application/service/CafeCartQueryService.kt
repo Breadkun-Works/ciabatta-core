@@ -28,23 +28,8 @@ class CafeCartQueryService(
     }
 
     override suspend fun findCafeCartById(
-        cafeCartId: String,
-        include: GlobalEnums.IncludeOption?
+        cafeCartId: String
     ): CafeCart? {
-        val cafeCart = cafeCartQueryPort.findById(cafeCartId)?.let { CafeCart.fromEntity(it) } ?: return null
-
-        return when (include) {
-            GlobalEnums.IncludeOption.CHILDREN -> fetchChildren(cafeCart)
-            else -> cafeCart
-        }
-    }
-
-    private suspend fun fetchChildren(cafeCart: CafeCart): CafeCart {
-        cafeCart.items = cafeCartItemQueryUseCase.findCafeCartItemsByCafeCartId(
-            cafeCart.id,
-            GlobalEnums.IncludeOption.DETAILS
-        )
-
-        return cafeCart
+        return cafeCartQueryPort.findById(cafeCartId)?.let { CafeCart.fromEntity(it) } ?: return null
     }
 }
