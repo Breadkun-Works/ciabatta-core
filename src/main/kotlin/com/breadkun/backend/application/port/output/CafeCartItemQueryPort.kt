@@ -1,9 +1,10 @@
 package com.breadkun.backend.application.port.output
 
 import com.breadkun.backend.infrastructure.persistence.entity.CafeCartItemEntity
+import kotlinx.coroutines.flow.Flow
 
 fun interface CafeCartItemQueryPort {
-    suspend fun findByCafeCartId(
+    fun findByCafeCartId(
         cafeCartId: String
-    ): List<CafeCartItemEntity>
+    ): Flow<CafeCartItemEntity>
 }

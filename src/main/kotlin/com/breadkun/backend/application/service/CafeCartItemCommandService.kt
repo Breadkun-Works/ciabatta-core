@@ -8,6 +8,9 @@ import com.breadkun.backend.application.port.input.CafeMenuQueryUseCase
 import com.breadkun.backend.application.port.output.CafeCartItemCommandPort
 import com.breadkun.backend.domain.model.enums.CafeEnums
 import com.breadkun.backend.global.common.dto.DeleteIdsDTO
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.toList
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -30,10 +33,7 @@ class CafeCartItemCommandService(
 
         return cafeCartItemCommandPort.saveAll(dtos.map {
             CafeCartItem.fromCreateDTO(cartId, userUUID, userName, it).toEntity()
-        })
-            .map {
-                CafeCartItem.fromEntity(it)
-            }
+        }.asFlow()).map { CafeCartItem.fromEntity(it) }.toList()
     }
 
     override suspend fun deleteCafeCartItems(

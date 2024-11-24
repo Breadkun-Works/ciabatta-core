@@ -8,6 +8,8 @@ import com.breadkun.backend.domain.model.enums.CafeEnums
 import com.breadkun.backend.global.common.enums.GlobalEnums
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.toList
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -29,8 +31,9 @@ class CafeMenuQueryService(
     override suspend fun findCafeMenusByIds(
         cafeMenuIds: Set<String>
     ): List<CafeMenu> {
-        return cafeMenuQueryPort.findByIds(cafeMenuIds).takeIf { it.isNotEmpty() }?.map { CafeMenu.fromEntity(it) }
-            ?: emptyList()
+        if (cafeMenuIds.isEmpty()) return emptyList()
+
+        return cafeMenuQueryPort.findByIds(cafeMenuIds).map { CafeMenu.fromEntity(it) }.toList()
     }
 
     override suspend fun getCafeMenuBoardByOptions(
@@ -39,26 +42,28 @@ class CafeMenuQueryService(
         category: CafeEnums.Menu.Category?,
         pageable: Pageable
     ): PageImpl<CafeMenuBoard> = coroutineScope {
-        val totalCountDeferred = if (pageable.isPaged) {
+        val isPaged = pageable.isPaged
+
+        val totalCountDeferred = if (isPaged) {
             async { cafeMenuQueryPort.countByMultipleOptionsWithGrouping(cafeLocation, name, category) }
-        } else {
-            null
-        }
+        } else null
 
         val cafeMenuListDeferred = async {
             cafeMenuQueryPort.findByMultipleOptionsWithGrouping(
-                cafeLocation, name, category,
-                if (pageable.isPaged) pageable.pageNumber else null,
-                if (pageable.isPaged) pageable.pageSize else null
-            )
+                cafeLocation = cafeLocation,
+                name = name,
+                category = category,
+                page = if (isPaged) pageable.pageNumber else null,
+                size = if (isPaged) pageable.pageSize else null
+            ).toList()
         }
 
-        val totalCount = totalCountDeferred?.await() ?: cafeMenuListDeferred.await().size.toLong()
         val cafeMenuList = cafeMenuListDeferred.await()
+        val totalCount = totalCountDeferred?.await() ?: cafeMenuList.size.toLong()
 
         PageImpl(
             cafeMenuList,
-            if (pageable.isPaged) pageable else PageRequest.of(0, cafeMenuList.size),
+            if (isPaged) pageable else PageRequest.of(0, cafeMenuList.size),
             totalCount
         )
     }

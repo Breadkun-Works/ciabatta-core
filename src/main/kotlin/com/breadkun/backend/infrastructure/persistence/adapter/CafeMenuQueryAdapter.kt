@@ -9,7 +9,9 @@ import com.breadkun.backend.infrastructure.persistence.entity.CafeMenuEntity
 import com.breadkun.backend.infrastructure.persistence.repository.CafeMenuCoroutineCrudRepository
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.r2dbc.postgresql.codec.Json
-import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.reactive.asFlow
 import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.r2dbc.core.DatabaseClient
 import org.springframework.stereotype.Repository
@@ -26,21 +28,21 @@ class CafeMenuQueryAdapter(
         return cafeMenuCoroutineCrudRepository.findById(id)
     }
 
-    override suspend fun findByIds(
+    override fun findByIds(
         ids: Set<String>
-    ): List<CafeMenuEntity> {
-        if (ids.isEmpty()) return emptyList()
+    ): Flow<CafeMenuEntity> {
+        if (ids.isEmpty()) return emptyFlow()
 
-        return cafeMenuCoroutineCrudRepository.findByIds(ids).toList()
+        return cafeMenuCoroutineCrudRepository.findByIds(ids)
     }
 
-    override suspend fun findByMultipleOptionsWithGrouping(
+    override fun findByMultipleOptionsWithGrouping(
         cafeLocation: GlobalEnums.Location?,
         name: String?,
         category: CafeEnums.Menu.Category?,
         page: Int?,
         size: Int?
-    ): List<CafeMenuBoard> {
+    ): Flow<CafeMenuBoard> {
         val baseQuery = """
             WITH grouped_data AS (
                 SELECT cafe_location, name, category,
@@ -92,8 +94,7 @@ class CafeMenuQueryAdapter(
             )
         }
             .all()
-            .collectList()
-            .awaitSingle()
+            .asFlow()
     }
 
     override suspend fun countByMultipleOptionsWithGrouping(

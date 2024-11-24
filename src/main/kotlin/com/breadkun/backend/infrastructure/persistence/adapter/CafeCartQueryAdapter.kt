@@ -4,8 +4,9 @@ import com.breadkun.backend.application.port.output.CafeCartQueryPort
 import com.breadkun.backend.domain.model.enums.CafeEnums
 import com.breadkun.backend.global.common.enums.GlobalEnums
 import com.breadkun.backend.infrastructure.persistence.entity.CafeCartEntity
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.reactive.asFlow
 import kotlinx.coroutines.reactive.awaitFirstOrNull
-import kotlinx.coroutines.reactive.awaitSingle
 import org.springframework.data.domain.Sort
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate
 import org.springframework.data.relational.core.query.Criteria
@@ -17,12 +18,12 @@ import java.time.LocalDateTime
 class CafeCartQueryAdapter(
     private val r2dbcEntityTemplate: R2dbcEntityTemplate
 ) : CafeCartQueryPort {
-    override suspend fun findByMultipleOptions(
+    override fun findByMultipleOptions(
         cafeLocation: GlobalEnums.Location?,
         status: CafeEnums.Cart.Status?,
         createdById: String?,
         currentTime: LocalDateTime
-    ): List<CafeCartEntity> {
+    ): Flow<CafeCartEntity> {
         val criteriaList = mutableListOf<Criteria>()
 
         cafeLocation?.let {
@@ -45,8 +46,7 @@ class CafeCartQueryAdapter(
             .sort(Sort.by(Sort.Order.desc("expires_at")))
 
         return r2dbcEntityTemplate.select(query, CafeCartEntity::class.java)
-            .collectList()
-            .awaitSingle()
+            .asFlow()
     }
 
     override suspend fun findById(
