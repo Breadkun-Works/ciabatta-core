@@ -5,6 +5,8 @@ import com.breadkun.backend.application.port.input.CafeCartItemQueryUseCase
 import com.breadkun.backend.application.port.input.CafeMenuQueryUseCase
 import com.breadkun.backend.application.port.output.CafeCartItemQueryPort
 import com.breadkun.backend.global.common.enums.GlobalEnums
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.toList
 import org.springframework.stereotype.Service
 
 @Service
@@ -16,8 +18,10 @@ class CafeCartItemQueryService(
         cafeCartId: String,
         include: GlobalEnums.IncludeOption?
     ): List<CafeCartItem> {
-        val cafeCartItems = cafeCartItemQueryPort.findByCafeCartId(cafeCartId).map { CafeCartItem.fromEntity(it) }
-            .takeIf { it.isNotEmpty() } ?: return emptyList()
+        val cafeCartItems =
+            cafeCartItemQueryPort.findByCafeCartId(cafeCartId).map { CafeCartItem.fromEntity(it) }.toList()
+
+        if (cafeCartItems.isEmpty()) return emptyList()
 
         return when (include) {
             GlobalEnums.IncludeOption.DETAILS -> fetchDetails(cafeCartItems)

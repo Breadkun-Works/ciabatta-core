@@ -4,23 +4,24 @@ import com.breadkun.backend.domain.model.CafeMenuBoard
 import com.breadkun.backend.domain.model.enums.CafeEnums
 import com.breadkun.backend.global.common.enums.GlobalEnums
 import com.breadkun.backend.infrastructure.persistence.entity.CafeMenuEntity
+import kotlinx.coroutines.flow.Flow
 
 interface CafeMenuQueryPort {
     suspend fun findById(
         id: String
     ): CafeMenuEntity?
 
-    suspend fun findByIds(
+    fun findByIds(
         ids: Set<String>
-    ): List<CafeMenuEntity>
+    ): Flow<CafeMenuEntity>
 
-    suspend fun findByMultipleOptionsWithGrouping(
+    fun findByMultipleOptionsWithGrouping(
         cafeLocation: GlobalEnums.Location?,
         name: String?,
         category: CafeEnums.Menu.Category?,
         page: Int?,
         size: Int?
-    ): List<CafeMenuBoard>
+    ): Flow<CafeMenuBoard>
 
     suspend fun countByMultipleOptionsWithGrouping(
         cafeLocation: GlobalEnums.Location?,

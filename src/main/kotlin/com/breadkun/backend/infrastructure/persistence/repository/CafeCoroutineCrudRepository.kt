@@ -24,4 +24,6 @@ interface CafeCartItemCoroutineCrudRepository : CoroutineCrudRepository<CafeCart
 
     @Query("DELETE FROM cafe_cart_item WHERE id IN (:ids)")
     suspend fun deleteAllByIds(ids: List<String>)
+
+    suspend fun deleteAllByCafeCartId(cafeCartId: String)
 }
