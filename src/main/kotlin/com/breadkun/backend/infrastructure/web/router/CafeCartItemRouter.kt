@@ -16,12 +16,13 @@ class CafeCartItemRouter(
     fun cafeCartItemRoutes() = coRouter {
         "/api/cafe/carts".nest {
             accept(MediaType.valueOf("application/vnd.breadkun.v1+json")).nest {
+                "/items".nest {
+                    POST("/delete", cafeCartItemCommandHandler::deleteCafeCartItems)
+                }
                 "/{cafeCartId}/items".nest {
                     GET("", cafeCartItemQueryHandler::findCafeCartItemsByCafeCartId)
+                    GET("/summary", cafeCartItemQueryHandler::findCafeCartItemSummaryByCafeCartId)
                     POST("", cafeCartItemCommandHandler::createCafeCartItems)
-                }
-                "/items/delete".nest {
-                    POST("", cafeCartItemCommandHandler::deleteCafeCartItems)
                 }
             }
         }
