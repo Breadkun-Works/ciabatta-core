@@ -15,4 +15,8 @@ interface CafeCartItemCommandUseCase {
     suspend fun deleteCafeCartItems(
         dto: DeleteIdsDTO
     )
+
+    suspend fun deleteCafeCartItemsByCafeCartId(
+        cafeCartId: String
+    )
 }

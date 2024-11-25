@@ -11,4 +11,8 @@ interface CafeCartItemCommandPort {
     suspend fun deleteAll(
         ids: List<String>
     )
+
+    suspend fun deleteAllByCafeCartId(
+        cafeCartId: String
+    )
 }

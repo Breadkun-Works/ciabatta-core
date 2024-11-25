@@ -42,6 +42,12 @@ class CafeCartItemCommandService(
         return cafeCartItemCommandPort.deleteAll(dto.ids)
     }
 
+    override suspend fun deleteCafeCartItemsByCafeCartId(
+        cafeCartId: String
+    ) {
+        return cafeCartItemCommandPort.deleteAllByCafeCartId(cafeCartId)
+    }
+
     private suspend fun validateCartAndMenuExistenceAndLocationMatch(
         cartId: String,
         dtos: List<CafeCartItemCreateDTO>

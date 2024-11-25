@@ -9,9 +9,9 @@ import org.springframework.web.reactive.function.server.ServerResponse
 import kotlin.jvm.optionals.getOrNull
 
 @Component
-class CafeCartItemQueryHandler (
+class CafeCartItemQueryHandler(
     private val cafeCartItemQueryUseCase: CafeCartItemQueryUseCase
-){
+) {
     suspend fun findCafeCartItemsByCafeCartId(
         request: ServerRequest
     ): ServerResponse {
@@ -22,5 +22,15 @@ class CafeCartItemQueryHandler (
         val result = cafeCartItemQueryUseCase.findCafeCartItemsByCafeCartId(cafeCartId, include)
 
         return ResponseUtils.ok(result, "cafeCartItem")
+    }
+
+    suspend fun findCafeCartItemSummaryByCafeCartId(
+        request: ServerRequest
+    ): ServerResponse {
+        val cafeCartId = request.pathVariable("cafeCartId")
+
+        val result = cafeCartItemQueryUseCase.findCafeCartItemSummaryByCafeCartId(cafeCartId)
+
+        return ResponseUtils.ok(result, "cafeCartItemSummary")
     }
 }

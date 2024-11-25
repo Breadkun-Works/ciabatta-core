@@ -32,4 +32,10 @@ class CafeCartItemCommandRepositoryImpl(
     ) {
         return cafeCartItemCoroutineCrudRepository.deleteAllByIds(ids)
     }
+
+    override suspend fun deleteAllByCafeCartId(
+        cafeCartId: String
+    ) {
+        return cafeCartItemCoroutineCrudRepository.deleteAllByCafeCartId(cafeCartId)
+    }
 }

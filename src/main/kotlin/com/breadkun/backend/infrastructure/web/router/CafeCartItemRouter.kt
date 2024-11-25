@@ -14,11 +14,16 @@ class CafeCartItemRouter(
 ) {
     @Bean
     fun cafeCartItemRoutes() = coRouter {
-        "/api/cafe/carts/{cafeCartId}/items".nest {
+        "/api/cafe/carts".nest {
             accept(MediaType.valueOf("application/vnd.breadkun.v1+json")).nest {
-                GET("", cafeCartItemQueryHandler::findCafeCartItemsByCafeCartId)
-                POST("", cafeCartItemCommandHandler::createCafeCartItems)
-                POST("/delete", cafeCartItemCommandHandler::deleteCafeCartItems)
+                "/items".nest {
+                    POST("/delete", cafeCartItemCommandHandler::deleteCafeCartItems)
+                }
+                "/{cafeCartId}/items".nest {
+                    GET("", cafeCartItemQueryHandler::findCafeCartItemsByCafeCartId)
+                    GET("/summary", cafeCartItemQueryHandler::findCafeCartItemSummaryByCafeCartId)
+                    POST("", cafeCartItemCommandHandler::createCafeCartItems)
+                }
             }
         }
     }
