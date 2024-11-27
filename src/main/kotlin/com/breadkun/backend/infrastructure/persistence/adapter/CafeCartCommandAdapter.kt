@@ -9,13 +9,13 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class CafeCartCommandAdapter(
-    private val template: R2dbcEntityTemplate,
+    private val r2dbcEntityTemplate: R2dbcEntityTemplate,
     private val cafeCartCoroutineCrudRepository: CafeCartCoroutineCrudRepository
 ) : CafeCartCommandPort {
     override suspend fun save(
         cafeCartEntity: CafeCartEntity
     ): CafeCartEntity {
-        return template.insert(CafeCartEntity::class.java).using(cafeCartEntity).awaitSingle()
+        return r2dbcEntityTemplate.insert(CafeCartEntity::class.java).using(cafeCartEntity).awaitSingle()
     }
 
     override suspend fun deleteAll(
