@@ -5,10 +5,7 @@ import com.breadkun.backend.application.port.input.CafeCartItemCommandUseCase
 import com.breadkun.backend.global.common.dto.DeleteIdsDTO
 import com.breadkun.backend.global.common.util.ResponseUtils
 import org.springframework.stereotype.Component
-import org.springframework.web.reactive.function.server.ServerRequest
-import org.springframework.web.reactive.function.server.ServerResponse
-import org.springframework.web.reactive.function.server.awaitBody
-import org.springframework.web.reactive.function.server.bodyValueAndAwait
+import org.springframework.web.reactive.function.server.*
 
 @Component
 class CafeCartItemCommandHandler(
@@ -28,7 +25,7 @@ class CafeCartItemCommandHandler(
         val createdCartItems =
             cafeCartItemCommandUseCase.createCafeCartItems(cafeCartId, userUUID, userName, cafeCartItemCreateDTOs)
 
-        return ResponseUtils.ok(createdCartItems, "cafeCartItem")
+        return ResponseUtils.created(createdCartItems, "cafeCartItem")
     }
 
     suspend fun deleteCafeCartItems(

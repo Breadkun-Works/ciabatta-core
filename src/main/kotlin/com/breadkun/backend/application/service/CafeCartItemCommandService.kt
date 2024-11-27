@@ -6,11 +6,9 @@ import com.breadkun.backend.domain.model.CafeCartItem
 import com.breadkun.backend.application.port.input.CafeCartQueryUseCase
 import com.breadkun.backend.application.port.input.CafeMenuQueryUseCase
 import com.breadkun.backend.application.port.output.CafeCartItemCommandPort
+import com.breadkun.backend.domain.model.CafeCart
 import com.breadkun.backend.domain.model.enums.CafeEnums
 import com.breadkun.backend.global.common.dto.DeleteIdsDTO
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.toList
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -29,11 +27,15 @@ class CafeCartItemCommandService(
         userName: String,
         dtos: List<CafeCartItemCreateDTO>
     ): List<CafeCartItem> {
-        validateCartAndMenuExistenceAndLocationMatch(cartId, dtos)
+        val cafeCart = validateCart(cartId)
 
-        return cafeCartItemCommandPort.saveAll(dtos.map {
-            CafeCartItem.fromCreateDTO(cartId, userUUID, userName, it).toEntity()
-        }.asFlow()).map { CafeCartItem.fromEntity(it) }.toList()
+        return dtos.map { dto ->
+            validateMenuAndLocation(cafeCart, dto)
+
+            val entity = CafeCartItem.fromCreateDTO(cartId, userUUID, userName, dto).toEntity()
+            val savedEntity = cafeCartItemCommandPort.save(entity)
+            CafeCartItem.fromEntity(savedEntity)
+        }
     }
 
     override suspend fun deleteCafeCartItems(
@@ -48,29 +50,29 @@ class CafeCartItemCommandService(
         return cafeCartItemCommandPort.deleteAllByCafeCartId(cafeCartId)
     }
 
-    private suspend fun validateCartAndMenuExistenceAndLocationMatch(
-        cartId: String,
-        dtos: List<CafeCartItemCreateDTO>
-    ) {
-        val cafeCart = cafeCartQueryUseCase.findCafeCartById(cartId)
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "CafeCart not found with id: $cartId")
-
-        if (cafeCart.status != CafeEnums.Cart.Status.ACTIVE) {
-            throw ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, "CafeCart must be ACTIVE")
-        }
-
-        for (dto in dtos) {
-            val cafeMenu = cafeMenuQueryUseCase.findCafeMenuById(dto.cafeMenuId)
-                ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "CafeMenu not found with id: ${dto.cafeMenuId}")
-
-            if (cafeCart.cafeLocation != cafeMenu.cafeLocation) {
-                throw ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "CafeCart location and CafeMenu location do not match. " +
-                            "Cart location: ${cafeCart.cafeLocation}, " +
-                            "Menu location: ${cafeMenu.cafeLocation}"
-                )
+    private suspend fun validateCart(cartId: String): CafeCart {
+        return cafeCartQueryUseCase.findCafeCartById(cartId)?.also { cafeCart ->
+            if (cafeCart.status != CafeEnums.Cart.Status.ACTIVE) {
+                throw ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, "CafeCart must be ACTIVE")
             }
+        } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "CafeCart not found with id: $cartId")
+    }
+
+
+    private suspend fun validateMenuAndLocation(
+        cafeCart: CafeCart,
+        dto: CafeCartItemCreateDTO
+    ) {
+        val cafeMenu = cafeMenuQueryUseCase.findCafeMenuById(dto.cafeMenuId)
+            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "CafeMenu not found with id: ${dto.cafeMenuId}")
+
+        if (cafeCart.cafeLocation != cafeMenu.cafeLocation) {
+            throw ResponseStatusException(
+                HttpStatus.BAD_REQUEST,
+                "CafeCart location and CafeMenu location do not match. " +
+                        "Cart location: ${cafeCart.cafeLocation}, " +
+                        "Menu location: ${cafeMenu.cafeLocation}"
+            )
         }
     }
 }
