@@ -32,14 +32,16 @@ data class CafeCartItemSummary(
         fun fromCafeCartItems(
             cafeCartItems: List<CafeCartItem>
         ): CafeCartItemSummary {
-            val contributors = cafeCartItems.map {
-                Contributor(
-                    it.createdById,
-                    it.createdByName,
-                    it.quantity,
-                    it.createdAt
-                )
-            }
+            val contributors = cafeCartItems
+                .groupBy { it.createdById } // createdById 가 같으면 합산
+                .map { (createdById, items) ->
+                    Contributor(
+                        userId = createdById,
+                        userName = items.first().createdByName,
+                        quantity = items.sumOf { it.quantity },
+                        createdAt = items.last().createdAt
+                    )
+                }
 
             val firstItem = cafeCartItems.first()
             val totalQuantity = cafeCartItems.sumOf { it.quantity }

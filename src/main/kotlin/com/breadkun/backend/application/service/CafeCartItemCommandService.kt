@@ -32,9 +32,11 @@ class CafeCartItemCommandService(
         return dtos.map { dto ->
             validateMenuAndLocation(cafeCart, dto)
 
-            val entity = CafeCartItem.fromCreateDTO(cartId, userUUID, userName, dto).toEntity()
-            val savedEntity = cafeCartItemCommandPort.save(entity)
-            CafeCartItem.fromEntity(savedEntity)
+            CafeCartItem
+                .fromCreateDTO(cartId, userUUID, userName, dto)
+                .toEntity()
+                .let { cafeCartItemCommandPort.save(it) }
+                .let { CafeCartItem.fromEntity(it) }
         }
     }
 

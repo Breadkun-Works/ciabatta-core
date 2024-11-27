@@ -41,7 +41,7 @@ class CafeCartItemQueryService(
         return cafeCartItems.groupBy { Pair(it.cafeMenuId, it.isPersonalCup) }.map { (_, groupedItems) ->
             CafeCartItemSummary.fromCafeCartItems(groupedItems)
         }.sortedWith(
-            compareBy<CafeCartItemSummary>(
+            compareBy(
                 { it.category },
                 { it.name },
                 { it.drinkTemperature },

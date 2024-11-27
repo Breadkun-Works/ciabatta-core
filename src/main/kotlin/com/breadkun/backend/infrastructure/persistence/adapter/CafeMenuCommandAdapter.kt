@@ -10,12 +10,12 @@ import org.springframework.stereotype.Repository
 @Repository
 class CafeMenuCommandAdapter(
     private val cafeMenuCoroutineCrudRepository: CafeMenuCoroutineCrudRepository,
-    private val template: R2dbcEntityTemplate
+    private val r2dbcEntityTemplate: R2dbcEntityTemplate
 ) : CafeMenuCommandPort {
     override suspend fun save(
         cafeMenuEntity: CafeMenuEntity
     ): CafeMenuEntity {
-        return template.insert(CafeMenuEntity::class.java).using(cafeMenuEntity).awaitSingle()
+        return r2dbcEntityTemplate.insert(CafeMenuEntity::class.java).using(cafeMenuEntity).awaitSingle()
     }
 
     override suspend fun update(
