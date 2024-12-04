@@ -38,13 +38,18 @@ comment on column public.cafe_menu.created_by_id is '메뉴 생성자 ID';
 comment on column public.cafe_menu.updated_at is '메뉴 수정 시각';
 comment on column public.cafe_menu.updated_by_id is '메뉴 수정자 ID';
 
--- changeset chanki5451:2024-10-28-002-create-cafe-cart context:local,dev,master labels:create
+-- changeset chanki5451:2024-10-28-002-create-ulid-extension context:local,dev,master labels:create
+-- comment: ULID 확장 활성화
+
+create extension if not exists "ulid";
+
+-- changeset chanki5451:2024-10-28-003-create-cafe-cart context:local,dev,master labels:create
 -- comment: CafeCart 테이블 생성
 
 -- CafeCart 테이블 생성
 create table public.cafe_cart
 (
-    id            public.ulid         not null default public.gen_ulid() primary key,
+    id            public.ulid  not null default public.gen_ulid() primary key,
     cafe_location varchar(50)  not null,
     title         varchar(70)  not null,
     description   varchar(255),
@@ -62,20 +67,20 @@ comment on column public.cafe_cart.expires_at is '장바구니 만료 시간';
 comment on column public.cafe_cart.created_by_id is '작성자 ID';
 comment on column public.cafe_cart.shared_url is '장바구니 공유 URL';
 
--- changeset chanki5451:2024-10-28-003-create-cafe-cart-item context:local,dev,master labels:create
+-- changeset chanki5451:2024-10-28-004-create-cafe-cart-item context:local,dev,master labels:create
 -- comment: CafeCartItem 테이블 생성
 
 -- CafeCartItem 테이블 생성
 create table public.cafe_cart_item
 (
-    id              public.ulid                                    not null default public.gen_ulid() primary key,
-    cafe_cart_id    public.ulid references public.cafe_cart (id)   not null,
-    cafe_menu_id    bigint references public.cafe_menu (id) not null,
-    is_personal_cup boolean                                 not null,
-    quantity        int                                     not null,
-    created_at      timestamp                               not null,
-    created_by_id   varchar(36)                             not null,
-    created_by_name varchar(30)                             not null
+    id              public.ulid                                  not null default public.gen_ulid() primary key,
+    cafe_cart_id    public.ulid references public.cafe_cart (id) not null,
+    cafe_menu_id    bigint references public.cafe_menu (id)      not null,
+    is_personal_cup boolean                                      not null,
+    quantity        int                                          not null,
+    created_at      timestamp                                    not null,
+    created_by_id   varchar(36)                                  not null,
+    created_by_name varchar(30)                                  not null
 );
 comment on column public.cafe_cart_item.id is '카페 장바구니 항목 ID';
 comment on column public.cafe_cart_item.cafe_cart_id is '참조된 카페 장바구니 ID';
