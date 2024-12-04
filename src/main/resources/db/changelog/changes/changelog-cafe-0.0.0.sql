@@ -55,8 +55,7 @@ create table public.cafe_cart
     description   varchar(255),
     created_at    timestamp    not null,
     expires_at    timestamp    not null,
-    created_by_id varchar(36)  not null,
-    shared_url    varchar(255) not null
+    created_by_id varchar(36)  not null
 );
 comment on column public.cafe_cart.id is '카페 장바구니 ID';
 comment on column public.cafe_cart.cafe_location is '카페 이름';
@@ -65,7 +64,6 @@ comment on column public.cafe_cart.description is '장바구니 설명';
 comment on column public.cafe_cart.created_at is '장바구니 생성 시간';
 comment on column public.cafe_cart.expires_at is '장바구니 만료 시간';
 comment on column public.cafe_cart.created_by_id is '작성자 ID';
-comment on column public.cafe_cart.shared_url is '장바구니 공유 URL';
 
 -- changeset chanki5451:2024-10-28-004-create-cafe-cart-item context:local,dev,master labels:create
 -- comment: CafeCartItem 테이블 생성
