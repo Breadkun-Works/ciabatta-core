@@ -44,7 +44,7 @@ comment on column public.cafe_menu.updated_by_id is '메뉴 수정자 ID';
 -- CafeCart 테이블 생성
 create table public.cafe_cart
 (
-    id            ulid         not null default gen_ulid() primary key,
+    id            public.ulid         not null default public.gen_ulid() primary key,
     cafe_location varchar(50)  not null,
     title         varchar(70)  not null,
     description   varchar(255),
@@ -68,8 +68,8 @@ comment on column public.cafe_cart.shared_url is '장바구니 공유 URL';
 -- CafeCartItem 테이블 생성
 create table public.cafe_cart_item
 (
-    id              ulid                                    not null default gen_ulid() primary key,
-    cafe_cart_id    ulid references public.cafe_cart (id)   not null,
+    id              public.ulid                                    not null default public.gen_ulid() primary key,
+    cafe_cart_id    public.ulid references public.cafe_cart (id)   not null,
     cafe_menu_id    bigint references public.cafe_menu (id) not null,
     is_personal_cup boolean                                 not null,
     quantity        int                                     not null,
