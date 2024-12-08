@@ -49,13 +49,13 @@ create extension if not exists "ulid";
 -- CafeCart 테이블 생성
 create table public.cafe_cart
 (
-    id            ulid         not null default gen_ulid() primary key,
-    cafe_location varchar(50)  not null,
-    title         varchar(70)  not null,
+    id            VARCHAR(26) not null default gen_ulid() primary key,
+    cafe_location varchar(50) not null,
+    title         varchar(70) not null,
     description   varchar(255),
-    created_at    timestamp    not null,
-    expires_at    timestamp    not null,
-    created_by_id varchar(36)  not null
+    created_at    timestamp   not null,
+    expires_at    timestamp   not null,
+    created_by_id varchar(36) not null
 );
 comment on column public.cafe_cart.id is '카페 장바구니 ID';
 comment on column public.cafe_cart.cafe_location is '카페 이름';
@@ -71,14 +71,14 @@ comment on column public.cafe_cart.created_by_id is '작성자 ID';
 -- CafeCartItem 테이블 생성
 create table public.cafe_cart_item
 (
-    id              ulid                                    not null default gen_ulid() primary key,
-    cafe_cart_id    ulid references public.cafe_cart (id)   not null,
-    cafe_menu_id    bigint references public.cafe_menu (id) not null,
-    is_personal_cup boolean                                 not null,
-    quantity        int                                     not null,
-    created_at      timestamp                               not null,
-    created_by_id   varchar(36)                             not null,
-    created_by_name varchar(30)                             not null
+    id              VARCHAR(26)                                  not null default gen_ulid() primary key,
+    cafe_cart_id    VARCHAR(26) references public.cafe_cart (id) not null,
+    cafe_menu_id    bigint references public.cafe_menu (id)      not null,
+    is_personal_cup boolean                                      not null,
+    quantity        int                                          not null,
+    created_at      timestamp                                    not null,
+    created_by_id   varchar(36)                                  not null,
+    created_by_name varchar(30)                                  not null
 );
 comment on column public.cafe_cart_item.id is '카페 장바구니 항목 ID';
 comment on column public.cafe_cart_item.cafe_cart_id is '참조된 카페 장바구니 ID';
