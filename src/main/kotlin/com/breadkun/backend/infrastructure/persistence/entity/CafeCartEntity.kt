@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 @Table("cafe_cart")
 data class CafeCartEntity(
     @Id
-    val id: String,
+    val id: String?,
 
     val cafeLocation: GlobalEnums.Location,
 
@@ -20,7 +20,5 @@ data class CafeCartEntity(
 
     val expiresAt: LocalDateTime,
 
-    val createdById: String,
-
-    val sharedUrl: String
+    val createdById: String
 )

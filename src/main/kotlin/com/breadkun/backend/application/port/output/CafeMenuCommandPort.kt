@@ -7,11 +7,7 @@ interface CafeMenuCommandPort {
         cafeMenuEntity: CafeMenuEntity
     ): CafeMenuEntity
 
-    suspend fun update(
-        cafeMenuEntity: CafeMenuEntity
-    ): CafeMenuEntity
-
     suspend fun deleteById(
-        cafeMenuId: String
-    ): String
+        cafeMenuId: Long
+    ): Long
 }

@@ -6,10 +6,9 @@ import com.breadkun.backend.domain.model.enums.CafeEnums
 import com.breadkun.backend.global.common.enums.GlobalEnums
 import com.breadkun.backend.infrastructure.persistence.entity.CafeMenuEntity
 import java.time.LocalDateTime
-import java.util.*
 
 data class CafeMenu(
-    val id: String,
+    val id: Long?,
 
     val cafeLocation: GlobalEnums.Location,
 
@@ -88,7 +87,7 @@ data class CafeMenu(
             cafeMenuCreateDTO: CafeMenuCreateDTO
         ): CafeMenu {
             return CafeMenu(
-                id = UUID.randomUUID().toString(),
+                id = null,
                 cafeLocation = cafeMenuCreateDTO.cafeLocation,
                 name = cafeMenuCreateDTO.name,
                 price = cafeMenuCreateDTO.price,
@@ -107,7 +106,7 @@ data class CafeMenu(
         }
 
         fun fromUpdateDTO(
-            cafeMenuId: String,
+            cafeMenuId: Long,
             userID: String,
             existingMenu: CafeMenu,
             cafeMenuUpdateDTO: CafeMenuUpdateDTO

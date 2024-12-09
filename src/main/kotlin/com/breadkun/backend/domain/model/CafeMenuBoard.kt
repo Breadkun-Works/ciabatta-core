@@ -16,7 +16,7 @@ data class CafeMenuBoard(
 data class CafeMenuBoardOptionDTO(
     val drinkTemperature: CafeEnums.Menu.Temperature,
 
-    val id: String,
+    val id: Long,
 
     val available: Boolean,
 

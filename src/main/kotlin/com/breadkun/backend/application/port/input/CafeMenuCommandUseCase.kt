@@ -11,12 +11,12 @@ interface CafeMenuCommandUseCase {
     ): CafeMenu
 
     suspend fun updateCafeMenu(
-        cafeMenuId: String,
+        cafeMenuId: Long,
         userID: String,
         dto: CafeMenuUpdateDTO
     ): CafeMenu?
 
     suspend fun deleteCafeMenuById(
-        cafeMenuId: String
-    ): String?
+        cafeMenuId: Long
+    ): Long?
 }

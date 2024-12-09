@@ -20,7 +20,7 @@ class CafeMenuQueryService(
     private val cafeMenuQueryPort: CafeMenuQueryPort,
 ) : CafeMenuQueryUseCase {
     override suspend fun findCafeMenuById(
-        cafeMenuId: String
+        cafeMenuId: Long
     ): CafeMenu? {
         return cafeMenuQueryPort.findById(cafeMenuId)
             ?.let {
@@ -29,7 +29,7 @@ class CafeMenuQueryService(
     }
 
     override suspend fun findCafeMenusByIds(
-        cafeMenuIds: Set<String>
+        cafeMenuIds: Set<Long>
     ): List<CafeMenu> {
         if (cafeMenuIds.isEmpty()) return emptyList()
 

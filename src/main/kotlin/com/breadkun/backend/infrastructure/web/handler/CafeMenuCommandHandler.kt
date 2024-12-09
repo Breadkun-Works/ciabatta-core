@@ -26,7 +26,7 @@ class AdminCafeMenuCommandHandler(
     suspend fun updateCafeMenu(
         request: ServerRequest
     ): ServerResponse {
-        val cafeMenuId = request.pathVariable("cafeMenuId")
+        val cafeMenuId = request.pathVariable("cafeMenuId").toLong()
         val userID = request.headers().firstHeader("X-User-ID")
             ?: return ServerResponse.badRequest().bodyValueAndAwait("Missing X-User-ID header")
         val cafeMenuUpdateDTO = request.awaitBody<CafeMenuUpdateDTO>()
@@ -39,7 +39,7 @@ class AdminCafeMenuCommandHandler(
     suspend fun deleteCafeMenuById(
         request: ServerRequest
     ): ServerResponse {
-        val cafeMenuId = request.pathVariable("cafeMenuId")
+        val cafeMenuId = request.pathVariable("cafeMenuId").toLong()
         val deletedId = cafeMenuCommandUseCase.deleteCafeMenuById(cafeMenuId)
 
         return deletedId?.let { ResponseUtils.noContent() } ?: ServerResponse.notFound().buildAndAwait()

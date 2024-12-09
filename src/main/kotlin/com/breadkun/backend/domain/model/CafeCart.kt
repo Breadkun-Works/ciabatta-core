@@ -5,10 +5,9 @@ import com.breadkun.backend.domain.model.enums.CafeEnums
 import com.breadkun.backend.global.common.enums.GlobalEnums
 import com.breadkun.backend.infrastructure.persistence.entity.CafeCartEntity
 import java.time.LocalDateTime
-import java.util.*
 
 data class CafeCart(
-    val id: String,
+    val id: String?,
 
     val cafeLocation: GlobalEnums.Location,
 
@@ -20,9 +19,7 @@ data class CafeCart(
 
     val expiresAt: LocalDateTime,
 
-    val createdById: String,
-
-    val sharedUrl: String
+    val createdById: String
 ) {
     val status: CafeEnums.Cart.Status
         get() {
@@ -42,8 +39,7 @@ data class CafeCart(
             description = description,
             createdAt = createdAt,
             expiresAt = expiresAt,
-            createdById = createdById,
-            sharedUrl = sharedUrl
+            createdById = createdById
         )
     }
 
@@ -58,8 +54,7 @@ data class CafeCart(
                 description = cafeCartEntity.description,
                 createdAt = cafeCartEntity.createdAt,
                 expiresAt = cafeCartEntity.expiresAt,
-                createdById = cafeCartEntity.createdById,
-                sharedUrl = cafeCartEntity.sharedUrl
+                createdById = cafeCartEntity.createdById
             )
         }
 
@@ -67,18 +62,16 @@ data class CafeCart(
             userUUID: String,
             cafeCartCreateDTO: CafeCartCreateDTO
         ): CafeCart {
-            val id = UUID.randomUUID().toString()
             val createdAt = LocalDateTime.now()
 
             return CafeCart(
-                id = id,
+                id = null,
                 cafeLocation = cafeCartCreateDTO.cafeLocation,
                 title = cafeCartCreateDTO.title,
                 description = cafeCartCreateDTO.description,
                 createdAt = createdAt,
                 expiresAt = createdAt.plusHours(3),
-                createdById = userUUID,
-                sharedUrl = "https://breadkun.com/cafe/carts/$id"
+                createdById = userUUID
             )
         }
     }
