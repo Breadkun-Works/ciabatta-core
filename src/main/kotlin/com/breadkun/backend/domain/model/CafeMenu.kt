@@ -6,7 +6,6 @@ import com.breadkun.backend.domain.model.enums.CafeEnums
 import com.breadkun.backend.global.common.enums.GlobalEnums
 import com.breadkun.backend.infrastructure.persistence.entity.CafeMenuEntity
 import java.time.LocalDateTime
-import java.util.*
 
 data class CafeMenu(
     val id: Long?,
