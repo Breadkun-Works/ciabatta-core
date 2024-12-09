@@ -9,11 +9,11 @@ import org.springframework.data.domain.Pageable
 
 interface CafeMenuQueryUseCase {
     suspend fun findCafeMenuById(
-        cafeMenuId: String
+        cafeMenuId: Long
     ): CafeMenu?
 
     suspend fun findCafeMenusByIds(
-        cafeMenuIds: Set<String>
+        cafeMenuIds: Set<Long>
     ): List<CafeMenu>
 
     suspend fun getCafeMenuBoardByOptions(

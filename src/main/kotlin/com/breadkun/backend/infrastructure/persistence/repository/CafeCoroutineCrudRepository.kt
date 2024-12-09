@@ -7,9 +7,9 @@ import kotlinx.coroutines.flow.Flow
 import org.springframework.data.r2dbc.repository.Query
 import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 
-interface CafeMenuCoroutineCrudRepository : CoroutineCrudRepository<CafeMenuEntity, String> {
+interface CafeMenuCoroutineCrudRepository : CoroutineCrudRepository<CafeMenuEntity, Long> {
     @Query("SELECT * FROM cafe_menu WHERE id IN (:ids)")
-    fun findByIds(ids: Set<String>): Flow<CafeMenuEntity>
+    fun findByIds(ids: Set<Long>): Flow<CafeMenuEntity>
 }
 
 interface CafeCartCoroutineCrudRepository : CoroutineCrudRepository<CafeCartEntity, String> {

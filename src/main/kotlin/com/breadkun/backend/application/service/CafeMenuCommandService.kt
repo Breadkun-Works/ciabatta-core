@@ -24,13 +24,13 @@ class CafeMenuCommandService(
     }
 
     override suspend fun updateCafeMenu(
-        cafeMenuId: String,
+        cafeMenuId: Long,
         userID: String,
         dto: CafeMenuUpdateDTO
     ): CafeMenu? {
         return cafeMenuQueryUseCase.findCafeMenuById(cafeMenuId)
             ?.let { existingMenu ->
-                cafeMenuCommandPort.update(CafeMenu.fromUpdateDTO(cafeMenuId, userID, existingMenu, dto).toEntity())
+                cafeMenuCommandPort.save(CafeMenu.fromUpdateDTO(cafeMenuId, userID, existingMenu, dto).toEntity())
             }
             ?.let { updatedMenu ->
                 CafeMenu.fromEntity(updatedMenu)
@@ -38,8 +38,8 @@ class CafeMenuCommandService(
     }
 
     override suspend fun deleteCafeMenuById(
-        cafeMenuId: String
-    ): String? {
+        cafeMenuId: Long
+    ): Long? {
         return cafeMenuQueryUseCase.findCafeMenuById(cafeMenuId)
             ?.let {
                 cafeMenuCommandPort.deleteById(cafeMenuId)

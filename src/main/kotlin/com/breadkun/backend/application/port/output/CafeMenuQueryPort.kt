@@ -8,11 +8,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface CafeMenuQueryPort {
     suspend fun findById(
-        id: String
+        id: Long
     ): CafeMenuEntity?
 
     fun findByIds(
-        ids: Set<String>
+        ids: Set<Long>
     ): Flow<CafeMenuEntity>
 
     fun findByMultipleOptionsWithGrouping(

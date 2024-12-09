@@ -5,14 +5,13 @@ import com.breadkun.backend.domain.model.enums.CafeEnums
 import com.breadkun.backend.infrastructure.persistence.entity.CafeCartItemEntity
 import com.fasterxml.jackson.annotation.JsonInclude
 import java.time.LocalDateTime
-import java.util.*
 
 data class CafeCartItem(
-    val id: String,
+    val id: String?,
 
     val cafeCartId: String,
 
-    val cafeMenuId: String,
+    val cafeMenuId: Long,
 
     val isPersonalCup: Boolean,
 
@@ -96,7 +95,7 @@ data class CafeCartItem(
             cafeCartItemCreateDTO: CafeCartItemCreateDTO
         ): CafeCartItem {
             return CafeCartItem(
-                id = UUID.randomUUID().toString(),
+                id = null,
                 cafeCartId = cartId,
                 cafeMenuId = cafeCartItemCreateDTO.cafeMenuId,
                 isPersonalCup = cafeCartItemCreateDTO.isPersonalCup,

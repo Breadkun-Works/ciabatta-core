@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 data class CafeCartItemSummary(
     val cafeCartId: String,
 
-    val cafeMenuId: String,
+    val cafeMenuId: Long,
 
     val name: String,
 

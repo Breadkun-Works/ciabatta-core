@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 @Table("cafe_menu")
 data class CafeMenuEntity(
     @Id
-    val id: String,
+    val id: Long?,
 
     val cafeLocation: GlobalEnums.Location,
 

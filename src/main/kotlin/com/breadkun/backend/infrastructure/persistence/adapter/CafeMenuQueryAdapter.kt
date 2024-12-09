@@ -23,13 +23,13 @@ class CafeMenuQueryAdapter(
     private val objectMapper: ObjectMapper
 ) : CafeMenuQueryPort {
     override suspend fun findById(
-        id: String
+        id: Long
     ): CafeMenuEntity? {
         return cafeMenuCoroutineCrudRepository.findById(id)
     }
 
     override fun findByIds(
-        ids: Set<String>
+        ids: Set<Long>
     ): Flow<CafeMenuEntity> {
         if (ids.isEmpty()) return emptyFlow()
 

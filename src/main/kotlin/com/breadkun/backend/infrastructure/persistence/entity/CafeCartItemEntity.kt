@@ -7,11 +7,11 @@ import java.time.LocalDateTime
 @Table("cafe_cart_item")
 data class CafeCartItemEntity(
     @Id
-    val id: String,
+    val id: String?,
 
     val cafeCartId: String,
 
-    val cafeMenuId: String,
+    val cafeMenuId: Long,
 
     val isPersonalCup: Boolean,
 
