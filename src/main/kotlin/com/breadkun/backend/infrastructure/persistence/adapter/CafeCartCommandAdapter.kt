@@ -12,7 +12,7 @@ class CafeCartCommandAdapter(
     override suspend fun save(
         cafeCartEntity: CafeCartEntity
     ): CafeCartEntity {
-        return cafeCartCoroutineCrudRepository.save(cafeCartEntity)
+        return cafeCartCoroutineCrudRepository.save(cafeCartEntity) // test
     }
 
     override suspend fun deleteAll(
