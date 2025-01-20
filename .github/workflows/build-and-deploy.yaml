@@ -22,16 +22,16 @@ jobs:
 
       - name: Build and Run tests with environment variables
         run: |
-          export MASTER_DB_URL=${{ secrets.MASTER_DB_URL }}
-          export MASTER_DB_USERNAME=${{ secrets.MASTER_DB_USERNAME }}
-          export MASTER_DB_PASSWORD=${{ secrets.MASTER_DB_PASSWORD }}
+          export BREADKUN_DB_URL=${{ secrets.BREADKUN_DB_URL }}
+          export BREADKUN_DB_USERNAME=${{ secrets.BREADKUN_DB_USERNAME }}
+          export BREADKUN_DB_PASSWORD=${{ secrets.BREADKUN_DB_PASSWORD }}
           ./gradlew build test --no-daemon -Dspring.profiles.active=master
 
       - name: Build Docker image and tag by branch
-        run: docker build -t breadkun-backend:master .
+        run: docker build -t ciabatta-core:master .
 
       - name: Save Docker image
-        run: docker save breadkun-backend:master -o breadkun-backend-master.tar
+        run: docker save ciabatta-core:master -o ciabatta-core-master.tar
 
       - name: Clean up, Deploy, and Run Docker image
         uses: easingthemes/ssh-deploy@v5.1.0
@@ -40,20 +40,20 @@ jobs:
           REMOTE_HOST: ${{ secrets.MASTER_SSH_HOST }}
           REMOTE_USER: ${{ secrets.MASTER_SSH_USERNAME }}
           REMOTE_PORT: ${{ secrets.MASTER_SSH_PORT }}
-          SOURCE: breadkun-backend-master.tar
-          TARGET: /home/${{ secrets.MASTER_SSH_USERNAME }}/breadkun-backend-master.tar
+          SOURCE: ciabatta-core-master.tar
+          TARGET: /home/${{ secrets.MASTER_SSH_USERNAME }}/ciabatta-core-master.tar
           SCRIPT_BEFORE: |
-            docker stop breadkun-backend-master-container || true
-            docker rm breadkun-backend-master-container || true
-            docker rmi breadkun-backend:master || true
-            rm -f /home/${{ secrets.MASTER_SSH_USERNAME }}/breadkun-backend-master.tar
+            docker stop ciabatta-core-master-container || true
+            docker rm ciabatta-core-master-container || true
+            docker rmi ciabatta-core:master || true
+            rm -f /home/${{ secrets.MASTER_SSH_USERNAME }}/ciabatta-core-master.tar
           SCRIPT_AFTER: |
-            docker load -i /home/${{ secrets.MASTER_SSH_USERNAME }}/breadkun-backend-master.tar
+            docker load -i /home/${{ secrets.MASTER_SSH_USERNAME }}/ciabatta-core-master.tar
             docker run -d \
-              --name breadkun-backend-master-container  \
+              --name ciabatta-core-master-container  \
               -p 65477:65477 \
               -e MASTER_DB_URL=${{ secrets.MASTER_DB_URL }} \
               -e MASTER_DB_USERNAME=${{ secrets.MASTER_DB_USERNAME }} \
               -e MASTER_DB_PASSWORD=${{ secrets.MASTER_DB_PASSWORD }} \
-              breadkun-backend:master
-            sudo docker update --restart always breadkun-backend-master-container
+              ciabatta-core:master
+            sudo docker update --restart always ciabatta-core-master-container

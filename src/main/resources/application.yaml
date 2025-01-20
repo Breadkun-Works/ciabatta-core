@@ -1,6 +1,6 @@
 spring:
   application:
-    name: breadkun-backend
+    name: ciabatta-core
   profiles:
     active: master
 

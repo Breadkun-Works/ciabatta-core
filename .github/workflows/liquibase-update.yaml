@@ -27,7 +27,7 @@ jobs:
         uses: liquibase-github-actions/update@v4.30.0
         with:
           changelogFile: src/main/resources/db/changelog/db.changelog-master.yaml
-          url: jdbc:postgresql://${{ secrets.MASTER_DB_URL }}
-          username: ${{ secrets.MASTER_DB_USERNAME }}
-          password: ${{ secrets.MASTER_DB_PASSWORD }}
+          url: jdbc:postgresql://${{ secrets.BREADKUN_DB_URL }}/ciabatta
+          username: ${{ secrets.BREADKUN_DB_USERNAME }}
+          password: ${{ secrets.BREADKUN_DB_PASSWORD }}
           logLevel: INFO
