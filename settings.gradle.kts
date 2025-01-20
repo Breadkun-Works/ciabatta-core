@@ -1,4 +1,4 @@
-rootProject.name = "breadkun-backend"
+rootProject.name = "ciabatta-core"
 
 pluginManagement {
     repositories {
