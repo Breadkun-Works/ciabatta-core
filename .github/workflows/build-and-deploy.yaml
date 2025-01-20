@@ -52,8 +52,8 @@ jobs:
             docker run -d \
               --name ciabatta-core-master-container  \
               -p 65477:65477 \
-              -e MASTER_DB_URL=${{ secrets.MASTER_DB_URL }} \
-              -e MASTER_DB_USERNAME=${{ secrets.MASTER_DB_USERNAME }} \
-              -e MASTER_DB_PASSWORD=${{ secrets.MASTER_DB_PASSWORD }} \
+              -e BREADKUN_DB_URL=${{ secrets.BREADKUN_DB_URL }} \
+              -e BREADKUN_DB_USERNAME=${{ secrets.BREADKUN_DB_USERNAME }} \
+              -e BREADKUN_DB_PASSWORD=${{ secrets.BREADKUN_DB_PASSWORD }} \
               ciabatta-core:master
             sudo docker update --restart always ciabatta-core-master-container
