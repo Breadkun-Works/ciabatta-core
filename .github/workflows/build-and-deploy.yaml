@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Build and Deploy using Docker Compose
 
 on:
   push:
@@ -27,13 +27,14 @@ jobs:
           export BREADKUN_DB_PASSWORD=${{ secrets.BREADKUN_DB_PASSWORD }}
           ./gradlew build test --no-daemon -Dspring.profiles.active=master
 
+      # 루트 경로의 Dockerfile로 이미지 굽기
       - name: Build Docker image and tag by branch
         run: docker build -t ciabatta-core:master .
 
       - name: Save Docker image
         run: docker save ciabatta-core:master -o ciabatta-core-master.tar
 
-      - name: Clean up, Deploy, and Run Docker image
+      - name: Deploy Docker Compose
         uses: easingthemes/ssh-deploy@v5.1.0
         with:
           SSH_PRIVATE_KEY: ${{ secrets.MASTER_SSH_PRIVATE_KEY }}
@@ -49,11 +50,4 @@ jobs:
             rm -f /home/${{ secrets.MASTER_SSH_USERNAME }}/ciabatta-core-master.tar
           SCRIPT_AFTER: |
             docker load -i /home/${{ secrets.MASTER_SSH_USERNAME }}/ciabatta-core-master.tar
-            docker run -d \
-              --name ciabatta-core-master-container  \
-              -p 65477:65477 \
-              -e BREADKUN_DB_URL=${{ secrets.BREADKUN_DB_URL }} \
-              -e BREADKUN_DB_USERNAME=${{ secrets.BREADKUN_DB_USERNAME }} \
-              -e BREADKUN_DB_PASSWORD=${{ secrets.BREADKUN_DB_PASSWORD }} \
-              ciabatta-core:master
-            sudo docker update --restart always ciabatta-core-master-container
+            docker compose -f /home/${{ secrets.MASTER_SSH_USERNAME }}/docker-compose.yaml up -d ciabatta-core
