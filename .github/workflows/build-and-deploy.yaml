@@ -34,7 +34,7 @@ jobs:
       - name: Save Docker image
         run: docker save ciabatta-core:master -o ciabatta-core-master.tar
 
-      - name: Deploy Docker Compose
+      - name: Clean up, Deploy, and Run Docker image
         uses: easingthemes/ssh-deploy@v5.1.0
         with:
           SSH_PRIVATE_KEY: ${{ secrets.MASTER_SSH_PRIVATE_KEY }}
