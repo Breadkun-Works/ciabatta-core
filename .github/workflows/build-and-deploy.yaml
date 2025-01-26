@@ -42,12 +42,12 @@ jobs:
           REMOTE_USER: ${{ secrets.MASTER_SSH_USERNAME }}
           REMOTE_PORT: ${{ secrets.MASTER_SSH_PORT }}
           SOURCE: ciabatta-core-master.tar
-          TARGET: /home/${{ secrets.MASTER_SSH_USERNAME }}/ciabatta-core-master.tar
+          TARGET: /home/${{ secrets.MASTER_SSH_USERNAME }}/deploy/ciabatta-core-master.tar
           SCRIPT_BEFORE: |
             docker stop ciabatta-core-master-container || true
             docker rm ciabatta-core-master-container || true
             docker rmi ciabatta-core:master || true
-            rm -f /home/${{ secrets.MASTER_SSH_USERNAME }}/ciabatta-core-master.tar
+            rm -f /home/${{ secrets.MASTER_SSH_USERNAME }}/deploy/ciabatta-core-master.tar
           SCRIPT_AFTER: |
-            docker load -i /home/${{ secrets.MASTER_SSH_USERNAME }}/ciabatta-core-master.tar
-            docker compose -f /home/${{ secrets.MASTER_SSH_USERNAME }}/docker-compose.yaml up -d ciabatta-core
+            docker load -i /home/${{ secrets.MASTER_SSH_USERNAME }}/deploy/ciabatta-core-master.tar
+            docker compose -f /home/${{ secrets.MASTER_SSH_USERNAME }}/deploy/docker-compose.yaml up -d ciabatta-core
