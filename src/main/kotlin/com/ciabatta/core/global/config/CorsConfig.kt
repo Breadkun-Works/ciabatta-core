@@ -10,13 +10,13 @@ import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource
 /**
  * 글로벌 CORS 설정을 위한 구성 클래스
  * 스프링 컨텍스트에 CorsWebFilter 빈(bean)을 등록하여 CORS 정책을 적용.
- * 환경변수(CORS_ALLOWED_ORIGINS)로 Origin 목록을 설정할 수 있음.
+ * 환경변수(BACKEND_CORS_ORIGINS)로 Origin 목록을 설정할 수 있음.
  * ⚠️ 프로덕션에서는 프록시(Nginx)에서 CORS 설정 전체 위임하고 있음.
  * ⚠️ 아래 설정은 테스트를 위한 설정이며, 기본적으로 VM 방화벽을 통해 백엔드서버(WAS)에 직접 접근을 차단하고 있음.
  */
 @Configuration
 class CorsConfig(
-    @Value("\${CORS_ALLOWED_ORIGINS}") private val allowedOrigins: String
+    @Value("\${BACKEND_CORS_ORIGINS}") private val allowedOrigins: String
 ) {
     @Bean
     fun corsWebFilter(): CorsWebFilter {
