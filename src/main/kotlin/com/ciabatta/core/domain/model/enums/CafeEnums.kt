@@ -1,7 +1,7 @@
 package com.ciabatta.core.domain.model.enums
 
 sealed interface CafeEnums {
-    sealed interface Menu : CafeEnums {
+    interface Menu : CafeEnums {
         enum class Category(
             val label: String
         ) : Menu {
@@ -18,7 +18,7 @@ sealed interface CafeEnums {
         }
     }
 
-    sealed interface Cart : CafeEnums {
+    interface Cart : CafeEnums {
         enum class Status(
             val label: String
         ) : Cart {
