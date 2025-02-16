@@ -76,6 +76,7 @@ create table public.cafe_cart_item
     cafe_menu_id    bigint references public.cafe_menu (id)      not null,
     is_personal_cup boolean                                      not null,
     quantity        int                                          not null,
+    image_url       varchar(255)                                 not null,
     created_at      timestamp                                    not null,
     created_by_id   varchar(36)                                  not null,
     created_by_name varchar(30)                                  not null
@@ -85,6 +86,7 @@ comment on column public.cafe_cart_item.cafe_cart_id is '참조된 카페 장바
 comment on column public.cafe_cart_item.cafe_menu_id is '참조된 카페 메뉴 항목 ID';
 comment on column public.cafe_cart_item.is_personal_cup is '개인컵 사용 여부';
 comment on column public.cafe_cart_item.quantity is '담긴 수량';
+comment on column public.cafe_cart_item.image_url is '항목 이미지 URL';
 comment on column public.cafe_cart_item.created_at is '항목 생성 시각';
 comment on column public.cafe_cart_item.created_by_id is '작성자 ID';
 comment on column public.cafe_cart_item.created_by_name is '작성자 이름';
