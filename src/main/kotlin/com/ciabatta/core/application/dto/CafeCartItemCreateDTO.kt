@@ -11,5 +11,8 @@ data class CafeCartItemCreateDTO(
     val isPersonalCup: Boolean,
 
     @field:Positive(message = "개수는 양수여야 합니다.")
-    val quantity: Int
+    val quantity: Int,
+
+    @field:NotBlank(message = "카트 항목 이미지는 필수입니다.")
+    val imageUrl: String,
 )

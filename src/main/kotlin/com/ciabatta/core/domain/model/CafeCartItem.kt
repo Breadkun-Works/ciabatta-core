@@ -17,6 +17,8 @@ data class CafeCartItem(
 
     val quantity: Int,
 
+    val imageUrl: String,
+
     val createdAt: LocalDateTime,
 
     val createdById: String,
@@ -24,25 +26,25 @@ data class CafeCartItem(
     val createdByName: String
 ) {
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    var name: String? = null
+    var drinkName: String? = null
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    var price: Int? = null
+    var drinkPrice: Int? = null
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    var totalPrice: Int? = null
+    var drinkTotalPrice: Int? = null
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    var category: CafeEnums.Menu.Category? = null
+    var drinkCategory: CafeEnums.Menu.Category? = null
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     var drinkTemperature: CafeEnums.Menu.Temperature? = null
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    var imageFilename: String? = null
+    var drinkImageFilename: String? = null
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    var imageUrl: String? = null
+    var drinkImageUrl: String? = null
 
     fun toEntity(
     ): CafeCartItemEntity {
@@ -52,6 +54,7 @@ data class CafeCartItem(
             cafeMenuId = cafeMenuId,
             isPersonalCup = isPersonalCup,
             quantity = quantity,
+            imageUrl = imageUrl,
             createdAt = createdAt,
             createdById = createdById,
             createdByName = createdByName
@@ -62,13 +65,13 @@ data class CafeCartItem(
         cafeMenu: CafeMenu
     ): CafeCartItem {
         return this.apply {
-            name = cafeMenu.name
-            price = if (isPersonalCup) cafeMenu.price else cafeMenu.price + cafeMenu.deposit
-            totalPrice = price!! * quantity
-            category = cafeMenu.category
+            drinkName = cafeMenu.name
+            drinkPrice = if (isPersonalCup) cafeMenu.price else cafeMenu.price + cafeMenu.deposit
+            drinkTotalPrice = drinkPrice!! * quantity
+            drinkCategory = cafeMenu.category
             drinkTemperature = cafeMenu.drinkTemperature
-            imageFilename = cafeMenu.imageFilename
-            imageUrl = cafeMenu.imageUrl
+            drinkImageFilename = cafeMenu.imageFilename
+            drinkImageUrl = cafeMenu.imageUrl
         }
     }
 
@@ -82,6 +85,7 @@ data class CafeCartItem(
                 cafeMenuId = cafeCartItemEntity.cafeMenuId,
                 isPersonalCup = cafeCartItemEntity.isPersonalCup,
                 quantity = cafeCartItemEntity.quantity,
+                imageUrl = cafeCartItemEntity.imageUrl,
                 createdAt = cafeCartItemEntity.createdAt,
                 createdById = cafeCartItemEntity.createdById,
                 createdByName = cafeCartItemEntity.createdByName
@@ -100,6 +104,7 @@ data class CafeCartItem(
                 cafeMenuId = cafeCartItemCreateDTO.cafeMenuId,
                 isPersonalCup = cafeCartItemCreateDTO.isPersonalCup,
                 quantity = cafeCartItemCreateDTO.quantity,
+                imageUrl = cafeCartItemCreateDTO.imageUrl,
                 createdAt = LocalDateTime.now(),
                 createdById = userUUID,
                 createdByName = userName

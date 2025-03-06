@@ -17,6 +17,8 @@ data class CafeCartItemEntity(
 
     val quantity: Int,
 
+    val imageUrl: String,
+
     val createdAt: LocalDateTime,
 
     val createdById: String,

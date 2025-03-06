@@ -39,6 +39,7 @@ data class CafeCartItemSummary(
                         userId = createdById,
                         userName = items.first().createdByName,
                         quantity = items.sumOf { it.quantity },
+                        imageUrl = items.last().imageUrl,
                         createdAt = items.last().createdAt
                     )
                 }
@@ -49,14 +50,14 @@ data class CafeCartItemSummary(
             return CafeCartItemSummary(
                 cafeCartId = firstItem.cafeCartId,
                 cafeMenuId = firstItem.cafeMenuId,
-                name = firstItem.name!!,
+                name = firstItem.drinkName!!,
                 drinkTemperature = firstItem.drinkTemperature!!,
                 isPersonalCup = firstItem.isPersonalCup,
-                price = firstItem.price!!,
-                totalPrice = firstItem.price!! * totalQuantity,
-                category = firstItem.category!!,
-                imageFilename = firstItem.imageFilename!!,
-                imageUrl = firstItem.imageUrl!!,
+                price = firstItem.drinkPrice!!,
+                totalPrice = firstItem.drinkPrice!! * totalQuantity,
+                category = firstItem.drinkCategory!!,
+                imageFilename = firstItem.drinkImageFilename!!,
+                imageUrl = firstItem.drinkImageUrl!!,
                 totalQuantity = totalQuantity,
                 contributors = contributors
             )
@@ -70,6 +71,8 @@ data class Contributor(
     val userName: String,
 
     val quantity: Int,
+
+    val imageUrl: String,
 
     val createdAt: LocalDateTime,
 )
