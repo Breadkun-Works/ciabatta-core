@@ -6,6 +6,8 @@ import com.ciabatta.core.domain.model.CafeMenu
 import com.ciabatta.core.application.port.output.CafeMenuQueryPort
 import com.ciabatta.core.domain.model.enums.CafeEnums
 import com.ciabatta.core.global.enums.GlobalEnums
+import com.ciabatta.core.global.exception.BusinessException
+import com.ciabatta.core.global.exception.ErrorCode
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.map
@@ -21,11 +23,11 @@ class CafeMenuQueryService(
 ) : CafeMenuQueryUseCase {
     override suspend fun findCafeMenuById(
         cafeMenuId: Long
-    ): CafeMenu? {
+    ): CafeMenu {
         return cafeMenuQueryPort.findById(cafeMenuId)
             ?.let {
                 CafeMenu.fromEntity(it)
-            }
+            } ?: throw BusinessException(ErrorCode.CA_1001, "CafeMenu not found with id: $cafeMenuId")
     }
 
     override suspend fun findCafeMenusByIds(

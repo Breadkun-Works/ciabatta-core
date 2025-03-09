@@ -14,9 +14,9 @@ interface CafeMenuCommandUseCase {
         cafeMenuId: Long,
         userID: String,
         dto: CafeMenuUpdateDTO
-    ): CafeMenu?
+    ): CafeMenu
 
     suspend fun deleteCafeMenuById(
         cafeMenuId: Long
-    ): Long?
+    ): Long
 }

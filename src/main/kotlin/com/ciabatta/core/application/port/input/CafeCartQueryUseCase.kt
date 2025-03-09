@@ -13,5 +13,5 @@ interface CafeCartQueryUseCase {
 
     suspend fun findCafeCartById(
         cafeCartId: String
-    ): CafeCart?
+    ): CafeCart
 }

@@ -6,6 +6,8 @@ import com.ciabatta.core.application.port.input.CafeMenuCommandUseCase
 import com.ciabatta.core.application.port.input.CafeMenuQueryUseCase
 import com.ciabatta.core.application.port.output.CafeMenuCommandPort
 import com.ciabatta.core.domain.model.CafeMenu
+import com.ciabatta.core.global.exception.BusinessException
+import com.ciabatta.core.global.exception.ErrorCode
 import org.springframework.stereotype.Service
 
 @Service
@@ -27,22 +29,20 @@ class CafeMenuCommandService(
         cafeMenuId: Long,
         userID: String,
         dto: CafeMenuUpdateDTO
-    ): CafeMenu? {
-        return cafeMenuQueryUseCase.findCafeMenuById(cafeMenuId)
-            ?.let { existingMenu ->
-                cafeMenuCommandPort.save(CafeMenu.fromUpdateDTO(cafeMenuId, userID, existingMenu, dto).toEntity())
-            }
-            ?.let { updatedMenu ->
-                CafeMenu.fromEntity(updatedMenu)
-            }
+    ): CafeMenu {
+        val existingMenu = cafeMenuQueryUseCase.findCafeMenuById(cafeMenuId)
+        val savedEntity = cafeMenuCommandPort.save(
+            CafeMenu.fromUpdateDTO(cafeMenuId, userID, existingMenu, dto).toEntity()
+        )
+
+        return CafeMenu.fromEntity(savedEntity)
     }
 
     override suspend fun deleteCafeMenuById(
         cafeMenuId: Long
-    ): Long? {
-        return cafeMenuQueryUseCase.findCafeMenuById(cafeMenuId)
-            ?.let {
-                cafeMenuCommandPort.deleteById(cafeMenuId)
-            }
+    ): Long {
+        val existingMenu = cafeMenuQueryUseCase.findCafeMenuById(cafeMenuId)
+
+        return cafeMenuCommandPort.deleteById(existingMenu.id!!)
     }
 }

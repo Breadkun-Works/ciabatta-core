@@ -5,6 +5,8 @@ import com.ciabatta.core.application.port.input.CafeCartQueryUseCase
 import com.ciabatta.core.application.port.output.CafeCartQueryPort
 import com.ciabatta.core.domain.model.enums.CafeEnums
 import com.ciabatta.core.global.enums.GlobalEnums
+import com.ciabatta.core.global.exception.BusinessException
+import com.ciabatta.core.global.exception.ErrorCode
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import org.springframework.stereotype.Service
@@ -27,7 +29,9 @@ class CafeCartQueryService(
 
     override suspend fun findCafeCartById(
         cafeCartId: String
-    ): CafeCart? {
-        return cafeCartQueryPort.findById(cafeCartId)?.let { CafeCart.fromEntity(it) } ?: return null
+    ): CafeCart {
+        return cafeCartQueryPort.findById(cafeCartId)?.let { CafeCart.fromEntity(it) } ?: throw BusinessException(
+            ErrorCode.CA_2001, "CafeCart not found with id: $cafeCartId"
+        )
     }
 }
