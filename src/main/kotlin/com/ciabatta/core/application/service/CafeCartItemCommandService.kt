@@ -1,21 +1,14 @@
 package com.ciabatta.core.application.service
 
 import com.ciabatta.core.application.dto.CafeCartItemCreateDTO
+import com.ciabatta.core.application.mapper.CafeCartItemMapper
 import com.ciabatta.core.application.port.input.CafeCartItemCommandUseCase
 import com.ciabatta.core.domain.model.CafeCartItem
-import com.ciabatta.core.application.port.input.CafeCartQueryUseCase
-import com.ciabatta.core.application.port.input.CafeMenuQueryUseCase
 import com.ciabatta.core.application.port.output.CafeCartItemCommandPort
 import com.ciabatta.core.application.validator.CafeCartValidator
-import com.ciabatta.core.domain.model.CafeCart
-import com.ciabatta.core.domain.model.enums.CafeEnums
 import com.ciabatta.core.global.dto.DeleteIdsDTO
-import com.ciabatta.core.global.exception.BusinessException
-import com.ciabatta.core.global.exception.ErrorCode
-import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.web.server.ResponseStatusException
 
 @Service
 class CafeCartItemCommandService(
@@ -34,11 +27,11 @@ class CafeCartItemCommandService(
         return dtos.map { dto ->
             cafeCartValidator.validateMenuAndLocation(cafeCart, dto)
 
-            CafeCartItem
-                .fromCreateDTO(cartId, userUUID, userName, dto)
-                .toEntity()
-                .let { cafeCartItemCommandPort.save(it) }
-                .let { CafeCartItem.fromEntity(it) }
+            val domain = CafeCartItemMapper.mapCreateDTOToDomain(cartId, userUUID, userName, dto)
+            val entity = CafeCartItemMapper.mapDomainToEntity(domain)
+            val savedEntity = cafeCartItemCommandPort.save(entity)
+
+            CafeCartItemMapper.mapEntityToDomain(savedEntity)
         }
     }
 

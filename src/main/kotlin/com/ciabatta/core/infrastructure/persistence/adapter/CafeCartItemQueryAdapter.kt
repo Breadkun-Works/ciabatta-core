@@ -12,7 +12,5 @@ class CafeCartItemQueryAdapter(
 ) : CafeCartItemQueryPort {
     override fun findByCafeCartId(
         cafeCartId: String
-    ): Flow<CafeCartItemEntity> {
-        return cafeCartItemCoroutineCrudRepository.findByCafeCartIdOrderByCreatedAtAsc(cafeCartId)
-    }
+    ): Flow<CafeCartItemEntity> = cafeCartItemCoroutineCrudRepository.findByCafeCartIdOrderByCreatedAtAsc(cafeCartId)
 }

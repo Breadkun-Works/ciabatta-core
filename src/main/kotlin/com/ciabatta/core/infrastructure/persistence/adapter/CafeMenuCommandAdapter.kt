@@ -11,9 +11,7 @@ class CafeMenuCommandAdapter(
 ) : CafeMenuCommandPort {
     override suspend fun save(
         cafeMenuEntity: CafeMenuEntity
-    ): CafeMenuEntity {
-        return cafeMenuCoroutineCrudRepository.save(cafeMenuEntity)
-    }
+    ): CafeMenuEntity = cafeMenuCoroutineCrudRepository.save(cafeMenuEntity)
 
     override suspend fun deleteById(
         cafeMenuId: Long

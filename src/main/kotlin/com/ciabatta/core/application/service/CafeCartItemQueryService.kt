@@ -1,5 +1,6 @@
 package com.ciabatta.core.application.service
 
+import com.ciabatta.core.application.mapper.CafeCartItemMapper
 import com.ciabatta.core.domain.model.CafeCartItem
 import com.ciabatta.core.application.port.input.CafeCartItemQueryUseCase
 import com.ciabatta.core.application.port.input.CafeCartQueryUseCase
@@ -26,7 +27,7 @@ class CafeCartItemQueryService(
         cafeCartQueryUseCase.findCafeCartById(cafeCartId) // 장바구니가 존재하지 않으면 예외 발생
 
         val cafeCartItems =
-            cafeCartItemQueryPort.findByCafeCartId(cafeCartId).map { CafeCartItem.fromEntity(it) }.toList()
+            cafeCartItemQueryPort.findByCafeCartId(cafeCartId).map { CafeCartItemMapper.mapEntityToDomain(it) }.toList()
 
         if (cafeCartItems.isEmpty()) return emptyList()
 

@@ -1,5 +1,6 @@
 package com.ciabatta.core.application.service
 
+import com.ciabatta.core.application.mapper.CafeCartMapper
 import com.ciabatta.core.domain.model.CafeCart
 import com.ciabatta.core.application.port.input.CafeCartQueryUseCase
 import com.ciabatta.core.application.port.output.CafeCartQueryPort
@@ -24,14 +25,15 @@ class CafeCartQueryService(
         val currentTime = LocalDateTime.now()
 
         return cafeCartQueryPort.findByMultipleOptions(cafeLocation, status, createdById, currentTime)
-            .map { CafeCart.fromEntity(it) }.toList()
+            .map { CafeCartMapper.mapEntityToDomain(it) }.toList()
     }
 
     override suspend fun findCafeCartById(
         cafeCartId: String
     ): CafeCart {
-        return cafeCartQueryPort.findById(cafeCartId)?.let { CafeCart.fromEntity(it) } ?: throw BusinessException(
-            ErrorCode.CA_2001, "CafeCart not found with id: $cafeCartId"
-        )
+        return cafeCartQueryPort.findById(cafeCartId)?.let { CafeCartMapper.mapEntityToDomain(it) }
+            ?: throw BusinessException(
+                ErrorCode.CA_2001, "CafeCart not found with id: $cafeCartId"
+            )
     }
 }

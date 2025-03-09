@@ -11,19 +11,13 @@ class CafeCartItemCommandRepositoryImpl(
 ) : CafeCartItemCommandPort {
     override suspend fun save(
         cafeCartItemEntity: CafeCartItemEntity
-    ): CafeCartItemEntity {
-        return cafeCartItemCoroutineCrudRepository.save(cafeCartItemEntity)
-    }
+    ): CafeCartItemEntity = cafeCartItemCoroutineCrudRepository.save(cafeCartItemEntity)
 
     override suspend fun deleteAll(
         ids: List<String>
-    ) {
-        return cafeCartItemCoroutineCrudRepository.deleteAllByIds(ids)
-    }
+    ) = cafeCartItemCoroutineCrudRepository.deleteAllByIds(ids)
 
     override suspend fun deleteAllByCafeCartId(
         cafeCartId: String
-    ) {
-        return cafeCartItemCoroutineCrudRepository.deleteAllByCafeCartId(cafeCartId)
-    }
+    ) = cafeCartItemCoroutineCrudRepository.deleteAllByCafeCartId(cafeCartId)
 }

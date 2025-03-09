@@ -2,12 +2,11 @@ package com.ciabatta.core.application.service
 
 import com.ciabatta.core.application.dto.CafeMenuCreateDTO
 import com.ciabatta.core.application.dto.CafeMenuUpdateDTO
+import com.ciabatta.core.application.mapper.CafeMenuMapper
 import com.ciabatta.core.application.port.input.CafeMenuCommandUseCase
 import com.ciabatta.core.application.port.input.CafeMenuQueryUseCase
 import com.ciabatta.core.application.port.output.CafeMenuCommandPort
 import com.ciabatta.core.domain.model.CafeMenu
-import com.ciabatta.core.global.exception.BusinessException
-import com.ciabatta.core.global.exception.ErrorCode
 import org.springframework.stereotype.Service
 
 @Service
@@ -19,10 +18,11 @@ class CafeMenuCommandService(
         userID: String,
         dto: CafeMenuCreateDTO
     ): CafeMenu {
-        return cafeMenuCommandPort.save(CafeMenu.fromCreateDTO(userID, dto).toEntity())
-            .let {
-                CafeMenu.fromEntity(it)
-            }
+        val domain = CafeMenuMapper.mapCreateDTOToDomain(userID, dto)
+        val entity = CafeMenuMapper.mapDomainToEntity(domain)
+        val savedEntity = cafeMenuCommandPort.save(entity)
+
+        return CafeMenuMapper.mapEntityToDomain(savedEntity)
     }
 
     override suspend fun updateCafeMenu(
@@ -31,11 +31,12 @@ class CafeMenuCommandService(
         dto: CafeMenuUpdateDTO
     ): CafeMenu {
         val existingMenu = cafeMenuQueryUseCase.findCafeMenuById(cafeMenuId)
-        val savedEntity = cafeMenuCommandPort.save(
-            CafeMenu.fromUpdateDTO(cafeMenuId, userID, existingMenu, dto).toEntity()
-        )
 
-        return CafeMenu.fromEntity(savedEntity)
+        val domain = CafeMenuMapper.mapUpdateDTOToDomain(cafeMenuId, userID, existingMenu, dto)
+        val entity = CafeMenuMapper.mapDomainToEntity(domain)
+        val savedEntity = cafeMenuCommandPort.save(entity)
+
+        return CafeMenuMapper.mapEntityToDomain(savedEntity)
     }
 
     override suspend fun deleteCafeMenuById(

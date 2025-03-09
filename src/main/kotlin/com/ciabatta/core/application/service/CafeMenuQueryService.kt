@@ -1,5 +1,6 @@
 package com.ciabatta.core.application.service
 
+import com.ciabatta.core.application.mapper.CafeMenuMapper
 import com.ciabatta.core.application.port.input.CafeMenuQueryUseCase
 import com.ciabatta.core.domain.model.CafeMenuBoard
 import com.ciabatta.core.domain.model.CafeMenu
@@ -26,7 +27,7 @@ class CafeMenuQueryService(
     ): CafeMenu {
         return cafeMenuQueryPort.findById(cafeMenuId)
             ?.let {
-                CafeMenu.fromEntity(it)
+                CafeMenuMapper.mapEntityToDomain(it)
             } ?: throw BusinessException(ErrorCode.CA_1001, "CafeMenu not found with id: $cafeMenuId")
     }
 
@@ -35,7 +36,7 @@ class CafeMenuQueryService(
     ): List<CafeMenu> {
         if (cafeMenuIds.isEmpty()) return emptyList()
 
-        return cafeMenuQueryPort.findByIds(cafeMenuIds).map { CafeMenu.fromEntity(it) }.toList()
+        return cafeMenuQueryPort.findByIds(cafeMenuIds).map { CafeMenuMapper.mapEntityToDomain(it) }.toList()
     }
 
     override suspend fun getCafeMenuBoardByOptions(

@@ -24,9 +24,7 @@ class CafeMenuQueryAdapter(
 ) : CafeMenuQueryPort {
     override suspend fun findById(
         id: Long
-    ): CafeMenuEntity? {
-        return cafeMenuCoroutineCrudRepository.findById(id)
-    }
+    ): CafeMenuEntity? = cafeMenuCoroutineCrudRepository.findById(id)
 
     override fun findByIds(
         ids: Set<Long>
