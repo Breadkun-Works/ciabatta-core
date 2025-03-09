@@ -2,7 +2,7 @@ package com.ciabatta.core.application.dto
 
 import com.ciabatta.core.domain.model.enums.CafeEnums
 import com.ciabatta.core.global.enums.GlobalEnums
-import jakarta.validation.constraints.Positive
+import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.Size
 
 data class CafeMenuUpdateDTO(
@@ -11,10 +11,10 @@ data class CafeMenuUpdateDTO(
     @field:Size(max = 70, message = "Menu name must be within 70 characters.")
     val name: String? = null,
 
-    @field:Positive(message = "Menu price must be a positive number.")
+    @field:Min(1,message = "Menu price must be a positive number.")
     val price: Int? = null,
 
-    @field:Positive(message = "Cup deposit must be a positive number.")
+    @field:Min(1,message = "Cup deposit must be a positive number.")
     val deposit: Int? = null,
 
     val category: CafeEnums.Menu.Category? = null,

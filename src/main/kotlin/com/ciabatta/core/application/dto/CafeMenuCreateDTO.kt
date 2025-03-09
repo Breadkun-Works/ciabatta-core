@@ -2,10 +2,7 @@ package com.ciabatta.core.application.dto
 
 import com.ciabatta.core.domain.model.enums.CafeEnums
 import com.ciabatta.core.global.enums.GlobalEnums
-import jakarta.validation.constraints.NotBlank
-import jakarta.validation.constraints.NotNull
-import jakarta.validation.constraints.Positive
-import jakarta.validation.constraints.Size
+import jakarta.validation.constraints.*
 
 data class CafeMenuCreateDTO(
     @field:NotNull(message = "Cafe location is required.")
@@ -15,10 +12,10 @@ data class CafeMenuCreateDTO(
     @field:Size(max = 70, message = "Menu name must be within 70 characters.")
     val name: String,
 
-    @field:Positive(message = "Menu price must be a positive number.")
+    @field:Min(1, message = "Menu price must be a positive number.")
     val price: Int,
 
-    @field:Positive(message = "Cup deposit must be a positive number.")
+    @field:Min(1, message = "Cup deposit must be a positive number.")
     val deposit: Int,
 
     @field:NotNull(message = "Category is required.")

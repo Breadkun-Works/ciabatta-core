@@ -3,6 +3,6 @@ package com.ciabatta.core.global.dto
 import jakarta.validation.constraints.NotEmpty
 
 data class DeleteIdsDTO(
-    @field:NotEmpty(message = "삭제할 ID 목록은 비어 있을 수 없습니다.")
+    @field:NotEmpty(message = "The list of IDs to delete cannot be empty")
     val ids: List<String>
 )
