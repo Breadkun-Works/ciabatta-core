@@ -4,15 +4,15 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Positive
 
 data class CafeCartItemCreateDTO(
-    @field:NotBlank(message = "카페 메뉴 ID는 필수입니다.")
+    @field:NotBlank(message = "Cafe menu ID is required")
     val cafeMenuId: Long,
 
-    @field:NotBlank(message = "개인컵 사용 여부는 필수입니다.")
+    @field:NotBlank(message = "Personal cup usage is required")
     val isPersonalCup: Boolean,
 
-    @field:Positive(message = "개수는 양수여야 합니다.")
+    @field:Positive(message = "Quantity must be a positive number")
     val quantity: Int,
 
-    @field:NotBlank(message = "카트 항목 이미지는 필수입니다.")
+    @field:NotBlank(message = "Cart item image is required")
     val imageUrl: String,
 )

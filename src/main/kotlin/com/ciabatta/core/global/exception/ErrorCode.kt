@@ -7,7 +7,9 @@ enum class ErrorCode(val code: String, val httpStatus: HttpStatus) {
      * Validation 관련 에러 코드
      * DTO 혹은 핸들러 계층에서 발생하는 입력 검증 오류
      */
-    VAL_0001("VAL-0001", HttpStatus.BAD_REQUEST),
+    VAL_0001("VAL-0001", HttpStatus.BAD_REQUEST), // 헤더 검증 오류
+    VAL_0002("VAL-0002", HttpStatus.BAD_REQUEST), // Jackson DTO 맵핑 오류 (JSON 파싱 실패)
+    VAL_0003("VAL-0003", HttpStatus.BAD_REQUEST), // Jakarta/Spring Validator 검증 오류 (DTO 필드 검증 실패)
 
     /**
      * Cafe 도메인(어플리케이션) 로직에서 발생하는 비즈니스 오류

@@ -8,33 +8,33 @@ import jakarta.validation.constraints.Positive
 import jakarta.validation.constraints.Size
 
 data class CafeMenuCreateDTO(
-    @field:NotNull(message = "카페 위치는 필수입니다.")
+    @field:NotNull(message = "Cafe location is required.")
     val cafeLocation: GlobalEnums.Location,
 
-    @field:NotBlank(message = "메뉴 이름은 필수입니다.")
-    @field:Size(max = 70, message = "메뉴 이름은 70자 이내여야 합니다.")
+    @field:NotBlank(message = "Menu name is required.")
+    @field:Size(max = 70, message = "Menu name must be within 70 characters.")
     val name: String,
 
-    @field:Positive(message = "메뉴 가격은 양수여야 합니다.")
+    @field:Positive(message = "Menu price must be a positive number.")
     val price: Int,
 
-    @field:Positive(message = "컵 보증금은 양수여야 합니다.")
+    @field:Positive(message = "Cup deposit must be a positive number.")
     val deposit: Int,
 
-    @field:NotNull(message = "카테고리는 필수입니다.")
+    @field:NotNull(message = "Category is required.")
     val category: CafeEnums.Menu.Category,
 
-    @field:NotNull(message = "음료 온도는 필수입니다.")
+    @field:NotNull(message = "Drink temperature is required.")
     val drinkTemperature: CafeEnums.Menu.Temperature,
 
-    @field:Size(max = 255, message = "메뉴 설명은 255자 이내여야 합니다.")
+    @field:Size(max = 255, message = "Menu description must be within 255 characters.")
     val description: String? = null,
 
-    @field:NotBlank(message = "이미지 파일은 필수입니다.")
-    @field:Size(max = 100, message = "이미지 파일 이름은 100자 이내여야 합니다.")
+    @field:NotBlank(message = "Image file is required.")
+    @field:Size(max = 100, message = "Image file name must be within 100 characters.")
     val imageFilename: String,
 
-    @field:NotBlank(message = "이미지 파일 경로는 필수입니다.")
-    @field:Size(max = 255, message = "이미지 URL은 255자 이내여야 합니다.")
+    @field:NotBlank(message = "Image file path is required.")
+    @field:Size(max = 255, message = "Image URL must be within 255 characters.")
     val imageUrl: String,
 )

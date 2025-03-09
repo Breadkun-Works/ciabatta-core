@@ -14,7 +14,7 @@ abstract class CustomException(
  * 일반적으로 HTTP 400(Bad Request) 상태 코드와 매핑.
  */
 class ValidationException(
-    private val error: ErrorCode = ErrorCode.VAL_0001,
+    private val error: ErrorCode,
     override val message: String? = error.code
 ) : CustomException(error.code, error.httpStatus, message)
 
