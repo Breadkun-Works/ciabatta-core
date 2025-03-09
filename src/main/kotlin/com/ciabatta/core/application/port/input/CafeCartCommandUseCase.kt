@@ -2,7 +2,7 @@ package com.ciabatta.core.application.port.input
 
 import com.ciabatta.core.application.dto.CafeCartCreateDTO
 import com.ciabatta.core.domain.model.CafeCart
-import com.ciabatta.core.global.common.dto.DeleteIdsDTO
+import com.ciabatta.core.global.dto.DeleteIdsDTO
 
 interface CafeCartCommandUseCase {
     suspend fun createCafeCart(

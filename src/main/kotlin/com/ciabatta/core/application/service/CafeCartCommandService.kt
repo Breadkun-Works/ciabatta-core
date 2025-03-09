@@ -5,10 +5,8 @@ import com.ciabatta.core.domain.model.CafeCart
 import com.ciabatta.core.application.port.input.CafeCartCommandUseCase
 import com.ciabatta.core.application.port.input.CafeCartItemCommandUseCase
 import com.ciabatta.core.application.port.output.CafeCartCommandPort
-import com.ciabatta.core.global.common.dto.DeleteIdsDTO
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.joinAll
-import kotlinx.coroutines.launch
+import com.ciabatta.core.global.dto.DeleteIdsDTO
+import kotlinx.coroutines.*
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -20,31 +18,15 @@ class CafeCartCommandService(
     override suspend fun createCafeCart(
         userUUID: String,
         dto: CafeCartCreateDTO
-    ): CafeCart {
-        return cafeCartCommandPort.save(CafeCart.fromCreateDTO(userUUID, dto).toEntity())
-            .let {
-                CafeCart.fromEntity(it)
-            }
-    }
+    ): CafeCart = cafeCartCommandPort.save(CafeCart.fromCreateDTO(userUUID, dto).toEntity())
+        .let { CafeCart.fromEntity(it) }
+
 
     @Transactional
     override suspend fun deleteCafeCarts(
         dto: DeleteIdsDTO
-    ) = coroutineScope {
-        try {
-            dto.ids.map {
-                launch {
-                    try {
-                        cafeCartItemCommandUseCase.deleteCafeCartItemsByCafeCartId(it)
-                    } catch (e: Exception) {
-                        throw e
-                    }
-                }
-            }.joinAll()
-
-            cafeCartCommandPort.deleteAll(dto.ids)
-        } catch (e: Exception) {
-            throw e
-        }
+    ) {
+        dto.ids.forEach { cafeCartItemCommandUseCase.deleteCafeCartItemsByCafeCartId(it) }
+        cafeCartCommandPort.deleteAll(dto.ids)
     }
 }

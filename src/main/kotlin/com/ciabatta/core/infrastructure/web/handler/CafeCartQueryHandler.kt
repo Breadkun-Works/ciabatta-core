@@ -2,8 +2,8 @@ package com.ciabatta.core.infrastructure.web.handler
 
 import com.ciabatta.core.application.port.input.CafeCartQueryUseCase
 import com.ciabatta.core.domain.model.enums.CafeEnums
-import com.ciabatta.core.global.common.enums.GlobalEnums
-import com.ciabatta.core.global.common.util.ResponseUtils
+import com.ciabatta.core.global.enums.GlobalEnums
+import com.ciabatta.core.global.util.ResponseUtils
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse

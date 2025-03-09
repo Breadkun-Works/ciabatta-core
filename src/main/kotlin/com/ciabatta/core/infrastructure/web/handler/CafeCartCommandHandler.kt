@@ -2,8 +2,8 @@ package com.ciabatta.core.infrastructure.web.handler
 
 import com.ciabatta.core.application.dto.CafeCartCreateDTO
 import com.ciabatta.core.application.port.input.CafeCartCommandUseCase
-import com.ciabatta.core.global.common.dto.DeleteIdsDTO
-import com.ciabatta.core.global.common.util.ResponseUtils
+import com.ciabatta.core.global.dto.DeleteIdsDTO
+import com.ciabatta.core.global.util.ResponseUtils
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse

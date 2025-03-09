@@ -4,7 +4,7 @@ import com.ciabatta.core.domain.model.CafeCart
 import com.ciabatta.core.application.port.input.CafeCartQueryUseCase
 import com.ciabatta.core.application.port.output.CafeCartQueryPort
 import com.ciabatta.core.domain.model.enums.CafeEnums
-import com.ciabatta.core.global.common.enums.GlobalEnums
+import com.ciabatta.core.global.enums.GlobalEnums
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import org.springframework.stereotype.Service

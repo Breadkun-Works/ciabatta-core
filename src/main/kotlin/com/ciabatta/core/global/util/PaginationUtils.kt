@@ -1,4 +1,4 @@
-package com.ciabatta.core.global.common.util
+package com.ciabatta.core.global.util
 
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable

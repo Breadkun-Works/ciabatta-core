@@ -1,7 +1,7 @@
-package com.ciabatta.core.global.common.util
+package com.ciabatta.core.global.util
 
-import com.ciabatta.core.global.common.model.ApiResponse
-import com.ciabatta.core.global.common.model.MetaData
+import com.ciabatta.core.global.model.ApiResponse
+import com.ciabatta.core.global.model.MetaData
 import org.springframework.data.domain.PageImpl
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType

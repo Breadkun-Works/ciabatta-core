@@ -1,6 +1,6 @@
 package com.ciabatta.core.application.dto
 
-import com.ciabatta.core.global.common.enums.GlobalEnums
+import com.ciabatta.core.global.enums.GlobalEnums
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size

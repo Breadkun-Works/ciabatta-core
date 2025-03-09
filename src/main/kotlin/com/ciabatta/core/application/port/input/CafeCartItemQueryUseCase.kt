@@ -2,7 +2,7 @@ package com.ciabatta.core.application.port.input
 
 import com.ciabatta.core.domain.model.CafeCartItem
 import com.ciabatta.core.domain.model.CafeCartItemSummary
-import com.ciabatta.core.global.common.enums.GlobalEnums
+import com.ciabatta.core.global.enums.GlobalEnums
 
 interface CafeCartItemQueryUseCase {
     suspend fun findCafeCartItemsByCafeCartId(

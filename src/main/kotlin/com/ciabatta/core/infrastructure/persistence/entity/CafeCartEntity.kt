@@ -1,6 +1,6 @@
 package com.ciabatta.core.infrastructure.persistence.entity
 
-import com.ciabatta.core.global.common.enums.GlobalEnums
+import com.ciabatta.core.global.enums.GlobalEnums
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table
 import java.time.LocalDateTime

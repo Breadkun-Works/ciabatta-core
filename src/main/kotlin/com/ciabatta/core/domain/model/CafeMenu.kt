@@ -3,7 +3,7 @@ package com.ciabatta.core.domain.model
 import com.ciabatta.core.application.dto.CafeMenuCreateDTO
 import com.ciabatta.core.application.dto.CafeMenuUpdateDTO
 import com.ciabatta.core.domain.model.enums.CafeEnums
-import com.ciabatta.core.global.common.enums.GlobalEnums
+import com.ciabatta.core.global.enums.GlobalEnums
 import com.ciabatta.core.infrastructure.persistence.entity.CafeMenuEntity
 import java.time.LocalDateTime
 

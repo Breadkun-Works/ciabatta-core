@@ -1,4 +1,4 @@
-package com.ciabatta.core.global.common.dto
+package com.ciabatta.core.global.dto
 
 import jakarta.validation.constraints.NotEmpty
 

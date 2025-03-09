@@ -8,7 +8,7 @@ import com.ciabatta.core.application.port.input.CafeMenuQueryUseCase
 import com.ciabatta.core.application.port.output.CafeCartItemCommandPort
 import com.ciabatta.core.domain.model.CafeCart
 import com.ciabatta.core.domain.model.enums.CafeEnums
-import com.ciabatta.core.global.common.dto.DeleteIdsDTO
+import com.ciabatta.core.global.dto.DeleteIdsDTO
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

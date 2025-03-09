@@ -1,4 +1,4 @@
-package com.ciabatta.core.global.common.model
+package com.ciabatta.core.global.model
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import java.time.LocalDateTime

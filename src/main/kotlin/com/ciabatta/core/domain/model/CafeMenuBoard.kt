@@ -1,7 +1,7 @@
 package com.ciabatta.core.domain.model
 
 import com.ciabatta.core.domain.model.enums.CafeEnums
-import com.ciabatta.core.global.common.enums.GlobalEnums
+import com.ciabatta.core.global.enums.GlobalEnums
 
 data class CafeMenuBoard(
     val cafeLocation: GlobalEnums.Location,

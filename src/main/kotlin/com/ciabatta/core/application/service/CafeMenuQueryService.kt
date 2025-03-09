@@ -5,7 +5,7 @@ import com.ciabatta.core.domain.model.CafeMenuBoard
 import com.ciabatta.core.domain.model.CafeMenu
 import com.ciabatta.core.application.port.output.CafeMenuQueryPort
 import com.ciabatta.core.domain.model.enums.CafeEnums
-import com.ciabatta.core.global.common.enums.GlobalEnums
+import com.ciabatta.core.global.enums.GlobalEnums
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.map

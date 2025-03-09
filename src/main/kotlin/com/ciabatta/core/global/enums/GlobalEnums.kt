@@ -1,4 +1,4 @@
-package com.ciabatta.core.global.common.enums
+package com.ciabatta.core.global.enums
 
 interface GlobalEnums {
     enum class Location(

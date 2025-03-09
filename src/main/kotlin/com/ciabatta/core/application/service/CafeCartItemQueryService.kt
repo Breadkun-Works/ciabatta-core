@@ -5,7 +5,7 @@ import com.ciabatta.core.application.port.input.CafeCartItemQueryUseCase
 import com.ciabatta.core.application.port.input.CafeMenuQueryUseCase
 import com.ciabatta.core.application.port.output.CafeCartItemQueryPort
 import com.ciabatta.core.domain.model.CafeCartItemSummary
-import com.ciabatta.core.global.common.enums.GlobalEnums
+import com.ciabatta.core.global.enums.GlobalEnums
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import org.springframework.stereotype.Service
@@ -55,6 +55,10 @@ class CafeCartItemQueryService(
             .findCafeMenusByIds(cafeCartItems.map { it.cafeMenuId }.toSet())
             .associateBy { it.id }
 
-        return cafeCartItems.map { it.attachDetails(cafeMenuMap[it.cafeMenuId]!!) }
+        return cafeCartItems.map { item ->
+            val menu = cafeMenuMap[item.cafeMenuId]
+                ?: throw IllegalArgumentException("해당 ID의 메뉴를 찾을 수 없습니다: ${item.cafeMenuId}")
+            item.attachDetails(menu)
+        }
     }
 }
