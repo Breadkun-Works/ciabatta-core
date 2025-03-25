@@ -28,40 +28,40 @@ object CafeMenuMapper {
     )
 
     fun mapEntityToDomain(
-        cafeMenuEntity: CafeMenuEntity
+        entity: CafeMenuEntity
     ): CafeMenu = CafeMenu(
-        id = cafeMenuEntity.id,
-        cafeLocation = cafeMenuEntity.cafeLocation,
-        name = cafeMenuEntity.name,
-        price = cafeMenuEntity.price,
-        deposit = cafeMenuEntity.deposit,
-        category = cafeMenuEntity.category,
-        drinkTemperature = cafeMenuEntity.drinkTemperature,
-        available = cafeMenuEntity.available,
-        description = cafeMenuEntity.description,
-        imageFilename = cafeMenuEntity.imageFilename,
-        imageUrl = cafeMenuEntity.imageUrl,
-        createdAt = cafeMenuEntity.createdAt,
-        createdById = cafeMenuEntity.createdById,
-        updatedAt = cafeMenuEntity.updatedAt,
-        updatedById = cafeMenuEntity.updatedById
+        id = entity.id,
+        cafeLocation = entity.cafeLocation,
+        name = entity.name,
+        price = entity.price,
+        deposit = entity.deposit,
+        category = entity.category,
+        drinkTemperature = entity.drinkTemperature,
+        available = entity.available,
+        description = entity.description,
+        imageFilename = entity.imageFilename,
+        imageUrl = entity.imageUrl,
+        createdAt = entity.createdAt,
+        createdById = entity.createdById,
+        updatedAt = entity.updatedAt,
+        updatedById = entity.updatedById
     )
 
     fun mapCreateDTOToDomain(
         userID: String,
-        cafeMenuCreateDTO: CafeMenuCreateDTO
+        dto: CafeMenuCreateDTO
     ): CafeMenu = CafeMenu(
         id = null,
-        cafeLocation = cafeMenuCreateDTO.cafeLocation,
-        name = cafeMenuCreateDTO.name,
-        price = cafeMenuCreateDTO.price,
-        deposit = cafeMenuCreateDTO.deposit,
-        category = cafeMenuCreateDTO.category,
-        drinkTemperature = cafeMenuCreateDTO.drinkTemperature,
+        cafeLocation = dto.cafeLocation,
+        name = dto.name,
+        price = dto.price,
+        deposit = dto.deposit,
+        category = dto.category,
+        drinkTemperature = dto.drinkTemperature,
         available = true,
-        description = cafeMenuCreateDTO.description,
-        imageFilename = cafeMenuCreateDTO.imageFilename,
-        imageUrl = cafeMenuCreateDTO.imageUrl,
+        description = dto.description,
+        imageFilename = dto.imageFilename,
+        imageUrl = dto.imageUrl,
         createdAt = LocalDateTime.now(),
         createdById = userID,
         updatedAt = null,
@@ -71,22 +71,22 @@ object CafeMenuMapper {
     fun mapUpdateDTOToDomain(
         cafeMenuId: Long,
         userID: String,
-        existingMenu: CafeMenu,
-        cafeMenuUpdateDTO: CafeMenuUpdateDTO
+        existingDomain: CafeMenu,
+        dto: CafeMenuUpdateDTO
     ): CafeMenu = CafeMenu(
         id = cafeMenuId,
-        cafeLocation = cafeMenuUpdateDTO.cafeLocation ?: existingMenu.cafeLocation,
-        name = cafeMenuUpdateDTO.name ?: existingMenu.name,
-        price = cafeMenuUpdateDTO.price ?: existingMenu.price,
-        deposit = cafeMenuUpdateDTO.deposit ?: existingMenu.deposit,
-        category = cafeMenuUpdateDTO.category ?: existingMenu.category,
-        drinkTemperature = cafeMenuUpdateDTO.drinkTemperature ?: existingMenu.drinkTemperature,
-        available = cafeMenuUpdateDTO.available ?: existingMenu.available,
-        description = cafeMenuUpdateDTO.description ?: existingMenu.description,
-        imageFilename = cafeMenuUpdateDTO.imageFilename ?: existingMenu.imageFilename,
-        imageUrl = cafeMenuUpdateDTO.imageUrl ?: existingMenu.imageUrl,
-        createdAt = existingMenu.createdAt,
-        createdById = existingMenu.createdById,
+        cafeLocation = dto.cafeLocation ?: existingDomain.cafeLocation,
+        name = dto.name ?: existingDomain.name,
+        price = dto.price ?: existingDomain.price,
+        deposit = dto.deposit ?: existingDomain.deposit,
+        category = dto.category ?: existingDomain.category,
+        drinkTemperature = dto.drinkTemperature ?: existingDomain.drinkTemperature,
+        available = dto.available ?: existingDomain.available,
+        description = dto.description ?: existingDomain.description,
+        imageFilename = dto.imageFilename ?: existingDomain.imageFilename,
+        imageUrl = dto.imageUrl ?: existingDomain.imageUrl,
+        createdAt = existingDomain.createdAt,
+        createdById = existingDomain.createdById,
         updatedAt = LocalDateTime.now(),
         updatedById = userID
     )

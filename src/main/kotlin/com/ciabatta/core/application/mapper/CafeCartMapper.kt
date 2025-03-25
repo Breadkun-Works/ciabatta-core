@@ -19,28 +19,28 @@ object CafeCartMapper {
     )
 
     fun mapEntityToDomain(
-        cafeCartEntity: CafeCartEntity
+        entity: CafeCartEntity
     ): CafeCart = CafeCart(
-        id = cafeCartEntity.id,
-        cafeLocation = cafeCartEntity.cafeLocation,
-        title = cafeCartEntity.title,
-        description = cafeCartEntity.description,
-        createdAt = cafeCartEntity.createdAt,
-        expiresAt = cafeCartEntity.expiresAt,
-        createdById = cafeCartEntity.createdById
+        id = entity.id,
+        cafeLocation = entity.cafeLocation,
+        title = entity.title,
+        description = entity.description,
+        createdAt = entity.createdAt,
+        expiresAt = entity.expiresAt,
+        createdById = entity.createdById
     )
 
     fun mapCreateDTOToDomain(
         userUUID: String,
-        cafeCartCreateDTO: CafeCartCreateDTO
+        dto: CafeCartCreateDTO
     ): CafeCart {
         val createdAt = LocalDateTime.now()
 
         return CafeCart(
             id = null,
-            cafeLocation = cafeCartCreateDTO.cafeLocation,
-            title = cafeCartCreateDTO.title,
-            description = cafeCartCreateDTO.description,
+            cafeLocation = dto.cafeLocation,
+            title = dto.title,
+            description = dto.description,
             createdAt = createdAt,
             expiresAt = createdAt.plusHours(3),
             createdById = userUUID

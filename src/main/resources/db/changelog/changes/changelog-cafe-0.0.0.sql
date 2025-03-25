@@ -49,13 +49,14 @@ create extension if not exists "ulid";
 -- CafeCart 테이블 생성
 create table public.cafe_cart
 (
-    id            VARCHAR(26) not null default gen_ulid() primary key,
-    cafe_location varchar(50) not null,
-    title         varchar(70) not null,
-    description   varchar(255),
-    created_at    timestamp   not null,
-    expires_at    timestamp   not null,
-    created_by_id varchar(36) not null
+    id               VARCHAR(26)  not null default gen_ulid() primary key,
+    cafe_location    varchar(50)  not null,
+    title            varchar(70)  not null,
+    description      varchar(255),
+    created_at       timestamp    not null,
+    expires_at       timestamp    not null,
+    secure_share_key varchar(255) not null,
+    created_by_id    varchar(36)  not null
 );
 comment on column public.cafe_cart.id is '카페 장바구니 ID';
 comment on column public.cafe_cart.cafe_location is '카페 이름';
@@ -63,6 +64,7 @@ comment on column public.cafe_cart.title is '장바구니 제목';
 comment on column public.cafe_cart.description is '장바구니 설명';
 comment on column public.cafe_cart.created_at is '장바구니 생성 시간';
 comment on column public.cafe_cart.expires_at is '장바구니 만료 시간';
+comment on column public.cafe_cart.secure_share_key is '공유용 보안 키';
 comment on column public.cafe_cart.created_by_id is '작성자 ID';
 
 -- changeset chanki5451:2024-10-28-004-create-cafe-cart-item context:local,dev,master labels:create

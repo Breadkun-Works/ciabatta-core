@@ -21,31 +21,31 @@ object CafeCartItemMapper {
     )
 
     fun mapEntityToDomain(
-        cafeCartItemEntity: CafeCartItemEntity
+        entity: CafeCartItemEntity
     ): CafeCartItem = CafeCartItem(
-        id = cafeCartItemEntity.id,
-        cafeCartId = cafeCartItemEntity.cafeCartId,
-        cafeMenuId = cafeCartItemEntity.cafeMenuId,
-        isPersonalCup = cafeCartItemEntity.isPersonalCup,
-        quantity = cafeCartItemEntity.quantity,
-        imageUrl = cafeCartItemEntity.imageUrl,
-        createdAt = cafeCartItemEntity.createdAt,
-        createdById = cafeCartItemEntity.createdById,
-        createdByName = cafeCartItemEntity.createdByName
+        id = entity.id,
+        cafeCartId = entity.cafeCartId,
+        cafeMenuId = entity.cafeMenuId,
+        isPersonalCup = entity.isPersonalCup,
+        quantity = entity.quantity,
+        imageUrl = entity.imageUrl,
+        createdAt = entity.createdAt,
+        createdById = entity.createdById,
+        createdByName = entity.createdByName
     )
 
     fun mapCreateDTOToDomain(
         cartId: String,
         userUUID: String,
         userName: String,
-        cafeCartItemCreateDTO: CafeCartItemCreateDTO
+        dto: CafeCartItemCreateDTO
     ): CafeCartItem = CafeCartItem(
         id = null,
         cafeCartId = cartId,
-        cafeMenuId = cafeCartItemCreateDTO.cafeMenuId,
-        isPersonalCup = cafeCartItemCreateDTO.isPersonalCup,
-        quantity = cafeCartItemCreateDTO.quantity,
-        imageUrl = cafeCartItemCreateDTO.imageUrl,
+        cafeMenuId = dto.cafeMenuId,
+        isPersonalCup = dto.isPersonalCup,
+        quantity = dto.quantity,
+        imageUrl = dto.imageUrl,
         createdAt = LocalDateTime.now(),
         createdById = userUUID,
         createdByName = userName
