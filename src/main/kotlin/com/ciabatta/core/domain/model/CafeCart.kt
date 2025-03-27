@@ -17,6 +17,8 @@ data class CafeCart(
 
     val expiresAt: LocalDateTime,
 
+    val secureShareKey: String?,
+
     val createdById: String
 ) {
     val status: CafeEnums.Cart.Status

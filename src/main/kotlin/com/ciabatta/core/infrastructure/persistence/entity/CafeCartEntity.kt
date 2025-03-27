@@ -20,5 +20,7 @@ data class CafeCartEntity(
 
     val expiresAt: LocalDateTime,
 
+    val secureShareKey: String,
+
     val createdById: String
 )
