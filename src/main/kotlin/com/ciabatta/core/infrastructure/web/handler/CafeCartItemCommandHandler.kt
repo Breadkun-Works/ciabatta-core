@@ -3,8 +3,7 @@ package com.ciabatta.core.infrastructure.web.handler
 import com.ciabatta.core.application.dto.CafeCartItemCreateDTO
 import com.ciabatta.core.application.port.input.CafeCartItemCommandUseCase
 import com.ciabatta.core.global.dto.DeleteIdsDTO
-import com.ciabatta.core.global.exception.ErrorCode
-import com.ciabatta.core.global.exception.ValidationException
+import com.ciabatta.core.global.util.HeaderUtils
 import com.ciabatta.core.global.util.ResponseUtils
 import com.ciabatta.core.global.util.awaitValidatedBody
 import com.ciabatta.core.global.util.awaitValidatedBodyList
@@ -21,10 +20,9 @@ class CafeCartItemCommandHandler(
         request: ServerRequest
     ): ServerResponse {
         val cafeCartId = request.pathVariable("cafeCartId")
-        val userUUID = request.headers().firstHeader("X-User-UUID")?.trim()?.takeIf { it.isNotBlank() }
-            ?: throw ValidationException(ErrorCode.VAL_0001, "Missing X-User-UUID header")
-        val userName = request.headers().firstHeader("X-User-Name")?.trim()?.takeIf { it.isNotBlank() }
-            ?: throw ValidationException(ErrorCode.VAL_0001, "Missing X-User-Name header")
+
+        val userUUID = HeaderUtils.getHeader("X-User-UUID",request)
+        val userName = HeaderUtils.getBase64Header("X-User-Name",request)
 
         val cafeCartItemCreateDTOs = request.awaitValidatedBodyList<CafeCartItemCreateDTO>(validator)
 

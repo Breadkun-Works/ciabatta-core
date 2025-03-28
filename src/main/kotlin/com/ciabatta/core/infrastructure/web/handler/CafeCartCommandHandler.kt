@@ -3,8 +3,7 @@ package com.ciabatta.core.infrastructure.web.handler
 import com.ciabatta.core.application.dto.CafeCartCreateDTO
 import com.ciabatta.core.application.port.input.CafeCartCommandUseCase
 import com.ciabatta.core.global.dto.DeleteIdsDTO
-import com.ciabatta.core.global.exception.ErrorCode
-import com.ciabatta.core.global.exception.ValidationException
+import com.ciabatta.core.global.util.HeaderUtils
 import com.ciabatta.core.global.util.ResponseUtils
 import com.ciabatta.core.global.util.awaitValidatedBody
 import org.springframework.stereotype.Component
@@ -20,8 +19,7 @@ class CafeCartCommandHandler(
     suspend fun createCafeCart(
         request: ServerRequest
     ): ServerResponse {
-        val userUUID = request.headers().firstHeader("X-User-UUID")?.trim()?.takeIf { it.isNotBlank() }
-            ?: throw ValidationException(ErrorCode.VAL_0001, "Missing X-User-UUID header")
+        val userUUID = HeaderUtils.getHeader("X-User-UUID",request)
         val cafeCartCreateDTO = request.awaitValidatedBody<CafeCartCreateDTO>(validator)
 
         val createdCart = cafeCartCommandUseCase.createCafeCart(userUUID, cafeCartCreateDTO)
