@@ -29,9 +29,9 @@ class SseRepository {
         topic: String
     ): MutableSharedFlow<ServerSentEvent<Any>> = flows.computeIfAbsent(topic) {
         MutableSharedFlow(
-            replay = 0,
-            extraBufferCapacity = 100,
-            onBufferOverflow = BufferOverflow.DROP_OLDEST
+            replay = 0, // 연결 이후의 이벤트 전송
+            extraBufferCapacity = 100, // 처리 속도 < 이벤트 발생 => 버퍼 크기 100개
+            onBufferOverflow = BufferOverflow.DROP_OLDEST // 버퍼 full 시 오래된 것 부터 제거
         )
     }
 }

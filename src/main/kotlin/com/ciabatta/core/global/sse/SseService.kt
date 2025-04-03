@@ -2,9 +2,13 @@ package com.ciabatta.core.global.sse
 
 import com.ciabatta.core.global.exception.ErrorCode
 import com.ciabatta.core.global.exception.SseException
+import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.timeout
 import org.springframework.http.codec.ServerSentEvent
 import org.springframework.stereotype.Service
+import kotlin.time.Duration.Companion.minutes
 
 @Service
 class SseService(
@@ -32,12 +36,22 @@ class SseService(
      */
     fun subscribe(
         topic: String
-    ): Flow<ServerSentEvent<Any>> = try {
-        sseRepository.subscribe(topic)
-    } catch (e: Exception) {
-        throw SseException(
-            error = ErrorCode.SSE_1002,
-            message = "Failed to subscribe to SSE topic: $topic"
-        )
-    }
+    ): Flow<ServerSentEvent<Any>> = sseRepository.subscribe(topic)
+        .timeout(20.minutes) // 20분 동안 이벤트가 없으면 타임아웃
+        .catch { e ->
+            when(e){
+                is TimeoutCancellationException -> {
+                    throw SseException(
+                        error = ErrorCode.SSE_1003,
+                        message = "SSE connection timed out due to inactivity"
+                    )
+                }
+                else -> {
+                    throw SseException(
+                        error = ErrorCode.SSE_1002,
+                        message = "Failed to subscribe to SSE topic: $topic"
+                    )
+                }
+            }
+        }
 }

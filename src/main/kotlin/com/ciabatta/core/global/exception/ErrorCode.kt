@@ -26,4 +26,5 @@ enum class ErrorCode(val code: String, val httpStatus: HttpStatus) {
      */
     SSE_1001("SSE-1001", HttpStatus.INTERNAL_SERVER_ERROR), // SSE 발행 오류
     SSE_1002("SSE-1002", HttpStatus.FORBIDDEN), // SSE 구독 오류
+    SSE_1003("SSE-1003", HttpStatus.REQUEST_TIMEOUT), // SSE 타임아웃
 }
