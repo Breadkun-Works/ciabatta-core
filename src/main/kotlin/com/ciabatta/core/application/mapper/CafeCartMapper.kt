@@ -28,7 +28,7 @@ object CafeCartMapper {
         description = entity.description,
         createdAt = entity.createdAt,
         expiresAt = entity.expiresAt,
-        secureShareKey = when { // 3시간 이내에 생성된 장바구니만 공유 키 반환
+        secureShareKey = when { // 2시간 이내에 생성된 장바구니만 공유 키 반환
             LocalDateTime.now().isBefore(entity.expiresAt) -> entity.secureShareKey
             else -> null
         },
@@ -48,7 +48,7 @@ object CafeCartMapper {
             title = dto.title,
             description = dto.description,
             createdAt = createdAt,
-            expiresAt = createdAt.plusHours(3),
+            expiresAt = createdAt.plusHours(2),
             secureShareKey = secureShareKey,
             createdById = userUUID
         )
