@@ -20,6 +20,7 @@ enum class ErrorCode(val code: String, val httpStatus: HttpStatus) {
     CA_2001("CA-2001", HttpStatus.NOT_FOUND), // CafeCart가 존재하지 않을 때
     CA_2002("CA-2002", HttpStatus.UNPROCESSABLE_ENTITY), // CafeCart가 Active 상태가 아닐 때
     CA_2003("CA-2003", HttpStatus.CONFLICT), // CafeCart와 CafeCartItem의 Location이 다를 때
+    CA_3001("CA-3001", HttpStatus.NOT_FOUND), // CafeCartItem이 존재하지 않을 때
 
     /**
      * SSE 로직에서 발생하는 오류
