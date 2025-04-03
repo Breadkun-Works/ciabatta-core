@@ -56,6 +56,8 @@ class CafeCartItemCommandService(
                 ErrorCode.CA_2001, "CafeCart not found with id: $firstItemId"
             )
 
+        cafeCartValidator.validateCart(cafeCartId)
+
         cafeCartItemCommandPort.deleteAll(idsToDelete) // cafeItem 실제 삭제
         cafeCartItemSseEventPublisher.publishDeleted(cafeCartId, idsToDelete) // Sse 이벤트 발행
     }
