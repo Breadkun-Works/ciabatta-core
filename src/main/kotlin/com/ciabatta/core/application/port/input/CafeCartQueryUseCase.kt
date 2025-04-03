@@ -12,6 +12,7 @@ interface CafeCartQueryUseCase {
     ): List<CafeCart>
 
     suspend fun findCafeCartById(
-        cafeCartId: String
+        cafeCartId: String,
+        includeSecureKey: Boolean = false
     ): CafeCart
 }

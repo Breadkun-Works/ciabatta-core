@@ -51,12 +51,10 @@ class CafeCartItemCommandService(
         val idsToDelete = dto.ids
         val firstItemId = idsToDelete.first() // 삭제 될 때 모두 하나의 장바구니에서 일어남을 가정
 
-        val cafeCartId = cafeCartItemQueryUseCase.findCafeCartItemsById(firstItemId)?.cafeCartId
+        val cafeCartId = cafeCartValidator.validateCart(firstItemId).id
             ?: throw BusinessException(
                 ErrorCode.CA_2001, "CafeCart not found with id: $firstItemId"
             )
-
-        cafeCartValidator.validateCart(cafeCartId)
 
         cafeCartItemCommandPort.deleteAll(idsToDelete) // cafeItem 실제 삭제
         cafeCartItemSseEventPublisher.publishDeleted(cafeCartId, idsToDelete) // Sse 이벤트 발행

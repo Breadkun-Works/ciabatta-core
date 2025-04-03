@@ -20,7 +20,8 @@ object CafeCartMapper {
     )
 
     fun mapEntityToDomain(
-        entity: CafeCartEntity
+        entity: CafeCartEntity,
+        includeSecureKey: Boolean = false
     ): CafeCart = CafeCart(
         id = entity.id,
         cafeLocation = entity.cafeLocation,
@@ -28,8 +29,8 @@ object CafeCartMapper {
         description = entity.description,
         createdAt = entity.createdAt,
         expiresAt = entity.expiresAt,
-        secureShareKey = when { // 2시간 이내에 생성된 장바구니만 공유 키 반환
-            LocalDateTime.now().isBefore(entity.expiresAt) -> entity.secureShareKey
+        secureShareKey = when {
+            (includeSecureKey && LocalDateTime.now().isBefore(entity.expiresAt)) -> entity.secureShareKey
             else -> null
         },
         createdById = entity.createdById

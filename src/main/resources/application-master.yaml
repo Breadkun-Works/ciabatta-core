@@ -12,6 +12,9 @@ spring:
     username: ${BREADKUN_DB_USERNAME}
     password: ${BREADKUN_DB_PASSWORD}
 
+secure:
+  ssr-secret-key: ${SSR_SECRET_KEY}
+
 logging:
   level:
     ROOT: info

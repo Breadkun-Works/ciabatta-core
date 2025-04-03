@@ -23,6 +23,13 @@ object HeaderUtils {
         ?.takeIf { it.isNotBlank() }
         ?: throw ValidationException(ErrorCode.VAL_0001, "Missing $headerName header")
 
+    fun getOptionalHeader(
+        headerName: String,
+        request: ServerRequest
+    ): String? = request.headers().firstHeader(headerName)
+        ?.trim()
+        ?.takeIf { it.isNotBlank() }
+
     /**
      * 요청 헤더에서 Base64로 인코딩된 값을 가져와 UTF-8로 디코딩한 문자열을 반환합니다.
      * 값이 없거나 디코딩에 실패할 경우 ValidationException을 발생시킵니다.
