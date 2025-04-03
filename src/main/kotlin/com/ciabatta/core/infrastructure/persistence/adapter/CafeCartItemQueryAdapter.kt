@@ -10,6 +10,10 @@ import org.springframework.stereotype.Repository
 class CafeCartItemQueryAdapter(
     private val cafeCartItemCoroutineCrudRepository: CafeCartItemCoroutineCrudRepository
 ) : CafeCartItemQueryPort {
+    override suspend fun findById(
+        id: String
+    ): CafeCartItemEntity? = cafeCartItemCoroutineCrudRepository.findById(id)
+
     override fun findByCafeCartId(
         cafeCartId: String
     ): Flow<CafeCartItemEntity> = cafeCartItemCoroutineCrudRepository.findByCafeCartIdOrderByCreatedAtAsc(cafeCartId)

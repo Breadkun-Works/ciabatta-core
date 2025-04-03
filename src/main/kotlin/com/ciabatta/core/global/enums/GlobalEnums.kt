@@ -13,4 +13,12 @@ interface GlobalEnums {
     ) : GlobalEnums {
         DETAILS("상세(참조) 데이터 포함")
     }
+
+    enum class EventType(
+        val label: String
+    ) {
+        CREATED("생성"),
+        UPDATED("수정"),
+        DELETED("삭제")
+    }
 }

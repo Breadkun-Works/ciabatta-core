@@ -10,8 +10,8 @@ class CafeCartCommandAdapter(
     private val cafeCartCoroutineCrudRepository: CafeCartCoroutineCrudRepository
 ) : CafeCartCommandPort {
     override suspend fun save(
-        cafeCartEntity: CafeCartEntity
-    ): CafeCartEntity = cafeCartCoroutineCrudRepository.save(cafeCartEntity) // test
+        entity: CafeCartEntity
+    ): CafeCartEntity = cafeCartCoroutineCrudRepository.save(entity) // test
 
     override suspend fun deleteAll(
         ids: List<String>

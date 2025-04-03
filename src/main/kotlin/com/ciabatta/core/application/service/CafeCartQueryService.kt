@@ -30,10 +30,9 @@ class CafeCartQueryService(
 
     override suspend fun findCafeCartById(
         cafeCartId: String
-    ): CafeCart {
-        return cafeCartQueryPort.findById(cafeCartId)?.let { CafeCartMapper.mapEntityToDomain(it) }
-            ?: throw BusinessException(
-                ErrorCode.CA_2001, "CafeCart not found with id: $cafeCartId"
-            )
-    }
+    ): CafeCart = cafeCartQueryPort.findById(cafeCartId)?.let { CafeCartMapper.mapEntityToDomain(it) }
+        ?: throw BusinessException(
+            ErrorCode.CA_2001, "CafeCart not found with id: $cafeCartId"
+        )
+
 }

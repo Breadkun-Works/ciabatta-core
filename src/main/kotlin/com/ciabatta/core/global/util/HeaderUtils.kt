@@ -15,12 +15,13 @@ object HeaderUtils {
      * @return 헤더의 문자열 값
      * @throws ValidationException 지정된 헤더가 없거나 빈 값일 경우
      */
-    fun getHeader(headerName: String, request: ServerRequest): String {
-        return request.headers().firstHeader(headerName)
-            ?.trim()
-            ?.takeIf { it.isNotBlank() }
-            ?: throw ValidationException(ErrorCode.VAL_0001, "Missing $headerName header")
-    }
+    fun getHeader(
+        headerName: String,
+        request: ServerRequest
+    ): String = request.headers().firstHeader(headerName)
+        ?.trim()
+        ?.takeIf { it.isNotBlank() }
+        ?: throw ValidationException(ErrorCode.VAL_0001, "Missing $headerName header")
 
     /**
      * 요청 헤더에서 Base64로 인코딩된 값을 가져와 UTF-8로 디코딩한 문자열을 반환합니다.
@@ -31,7 +32,10 @@ object HeaderUtils {
      * @return Base64 디코딩된 문자열 값
      * @throws ValidationException 지정된 헤더가 없거나 Base64 디코딩 실패 시
      */
-    fun getBase64Header(headerName: String, request: ServerRequest): String {
+    fun getBase64Header(
+        headerName: String,
+        request: ServerRequest
+    ): String {
         val encodedValue = request.headers().firstHeader(headerName)
             ?.takeIf { it.isNotBlank() }
             ?: throw ValidationException(ErrorCode.VAL_0001, "Missing $headerName header")

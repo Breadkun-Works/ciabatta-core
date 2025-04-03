@@ -19,7 +19,9 @@ object KeyGenerator {
      * @param size 바이트 단위 크기
      * @return Base64 인코딩된 문자열
      */
-    fun generateBase64Key(size: Int): String {
+    fun generateBase64Key(
+        size: Int
+    ): String {
         require(size > 0) { "Key size must be greater than 0" }
         val keyBytes = ByteArray(size)
         secureRandom.nextBytes(keyBytes)

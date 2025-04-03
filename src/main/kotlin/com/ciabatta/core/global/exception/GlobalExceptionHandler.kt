@@ -16,7 +16,10 @@ import reactor.core.publisher.Mono
 @Component
 @Order(-2)
 class GlobalErrorWebExceptionHandler : WebExceptionHandler {
-    override fun handle(exchange: ServerWebExchange, ex: Throwable): Mono<Void> = mono {
+    override fun handle(
+        exchange: ServerWebExchange,
+        ex: Throwable
+    ): Mono<Void> = mono {
         val (httpStatus, errorCode) = when (ex) {
             is ValidationException -> ex.status to ex.errorCode
             is BusinessException -> ex.status to ex.errorCode

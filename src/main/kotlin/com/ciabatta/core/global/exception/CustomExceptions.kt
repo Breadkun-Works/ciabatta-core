@@ -24,6 +24,16 @@ class ValidationException(
  */
 class BusinessException(
     private val error: ErrorCode,
-    override val message: String? = null,
+    override val message: String? = error.code,
+    override val cause: Throwable? = null
+) : CustomException(error.code, error.httpStatus, message, cause)
+
+/**
+ * SSE 로직에서 발생하는 오류에 사용.
+ * 상황에 맞게 커스터마이징 할 수 있음.
+ */
+class SseException(
+    private val error: ErrorCode,
+    override val message: String? = error.code,
     override val cause: Throwable? = null
 ) : CustomException(error.code, error.httpStatus, message, cause)

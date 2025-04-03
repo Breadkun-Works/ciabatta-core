@@ -20,6 +20,12 @@ class CafeCartItemQueryService(
     private val cafeMenuQueryUseCase: CafeMenuQueryUseCase,
     private val cafeCartQueryUseCase: CafeCartQueryUseCase
 ) : CafeCartItemQueryUseCase {
+    override suspend fun findCafeCartItemsById(
+        id: String
+    ): CafeCartItem? = cafeCartItemQueryPort.findById(id)?.let {
+        CafeCartItemMapper.mapEntityToDomain(it)
+    }
+
     override suspend fun findCafeCartItemsByCafeCartId(
         cafeCartId: String,
         include: GlobalEnums.IncludeOption?
@@ -59,7 +65,9 @@ class CafeCartItemQueryService(
         )
     }
 
-    private suspend fun fetchDetails(cafeCartItems: List<CafeCartItem>): List<CafeCartItem> {
+    override suspend fun fetchDetails(
+        cafeCartItems: List<CafeCartItem>
+    ): List<CafeCartItem> {
         val cafeMenuMap = cafeMenuQueryUseCase
             .findCafeMenusByIds(cafeCartItems.map { it.cafeMenuId }.toSet())
             .associateBy { it.id }

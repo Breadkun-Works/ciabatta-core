@@ -4,7 +4,10 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 
 object PaginationUtils {
-    fun validatePagination(page: Int?, size: Int?): Pageable {
+    fun validatePagination(
+        page: Int?,
+        size: Int?
+    ): Pageable {
         val isValidPage = page != null && page >= 0
         val isValidSize = size != null && size > 0
 

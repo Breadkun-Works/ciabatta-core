@@ -4,7 +4,7 @@ import com.ciabatta.core.infrastructure.persistence.entity.CafeMenuEntity
 
 interface CafeMenuCommandPort {
     suspend fun save(
-        cafeMenuEntity: CafeMenuEntity
+        entity: CafeMenuEntity
     ): CafeMenuEntity
 
     suspend fun deleteById(
