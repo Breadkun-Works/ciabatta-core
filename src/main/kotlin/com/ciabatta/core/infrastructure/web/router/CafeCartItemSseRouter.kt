@@ -11,7 +11,7 @@ class CafeCartItemSseRouter(
 ) {
     @Bean
     fun cafeCartItemSseRoutes() = coRouter {
-        "/api/cafe/carts/{cafeCartId}/items".nest {
+        "/sse/cafe/carts/{cafeCartId}/items".nest {
             GET("/subscribe", cafeCartItemSseHandler::subscribeCafeCartItem)
         }
     }
