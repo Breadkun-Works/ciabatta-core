@@ -33,7 +33,7 @@ class CafeCartCommandService(
 
     override suspend fun deleteCafeCarts(
         dto: DeleteIdsDTO
-    ) {
+    ): Unit {
         dto.ids.forEach { cafeCartItemCommandUseCase.deleteCafeCartItemsByCafeCartId(it) }
         cafeCartCommandPort.deleteAll(dto.ids)
     }

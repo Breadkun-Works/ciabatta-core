@@ -31,13 +31,13 @@ class CafeCartQueryHandler(
         return ResponseUtils.ok(result, "cafeCart")
     }
 
-    suspend fun findCafeCartById(
+    suspend fun getCafeCartById(
         request: ServerRequest
     ): ServerResponse {
         val cafeCartId = request.pathVariable("cafeCartId")
         val includeSecureKey = HeaderUtils.getOptionalHeader("X-SSR-Token", request) == ssrSecretKey
 
-        val result = cafeCartQueryUseCase.findCafeCartById(cafeCartId, includeSecureKey)
+        val result = cafeCartQueryUseCase.getCafeCartById(cafeCartId, includeSecureKey)
 
         return ResponseUtils.ok(result, "cafeCart")
     }

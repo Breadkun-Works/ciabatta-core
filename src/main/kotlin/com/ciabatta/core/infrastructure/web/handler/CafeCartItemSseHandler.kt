@@ -1,5 +1,6 @@
 package com.ciabatta.core.infrastructure.web.handler
 
+import com.ciabatta.core.application.port.input.CafeCartQueryUseCase
 import com.ciabatta.core.application.validator.CafeCartValidator
 import com.ciabatta.core.global.sse.SseEventTopic
 import com.ciabatta.core.global.sse.SseService
@@ -11,12 +12,16 @@ import org.springframework.web.reactive.function.server.ServerResponse
 @Component
 class CafeCartItemSseHandler(
     private val sseService: SseService,
-    private val cafeCartValidator: CafeCartValidator
+    private val cafeCartValidator: CafeCartValidator,
+    private val cafeCartQueryUseCase: CafeCartQueryUseCase
 ) {
-    suspend fun subscribeCafeCartItem(request: ServerRequest): ServerResponse {
+    suspend fun subscribeCafeCartItem(
+        request: ServerRequest
+    ): ServerResponse {
         val cafeCartId = request.pathVariable("cafeCartId")
 
-        cafeCartValidator.validateCart(cafeCartId)
+        val cafeCart = cafeCartQueryUseCase.getCafeCartById(cafeCartId)
+        cafeCartValidator.assertCartIsActive(cafeCart)
 
         val topic = SseEventTopic.cafeCartItem(cafeCartId)
         val stream = sseService.subscribe(topic)

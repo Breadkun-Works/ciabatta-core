@@ -9,5 +9,5 @@ interface CafeCartCommandPort {
 
     suspend fun deleteAll(
         ids: List<String>
-    )
+    ): Unit
 }

@@ -28,7 +28,7 @@ class CafeCartQueryService(
             .map { CafeCartMapper.mapEntityToDomain(it) }.toList()
     }
 
-    override suspend fun findCafeCartById(
+    override suspend fun getCafeCartById(
         cafeCartId: String,
         includeSecureKey: Boolean
     ): CafeCart = cafeCartQueryPort.findById(cafeCartId)?.let { CafeCartMapper.mapEntityToDomain(it, includeSecureKey) }

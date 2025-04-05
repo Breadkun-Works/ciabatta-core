@@ -16,7 +16,7 @@ class SseRepository {
     suspend fun publish(
         topic: String,
         data: Any
-    ) = getOrCreateFlow(topic).emit(
+    ): Unit = getOrCreateFlow(topic).emit(
         ServerSentEvent.builder<Any>()
             .event(topic)
             .data(data)

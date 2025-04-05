@@ -30,7 +30,7 @@ class CafeCartItemQueryService(
         cafeCartId: String,
         include: GlobalEnums.IncludeOption?
     ): List<CafeCartItem> {
-        cafeCartQueryUseCase.findCafeCartById(cafeCartId) // 장바구니가 존재하지 않으면 예외 발생
+        cafeCartQueryUseCase.getCafeCartById(cafeCartId)
 
         val cafeCartItems =
             cafeCartItemQueryPort.findByCafeCartId(cafeCartId).map { CafeCartItemMapper.mapEntityToDomain(it) }.toList()
@@ -46,7 +46,7 @@ class CafeCartItemQueryService(
     override suspend fun findCafeCartItemSummaryByCafeCartId(
         cafeCartId: String
     ): List<CafeCartItemSummary> {
-        cafeCartQueryUseCase.findCafeCartById(cafeCartId) // 장바구니가 존재하지 않으면 예외 발생
+        cafeCartQueryUseCase.getCafeCartById(cafeCartId)
 
         val cafeCartItems = findCafeCartItemsByCafeCartId(
             cafeCartId,

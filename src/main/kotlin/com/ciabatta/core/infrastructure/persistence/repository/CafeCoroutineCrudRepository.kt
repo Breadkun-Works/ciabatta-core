@@ -18,7 +18,7 @@ interface CafeCartCoroutineCrudRepository : CoroutineCrudRepository<CafeCartEnti
     @Query("DELETE FROM cafe_cart WHERE id IN (:ids)")
     suspend fun deleteAllByIds(
         ids: List<String>
-    )
+    ): Unit
 }
 
 interface CafeCartItemCoroutineCrudRepository : CoroutineCrudRepository<CafeCartItemEntity, String> {
@@ -29,9 +29,9 @@ interface CafeCartItemCoroutineCrudRepository : CoroutineCrudRepository<CafeCart
     @Query("DELETE FROM cafe_cart_item WHERE id IN (:ids)")
     suspend fun deleteAllByIds(
         ids: List<String>
-    )
+    ): Unit
 
     suspend fun deleteAllByCafeCartId(
         cafeCartId: String
-    )
+    ): Unit
 }

@@ -15,9 +15,9 @@ class CafeCartItemCommandRepositoryImpl(
 
     override suspend fun deleteAll(
         ids: List<String>
-    ) = cafeCartItemCoroutineCrudRepository.deleteAllByIds(ids)
+    ): Unit = cafeCartItemCoroutineCrudRepository.deleteAllByIds(ids)
 
     override suspend fun deleteAllByCafeCartId(
         cafeCartId: String
-    ) = cafeCartItemCoroutineCrudRepository.deleteAllByCafeCartId(cafeCartId)
+    ): Unit = cafeCartItemCoroutineCrudRepository.deleteAllByCafeCartId(cafeCartId)
 }

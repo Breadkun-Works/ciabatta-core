@@ -11,7 +11,7 @@ interface CafeCartQueryUseCase {
         createdById: String?
     ): List<CafeCart>
 
-    suspend fun findCafeCartById(
+    suspend fun getCafeCartById(
         cafeCartId: String,
         includeSecureKey: Boolean = false
     ): CafeCart

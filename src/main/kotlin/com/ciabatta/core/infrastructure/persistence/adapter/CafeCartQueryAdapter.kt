@@ -4,9 +4,9 @@ import com.ciabatta.core.application.port.output.CafeCartQueryPort
 import com.ciabatta.core.domain.model.enums.CafeEnums
 import com.ciabatta.core.global.enums.GlobalEnums
 import com.ciabatta.core.infrastructure.persistence.entity.CafeCartEntity
+import com.ciabatta.core.infrastructure.persistence.repository.CafeCartCoroutineCrudRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.reactive.asFlow
-import kotlinx.coroutines.reactive.awaitFirstOrNull
 import org.springframework.data.domain.Sort
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate
 import org.springframework.data.relational.core.query.Criteria
@@ -16,6 +16,7 @@ import java.time.LocalDateTime
 
 @Repository
 class CafeCartQueryAdapter(
+    private val cafeCartCoroutineCrudRepository: CafeCartCoroutineCrudRepository,
     private val r2dbcEntityTemplate: R2dbcEntityTemplate
 ) : CafeCartQueryPort {
     override fun findByMultipleOptions(
@@ -51,16 +52,5 @@ class CafeCartQueryAdapter(
 
     override suspend fun findById(
         cafeCartId: String
-    ): CafeCartEntity? {
-        val criteriaList = mutableListOf<Criteria>()
-
-        criteriaList.add(Criteria.where("id").`is`(cafeCartId))
-
-        val criteria = Criteria.from(criteriaList)
-
-        val query = Query.query(criteria)
-
-        return r2dbcEntityTemplate.select(query, CafeCartEntity::class.java)
-            .awaitFirstOrNull()
-    }
+    ): CafeCartEntity? = cafeCartCoroutineCrudRepository.findById(cafeCartId)
 }

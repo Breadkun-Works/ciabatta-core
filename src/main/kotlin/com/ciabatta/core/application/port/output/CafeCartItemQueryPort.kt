@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface CafeCartItemQueryPort {
     suspend fun findById(
-        id: String
+        cafeCartItemId: String
     ): CafeCartItemEntity?
 
     fun findByCafeCartId(

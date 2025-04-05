@@ -11,8 +11,8 @@ class CafeCartItemQueryAdapter(
     private val cafeCartItemCoroutineCrudRepository: CafeCartItemCoroutineCrudRepository
 ) : CafeCartItemQueryPort {
     override suspend fun findById(
-        id: String
-    ): CafeCartItemEntity? = cafeCartItemCoroutineCrudRepository.findById(id)
+        cafeCartItemId: String
+    ): CafeCartItemEntity? = cafeCartItemCoroutineCrudRepository.findById(cafeCartItemId)
 
     override fun findByCafeCartId(
         cafeCartId: String
