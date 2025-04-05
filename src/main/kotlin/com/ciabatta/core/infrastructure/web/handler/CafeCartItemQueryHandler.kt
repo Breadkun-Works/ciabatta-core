@@ -23,14 +23,4 @@ class CafeCartItemQueryHandler(
 
         return ResponseUtils.ok(result, "cafeCartItem")
     }
-
-    suspend fun findCafeCartItemSummaryByCafeCartId(
-        request: ServerRequest
-    ): ServerResponse {
-        val cafeCartId = request.pathVariable("cafeCartId")
-
-        val result = cafeCartItemQueryUseCase.findCafeCartItemSummaryByCafeCartId(cafeCartId)
-
-        return ResponseUtils.ok(result, "cafeCartItemSummary")
-    }
 }

@@ -6,7 +6,6 @@ import com.ciabatta.core.application.port.input.CafeCartItemQueryUseCase
 import com.ciabatta.core.application.port.input.CafeCartQueryUseCase
 import com.ciabatta.core.application.port.input.CafeMenuQueryUseCase
 import com.ciabatta.core.application.port.output.CafeCartItemQueryPort
-import com.ciabatta.core.domain.model.CafeCartItemSummary
 import com.ciabatta.core.global.enums.GlobalEnums
 import com.ciabatta.core.global.exception.BusinessException
 import com.ciabatta.core.global.exception.ErrorCode
@@ -41,28 +40,6 @@ class CafeCartItemQueryService(
             GlobalEnums.IncludeOption.DETAILS -> fetchDetails(cafeCartItems)
             else -> cafeCartItems
         }
-    }
-
-    override suspend fun findCafeCartItemSummaryByCafeCartId(
-        cafeCartId: String
-    ): List<CafeCartItemSummary> {
-        cafeCartQueryUseCase.getCafeCartById(cafeCartId)
-
-        val cafeCartItems = findCafeCartItemsByCafeCartId(
-            cafeCartId,
-            GlobalEnums.IncludeOption.DETAILS
-        ).takeIf { it.isNotEmpty() } ?: return emptyList()
-
-        return cafeCartItems.groupBy { Pair(it.cafeMenuId, it.isPersonalCup) }.map { (_, groupedItems) ->
-            CafeCartItemSummary.fromCafeCartItems(groupedItems)
-        }.sortedWith(
-            compareBy(
-                { it.category },
-                { it.name },
-                { it.drinkTemperature },
-                { it.isPersonalCup }
-            )
-        )
     }
 
     override suspend fun fetchDetails(

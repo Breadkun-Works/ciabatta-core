@@ -21,7 +21,6 @@ class CafeCartItemRouter(
                 }
                 "/{cafeCartId}/items".nest {
                     GET("", cafeCartItemQueryHandler::findCafeCartItemsByCafeCartId)
-                    GET("/summary", cafeCartItemQueryHandler::findCafeCartItemSummaryByCafeCartId)
                     POST("", cafeCartItemCommandHandler::createCafeCartItems)
                 }
             }
