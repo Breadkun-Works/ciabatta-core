@@ -16,10 +16,9 @@ class CafeCartRouter(
     fun cafeCartRoutes() = coRouter {
         "/api/cafe/carts".nest {
             accept(MediaType.valueOf("application/vnd.breadkun.v1+json")).nest {
-                GET("", cafeCartQueryHandler::findCafeCartsByOptions)
                 GET("/{cafeCartId}", cafeCartQueryHandler::getCafeCartById)
                 POST("", cafeCartCommandHandler::createCafeCart)
-                POST("/delete", cafeCartCommandHandler::deleteCafeCarts)
+                PATCH("/{cafeCartId}/expire", cafeCartCommandHandler::expireCafeCart)
             }
         }
     }

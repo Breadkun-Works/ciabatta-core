@@ -29,7 +29,7 @@ class CafeCartItemQueryService(
         cafeCartId: String,
         include: GlobalEnums.IncludeOption?
     ): List<CafeCartItem> {
-        cafeCartQueryUseCase.getCafeCartById(cafeCartId)
+        cafeCartQueryUseCase.getCafeCartById(cafeCartId, false)
 
         val cafeCartItems =
             cafeCartItemQueryPort.findByCafeCartId(cafeCartId).map { CafeCartItemMapper.mapEntityToDomain(it) }.toList()

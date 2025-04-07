@@ -2,7 +2,6 @@ package com.ciabatta.core.infrastructure.web.handler
 
 import com.ciabatta.core.application.dto.CafeCartCreateDTO
 import com.ciabatta.core.application.port.input.CafeCartCommandUseCase
-import com.ciabatta.core.global.dto.DeleteIdsDTO
 import com.ciabatta.core.global.util.HeaderUtils
 import com.ciabatta.core.global.util.ResponseUtils
 import com.ciabatta.core.global.util.awaitValidatedBody
@@ -19,7 +18,8 @@ class CafeCartCommandHandler(
     suspend fun createCafeCart(
         request: ServerRequest
     ): ServerResponse {
-        val userUUID = HeaderUtils.getHeader("X-User-UUID",request)
+        val userUUID = HeaderUtils.getHeader("X-User-UUID", request)
+
         val cafeCartCreateDTO = request.awaitValidatedBody<CafeCartCreateDTO>(validator)
 
         val createdCart = cafeCartCommandUseCase.createCafeCart(userUUID, cafeCartCreateDTO)
@@ -27,12 +27,14 @@ class CafeCartCommandHandler(
         return ResponseUtils.created(createdCart, "cafeCart")
     }
 
-    suspend fun deleteCafeCarts(
+    suspend fun expireCafeCart(
         request: ServerRequest
     ): ServerResponse {
-        val dto = request.awaitValidatedBody<DeleteIdsDTO>(validator)
+        val userUUID = HeaderUtils.getHeader("X-User-UUID", request)
 
-        cafeCartCommandUseCase.deleteCafeCarts(dto)
+        val cafeCartId = request.pathVariable("cafeCartId")
+
+        cafeCartCommandUseCase.expireCafeCart(userUUID, cafeCartId)
 
         return ResponseUtils.noContent()
     }

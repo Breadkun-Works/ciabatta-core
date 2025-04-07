@@ -20,7 +20,7 @@ class CafeCartItemSseHandler(
     ): ServerResponse {
         val cafeCartId = request.pathVariable("cafeCartId")
 
-        val cafeCart = cafeCartQueryUseCase.getCafeCartById(cafeCartId)
+        val cafeCart = cafeCartQueryUseCase.getCafeCartById(cafeCartId, false)
         cafeCartValidator.assertCartIsActive(cafeCart)
 
         val topic = SseEventTopic.cafeCartItem(cafeCartId)

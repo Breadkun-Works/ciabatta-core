@@ -2,7 +2,6 @@ package com.ciabatta.core.application.port.input
 
 import com.ciabatta.core.application.dto.CafeCartCreateDTO
 import com.ciabatta.core.domain.model.CafeCart
-import com.ciabatta.core.global.dto.DeleteIdsDTO
 
 interface CafeCartCommandUseCase {
     suspend fun createCafeCart(
@@ -10,7 +9,8 @@ interface CafeCartCommandUseCase {
         dto: CafeCartCreateDTO
     ): CafeCart
 
-    suspend fun deleteCafeCarts(
-        dto: DeleteIdsDTO
-    ): Unit
+    suspend fun expireCafeCart(
+        userUUID: String,
+        cafeCartId: String
+    ): CafeCart
 }

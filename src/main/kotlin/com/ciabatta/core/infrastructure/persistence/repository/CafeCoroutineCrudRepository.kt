@@ -14,12 +14,7 @@ interface CafeMenuCoroutineCrudRepository : CoroutineCrudRepository<CafeMenuEnti
     ): Flow<CafeMenuEntity>
 }
 
-interface CafeCartCoroutineCrudRepository : CoroutineCrudRepository<CafeCartEntity, String> {
-    @Query("DELETE FROM cafe_cart WHERE id IN (:ids)")
-    suspend fun deleteAllByIds(
-        ids: List<String>
-    ): Unit
-}
+interface CafeCartCoroutineCrudRepository : CoroutineCrudRepository<CafeCartEntity, String> {}
 
 interface CafeCartItemCoroutineCrudRepository : CoroutineCrudRepository<CafeCartItemEntity, String> {
     fun findByCafeCartIdOrderByCreatedAtAsc(
@@ -29,9 +24,5 @@ interface CafeCartItemCoroutineCrudRepository : CoroutineCrudRepository<CafeCart
     @Query("DELETE FROM cafe_cart_item WHERE id IN (:ids)")
     suspend fun deleteAllByIds(
         ids: List<String>
-    ): Unit
-
-    suspend fun deleteAllByCafeCartId(
-        cafeCartId: String
     ): Unit
 }

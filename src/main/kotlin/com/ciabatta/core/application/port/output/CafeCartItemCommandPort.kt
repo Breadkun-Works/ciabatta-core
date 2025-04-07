@@ -10,8 +10,4 @@ interface CafeCartItemCommandPort {
     suspend fun deleteAll(
         ids: List<String>
     ): Unit
-
-    suspend fun deleteAllByCafeCartId(
-        cafeCartId: String
-    ): Unit
 }

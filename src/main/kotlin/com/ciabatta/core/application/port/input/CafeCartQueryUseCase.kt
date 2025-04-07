@@ -1,18 +1,10 @@
 package com.ciabatta.core.application.port.input
 
 import com.ciabatta.core.domain.model.CafeCart
-import com.ciabatta.core.domain.model.enums.CafeEnums
-import com.ciabatta.core.global.enums.GlobalEnums
 
-interface CafeCartQueryUseCase {
-    suspend fun findCafeCartsByOptions(
-        cafeLocation: GlobalEnums.Location?,
-        status: CafeEnums.Cart.Status?,
-        createdById: String?
-    ): List<CafeCart>
-
+fun interface CafeCartQueryUseCase {
     suspend fun getCafeCartById(
         cafeCartId: String,
-        includeSecureKey: Boolean = false
+        includeSecureKey: Boolean
     ): CafeCart
 }

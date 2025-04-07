@@ -11,9 +11,5 @@ class CafeCartCommandAdapter(
 ) : CafeCartCommandPort {
     override suspend fun save(
         entity: CafeCartEntity
-    ): CafeCartEntity = cafeCartCoroutineCrudRepository.save(entity) // test
-
-    override suspend fun deleteAll(
-        ids: List<String>
-    ): Unit = cafeCartCoroutineCrudRepository.deleteAllByIds(ids)
+    ): CafeCartEntity = cafeCartCoroutineCrudRepository.save(entity)
 }

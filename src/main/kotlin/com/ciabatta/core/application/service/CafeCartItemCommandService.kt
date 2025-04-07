@@ -31,7 +31,7 @@ class CafeCartItemCommandService(
         userName: String,
         dtos: List<CafeCartItemCreateDTO>
     ): List<CafeCartItem> {
-        val cafeCart = cafeCartQueryUseCase.getCafeCartById(cartId)
+        val cafeCart = cafeCartQueryUseCase.getCafeCartById(cartId, false)
         cafeCartValidator.assertCartIsActive(cafeCart)
 
         val createdItems = dtos.map { dto ->
@@ -60,15 +60,10 @@ class CafeCartItemCommandService(
             ?: throw BusinessException(
                 ErrorCode.CA_3001, "CafeCartItem not found with id: $firstItemId"
             )
-        val cafeCart = cafeCartQueryUseCase.getCafeCartById(cafeCartItem.cafeCartId)
+        val cafeCart = cafeCartQueryUseCase.getCafeCartById(cafeCartItem.cafeCartId, false)
         cafeCartValidator.assertCartIsActive(cafeCart)
 
         cafeCartItemCommandPort.deleteAll(idsToDelete) // cafeItem 실제 삭제
         cafeCartItemSseEventPublisher.publishDeleted(cafeCart.id!!, idsToDelete) // Sse 이벤트 발행
     }
-
-
-    override suspend fun deleteCafeCartItemsByCafeCartId(
-        cafeCartId: String
-    ): Unit = cafeCartItemCommandPort.deleteAllByCafeCartId(cafeCartId)
 }

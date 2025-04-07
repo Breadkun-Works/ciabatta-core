@@ -30,4 +30,13 @@ class CafeCartValidator() {
             )
         }
     }
+
+    suspend fun assertCartOwnership(
+        cafeCart: CafeCart,
+        userUUID: String
+    ): Unit {
+        if (cafeCart.createdById != userUUID) {
+            throw BusinessException(ErrorCode.CA_2004, "CafeCart creator ID does not match the provided UUID.")
+        }
+    }
 }
