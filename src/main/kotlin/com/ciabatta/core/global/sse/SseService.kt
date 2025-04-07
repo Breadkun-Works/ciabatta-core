@@ -37,7 +37,7 @@ class SseService(
     fun subscribe(
         topic: String
     ): Flow<ServerSentEvent<Any>> = sseRepository.subscribe(topic)
-        .timeout(20.minutes) // 20분 동안 이벤트가 없으면 타임아웃
+        .timeout(2.minutes) // 20분 동안 이벤트가 없으면 타임아웃
         .catch { e ->
             when(e){
                 is TimeoutCancellationException -> {
