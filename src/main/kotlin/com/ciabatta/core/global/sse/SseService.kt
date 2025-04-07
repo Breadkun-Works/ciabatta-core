@@ -42,13 +42,10 @@ class SseService(
         .catch { e ->
             when (e) {
                 is TimeoutCancellationException -> {
-                    // 커스텀 에러 이벤트 전송 (프론트에서 처리 가능하도록)
-                    // ServerSentEvent 표준 에러 포맷이 없기 때문에 별도 이벤트로 전달
-                    // 프론트는 "ERROR" 이벤트를 구독해 UX 처리 (ex. 모달, 재접속 등)
                     sseRepository.publish(
                         topic,
                         ServerSentEvent.builder<Map<String, String>>()
-                            .event("ERROR")
+                            .event("sse-error")
                             .data(
                                 mapOf(
                                     "code" to ErrorCode.SSE_1003.code,
@@ -58,8 +55,6 @@ class SseService(
                             .build()
                     )
 
-                    // 연결을 종료하기 위해 예외 throw (SSE 스트림 강제 종료)
-                    // Flow가 종료되지 않으면 연결 유지됨 (서버 리소스 누수 위험)
                     throw SseException(
                         error = ErrorCode.SSE_1003,
                         message = "SSE connection timed out due to inactivity"
@@ -70,7 +65,7 @@ class SseService(
                     sseRepository.publish(
                         topic,
                         ServerSentEvent.builder<Map<String, String>>()
-                            .event("ERROR")
+                            .event("sse-error")
                             .data(
                                 mapOf(
                                     "code" to ErrorCode.SSE_1002.code,
