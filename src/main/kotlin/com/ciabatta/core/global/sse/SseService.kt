@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.timeout
 import org.springframework.http.codec.ServerSentEvent
 import org.springframework.stereotype.Service
+import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
 @Service
@@ -38,43 +39,16 @@ class SseService(
         topic: String
     ): Flow<ServerSentEvent<Any>> = sseRepository.subscribe(topic)
 //        .timeout(20.minutes) // 20분 동안 이벤트가 없으면 타임아웃
-        .timeout(15.seconds) // 20분 동안 이벤트가 없으면 타임아웃
+        .timeout(30.seconds) // 20분 동안 이벤트가 없으면 타임아웃
         .catch { e ->
-            when (e) {
+            when(e){
                 is TimeoutCancellationException -> {
-                    sseRepository.publish(
-                        topic,
-                        ServerSentEvent.builder<Map<String, String>>()
-                            .event("sse-error")
-                            .data(
-                                mapOf(
-                                    "code" to ErrorCode.SSE_1003.code,
-                                    "message" to "SSE connection timed out due to inactivity"
-                                )
-                            )
-                            .build()
-                    )
-
                     throw SseException(
                         error = ErrorCode.SSE_1003,
                         message = "SSE connection timed out due to inactivity"
                     )
                 }
-
                 else -> {
-                    sseRepository.publish(
-                        topic,
-                        ServerSentEvent.builder<Map<String, String>>()
-                            .event("sse-error")
-                            .data(
-                                mapOf(
-                                    "code" to ErrorCode.SSE_1002.code,
-                                    "message" to "Failed to subscribe to SSE topic: $topic"
-                                )
-                            )
-                            .build()
-                    )
-
                     throw SseException(
                         error = ErrorCode.SSE_1002,
                         message = "Failed to subscribe to SSE topic: $topic"
