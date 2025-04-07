@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class CafeMenuQueryService(
-    private val cafeMenuQueryPort: CafeMenuQueryPort,
+    private val cafeMenuQueryPort: CafeMenuQueryPort
 ) : CafeMenuQueryUseCase {
     override suspend fun findCafeMenuById(
         cafeMenuId: Long
