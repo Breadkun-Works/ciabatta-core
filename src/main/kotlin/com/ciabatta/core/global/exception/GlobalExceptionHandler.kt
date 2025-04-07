@@ -23,6 +23,7 @@ class GlobalErrorWebExceptionHandler : WebExceptionHandler {
         val (httpStatus, errorCode) = when (ex) {
             is ValidationException -> ex.status to ex.errorCode
             is BusinessException -> ex.status to ex.errorCode
+            is SseException -> ex.status to ex.errorCode
             is IllegalArgumentException,
             is WebExchangeBindException -> HttpStatus.BAD_REQUEST to "E-400"
 
