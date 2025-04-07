@@ -13,6 +13,7 @@ interface CafeCartItemCommandUseCase {
     ): List<CafeCartItem>
 
     suspend fun deleteCafeCartItems(
+        userUUID: String,
         dto: DeleteIdsDTO
     ): Unit
 }

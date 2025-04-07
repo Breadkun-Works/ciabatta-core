@@ -51,17 +51,30 @@ class CafeCartItemCommandService(
     }
 
     override suspend fun deleteCafeCartItems(
+        userUUID: String,
         dto: DeleteIdsDTO
     ): Unit {
         val idsToDelete = dto.ids
-        val firstItemId = idsToDelete.first() // 삭제 될 때 모두 하나의 장바구니에서 일어남을 가정
+        require(idsToDelete.isNotEmpty()) { "Empty CafeCartItemIDs" }
 
-        val cafeCartItem = cafeCartItemQueryUseCase.findCafeCartItemsById(firstItemId)
-            ?: throw BusinessException(
-                ErrorCode.CA_3001, "CafeCartItem not found with id: $firstItemId"
-            )
-        val cafeCart = cafeCartQueryUseCase.getCafeCartById(cafeCartItem.cafeCartId, false)
+        // 첫 번째 ID로 CafeCartItem을 조회하여 해당 카트 ID 획득
+        val firstCartItem = cafeCartItemQueryUseCase.findCafeCartItemsById(idsToDelete.first())
+            ?: throw BusinessException(ErrorCode.CA_3001, "CafeCartItem not found with id: ${idsToDelete.first()}")
+        val cafeCartId = firstCartItem.cafeCartId
+
+        // 해당 카트에 속한 모든 CafeCartItem 조회
+        val cafeCartItems = cafeCartItemQueryUseCase.findCafeCartItemsByCafeCartId(cafeCartId, null)
+        val existingIds = cafeCartItems.mapNotNull { it.id }
+
+        // 삭제 요청한 아이템들이 모두 동일한 카트에 속해 있는지 확인
+        require(idsToDelete.all { it in existingIds }) { "CafeCartItems are associated with different CafeCarts." }
+
+        // 카페 장바구니가 활성 상태 확인
+        val cafeCart = cafeCartQueryUseCase.getCafeCartById(cafeCartId, false)
         cafeCartValidator.assertCartIsActive(cafeCart)
+
+        // 카페 장바구니 아이템이 현재 사용자의 소유인지 확인
+        cafeCartItems.filter { it.id in idsToDelete }.forEach { cafeCartValidator.assertCartItemOwnership(userUUID, it) }
 
         cafeCartItemCommandPort.deleteAll(idsToDelete) // cafeItem 실제 삭제
         cafeCartItemSseEventPublisher.publishDeleted(cafeCart.id!!, idsToDelete) // Sse 이벤트 발행

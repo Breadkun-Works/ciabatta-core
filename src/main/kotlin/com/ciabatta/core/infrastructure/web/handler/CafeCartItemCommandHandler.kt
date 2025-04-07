@@ -21,13 +21,13 @@ class CafeCartItemCommandHandler(
     ): ServerResponse {
         val cafeCartId = request.pathVariable("cafeCartId")
 
-        val userUUID = HeaderUtils.getHeader("X-User-UUID",request)
-        val userName = HeaderUtils.getBase64Header("X-User-Name",request)
+        val userUUID = HeaderUtils.getHeader("X-User-UUID", request)
+        val userName = HeaderUtils.getBase64Header("X-User-Name", request)
 
-        val cafeCartItemCreateDTOs = request.awaitValidatedBodyList<CafeCartItemCreateDTO>(validator)
+        val dtos = request.awaitValidatedBodyList<CafeCartItemCreateDTO>(validator)
 
         val createdCartItems =
-            cafeCartItemCommandUseCase.createCafeCartItems(cafeCartId, userUUID, userName, cafeCartItemCreateDTOs)
+            cafeCartItemCommandUseCase.createCafeCartItems(cafeCartId, userUUID, userName, dtos)
 
         return ResponseUtils.created(createdCartItems, "cafeCartItem")
     }
@@ -35,9 +35,11 @@ class CafeCartItemCommandHandler(
     suspend fun deleteCafeCartItems(
         request: ServerRequest
     ): ServerResponse {
+        val userUUID = HeaderUtils.getHeader("X-User-UUID", request)
+
         val dto = request.awaitValidatedBody<DeleteIdsDTO>(validator)
 
-        cafeCartItemCommandUseCase.deleteCafeCartItems(dto)
+        cafeCartItemCommandUseCase.deleteCafeCartItems(userUUID, dto)
 
         return ResponseUtils.noContent()
     }

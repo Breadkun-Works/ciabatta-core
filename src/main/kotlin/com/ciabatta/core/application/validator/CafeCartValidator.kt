@@ -1,6 +1,7 @@
 package com.ciabatta.core.application.validator
 
 import com.ciabatta.core.domain.model.CafeCart
+import com.ciabatta.core.domain.model.CafeCartItem
 import com.ciabatta.core.domain.model.CafeMenu
 import com.ciabatta.core.domain.model.enums.CafeEnums
 import com.ciabatta.core.global.exception.BusinessException
@@ -32,11 +33,20 @@ class CafeCartValidator() {
     }
 
     suspend fun assertCartOwnership(
-        cafeCart: CafeCart,
-        userUUID: String
+        userUUID: String,
+        cafeCart: CafeCart
     ): Unit {
         if (cafeCart.createdById != userUUID) {
             throw BusinessException(ErrorCode.CA_2004, "CafeCart creator ID does not match the provided UUID.")
+        }
+    }
+
+    suspend fun assertCartItemOwnership(
+        userUUID: String,
+        cafeCartItem: CafeCartItem
+    ): Unit {
+        if (cafeCartItem.createdById != userUUID) {
+            throw BusinessException(ErrorCode.CA_3002, "CafeCartItem creator ID does not match the provided UUID.")
         }
     }
 }

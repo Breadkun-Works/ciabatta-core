@@ -38,7 +38,7 @@ class CafeCartCommandService(
     ): CafeCart {
         val cafeCart = cafeCartQueryUseCase.getCafeCartById(cafeCartId, true)
         cafeCartValidator.assertCartIsActive(cafeCart)
-        cafeCartValidator.assertCartOwnership(cafeCart, userUUID)
+        cafeCartValidator.assertCartOwnership(userUUID, cafeCart)
 
         val entity = CafeCartMapper.mapDomainToEntity(cafeCart.copy(expiresAt = LocalDateTime.now()))
         val savedEntity = cafeCartCommandPort.save(entity)
