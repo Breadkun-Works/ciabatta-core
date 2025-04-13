@@ -7,7 +7,8 @@ sealed interface CafeEnums {
         ) : Menu {
             COFFEE("커피"),
             TEA("티"),
-            DRINK("음료")
+            DRINK("음료"),
+            SEASON("시즌")
         }
 
         enum class Temperature(
