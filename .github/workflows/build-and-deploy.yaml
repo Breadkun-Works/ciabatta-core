@@ -20,13 +20,16 @@ jobs:
           distribution: 'temurin'
           cache: 'gradle'
 
+      - name: Run ktlint check
+        run: ./gradlew ktlintCheck --no-daemon
+
       - name: Build and Run tests with environment variables
         run: |
           export BREADKUN_DB_URL=${{ secrets.BREADKUN_DB_URL }}
           export BREADKUN_DB_USERNAME=${{ secrets.BREADKUN_DB_USERNAME }}
           export BREADKUN_DB_PASSWORD=${{ secrets.BREADKUN_DB_PASSWORD }}
           export SSR_SECRET_KEY=${{ secrets.SSR_SECRET_KEY }}
-          ./gradlew build test --no-daemon -Dspring.profiles.active=master
+          ./gradlew build --no-daemon -Dspring.profiles.active=master
 
       # 루트 경로의 Dockerfile로 이미지 굽기
       - name: Build Docker image and tag by branch
