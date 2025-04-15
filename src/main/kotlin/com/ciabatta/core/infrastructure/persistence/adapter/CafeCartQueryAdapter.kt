@@ -9,9 +9,8 @@ import org.springframework.stereotype.Repository
 @Repository
 class CafeCartQueryAdapter(
     private val cafeCartCoroutineCrudRepository: CafeCartCoroutineCrudRepository,
-    private val r2dbcEntityTemplate: R2dbcEntityTemplate
+    private val r2dbcEntityTemplate: R2dbcEntityTemplate,
 ) : CafeCartQueryPort {
-    override suspend fun findById(
-        cafeCartId: String
-    ): CafeCartEntity? = cafeCartCoroutineCrudRepository.findById(cafeCartId)
+    override suspend fun findById(cafeCartId: String): CafeCartEntity? =
+        cafeCartCoroutineCrudRepository.findById(cafeCartId)
 }

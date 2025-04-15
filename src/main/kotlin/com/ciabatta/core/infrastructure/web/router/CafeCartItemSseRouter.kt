@@ -7,12 +7,13 @@ import org.springframework.web.reactive.function.server.coRouter
 
 @Configuration
 class CafeCartItemSseRouter(
-    private val cafeCartItemSseHandler: CafeCartItemSseHandler
+    private val cafeCartItemSseHandler: CafeCartItemSseHandler,
 ) {
     @Bean
-    fun cafeCartItemSseRoutes() = coRouter {
-        "/sse/cafe/carts/{cafeCartId}/items".nest {
-            GET("/subscribe", cafeCartItemSseHandler::subscribeCafeCartItem)
+    fun cafeCartItemSseRoutes() =
+        coRouter {
+            "/sse/cafe/carts/{cafeCartId}/items".nest {
+                GET("/subscribe", cafeCartItemSseHandler::subscribeCafeCartItem)
+            }
         }
-    }
 }

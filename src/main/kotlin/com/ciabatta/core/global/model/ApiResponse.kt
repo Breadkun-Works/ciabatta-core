@@ -6,29 +6,21 @@ import java.time.LocalDateTime
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class ApiResponse<T>(
     val success: Boolean,
-
     val meta: MetaData? = null,
-
     val data: T? = null,
-
-    val error: ErrorResponse? = null
+    val error: ErrorResponse? = null,
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class MetaData(
     val totalItems: Int,
-
     val totalPages: Int? = null,
-
     val pageSize: Int? = null,
-
     val currentPage: Int? = null,
-
-    val timestamp: LocalDateTime = LocalDateTime.now()
+    val timestamp: LocalDateTime = LocalDateTime.now(),
 )
 
 data class ErrorResponse(
     val code: String,
-
-    val message: String
+    val message: String,
 )

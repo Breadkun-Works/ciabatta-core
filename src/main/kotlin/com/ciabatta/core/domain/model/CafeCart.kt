@@ -6,20 +6,13 @@ import java.time.LocalDateTime
 
 data class CafeCart(
     val id: String?,
-
     val cafeLocation: GlobalEnums.Location,
-
     val title: String,
-
     val description: String?,
-
     val createdAt: LocalDateTime,
-
     val expiresAt: LocalDateTime,
-
     val secureShareKey: String?,
-
-    val createdById: String
+    val createdById: String,
 ) {
     val status: CafeEnums.Cart.Status
         get() {

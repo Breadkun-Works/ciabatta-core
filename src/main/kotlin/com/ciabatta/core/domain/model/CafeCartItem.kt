@@ -6,22 +6,14 @@ import java.time.LocalDateTime
 
 data class CafeCartItem(
     val id: String?,
-
     val cafeCartId: String,
-
     val cafeMenuId: Long,
-
     val isPersonalCup: Boolean,
-
     val quantity: Int,
-
     val imageUrl: String,
-
     val createdAt: LocalDateTime,
-
     val createdById: String,
-
-    val createdByName: String
+    val createdByName: String,
 ) {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     var drinkName: String? = null
@@ -44,15 +36,14 @@ data class CafeCartItem(
     @JsonInclude(JsonInclude.Include.NON_NULL)
     var drinkImageUrl: String? = null
 
-    fun attachDetails(
-        cafeMenu: CafeMenu
-    ): CafeCartItem = this.apply {
-        drinkName = cafeMenu.name
-        drinkPrice = if (isPersonalCup) cafeMenu.price else cafeMenu.price + cafeMenu.deposit
-        drinkTotalPrice = drinkPrice!! * quantity
-        drinkCategory = cafeMenu.category
-        drinkTemperature = cafeMenu.drinkTemperature
-        drinkImageFilename = cafeMenu.imageFilename
-        drinkImageUrl = cafeMenu.imageUrl
-    }
+    fun attachDetails(cafeMenu: CafeMenu): CafeCartItem =
+        this.apply {
+            drinkName = cafeMenu.name
+            drinkPrice = if (isPersonalCup) cafeMenu.price else cafeMenu.price + cafeMenu.deposit
+            drinkTotalPrice = drinkPrice!! * quantity
+            drinkCategory = cafeMenu.category
+            drinkTemperature = cafeMenu.drinkTemperature
+            drinkImageFilename = cafeMenu.imageFilename
+            drinkImageUrl = cafeMenu.imageUrl
+        }
 }

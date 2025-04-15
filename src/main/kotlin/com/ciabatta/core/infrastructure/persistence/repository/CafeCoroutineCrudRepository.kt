@@ -9,20 +9,14 @@ import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 
 interface CafeMenuCoroutineCrudRepository : CoroutineCrudRepository<CafeMenuEntity, Long> {
     @Query("SELECT * FROM cafe_menu WHERE id IN (:ids)")
-    fun findByIds(
-        ids: Set<Long>
-    ): Flow<CafeMenuEntity>
+    fun findByIds(ids: Set<Long>): Flow<CafeMenuEntity>
 }
 
-interface CafeCartCoroutineCrudRepository : CoroutineCrudRepository<CafeCartEntity, String> {}
+interface CafeCartCoroutineCrudRepository : CoroutineCrudRepository<CafeCartEntity, String>
 
 interface CafeCartItemCoroutineCrudRepository : CoroutineCrudRepository<CafeCartItemEntity, String> {
-    fun findByCafeCartIdOrderByCreatedAtAsc(
-        cafeCartId: String
-    ): Flow<CafeCartItemEntity>
+    fun findByCafeCartIdOrderByCreatedAtAsc(cafeCartId: String): Flow<CafeCartItemEntity>
 
     @Query("DELETE FROM cafe_cart_item WHERE id IN (:ids)")
-    suspend fun deleteAllByIds(
-        ids: List<String>
-    ): Unit
+    suspend fun deleteAllByIds(ids: List<String>): Unit
 }

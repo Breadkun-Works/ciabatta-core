@@ -13,11 +13,9 @@ import org.springframework.web.reactive.function.server.ServerResponse
 class CafeCartItemSseHandler(
     private val sseService: SseService,
     private val cafeCartValidator: CafeCartValidator,
-    private val cafeCartQueryUseCase: CafeCartQueryUseCase
+    private val cafeCartQueryUseCase: CafeCartQueryUseCase,
 ) {
-    suspend fun subscribeCafeCartItem(
-        request: ServerRequest
-    ): ServerResponse {
+    suspend fun subscribeCafeCartItem(request: ServerRequest): ServerResponse {
         val cafeCartId = request.pathVariable("cafeCartId")
 
         val cafeCart = cafeCartQueryUseCase.getCafeCartById(cafeCartId, false)

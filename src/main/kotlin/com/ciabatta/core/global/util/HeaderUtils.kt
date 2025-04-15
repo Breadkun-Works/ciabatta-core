@@ -2,8 +2,8 @@ package com.ciabatta.core.global.util
 
 import com.ciabatta.core.global.exception.ErrorCode
 import com.ciabatta.core.global.exception.ValidationException
+import java.util.Base64
 import org.springframework.web.reactive.function.server.ServerRequest
-import java.util.*
 
 object HeaderUtils {
     /**
@@ -17,18 +17,20 @@ object HeaderUtils {
      */
     fun getHeader(
         headerName: String,
-        request: ServerRequest
-    ): String = request.headers().firstHeader(headerName)
-        ?.trim()
-        ?.takeIf { it.isNotBlank() }
-        ?: throw ValidationException(ErrorCode.VAL_0001, "Missing $headerName header")
+        request: ServerRequest,
+    ): String =
+        request.headers().firstHeader(headerName)
+            ?.trim()
+            ?.takeIf { it.isNotBlank() }
+            ?: throw ValidationException(ErrorCode.VAL_0001, "Missing $headerName header")
 
     fun getOptionalHeader(
         headerName: String,
-        request: ServerRequest
-    ): String? = request.headers().firstHeader(headerName)
-        ?.trim()
-        ?.takeIf { it.isNotBlank() }
+        request: ServerRequest,
+    ): String? =
+        request.headers().firstHeader(headerName)
+            ?.trim()
+            ?.takeIf { it.isNotBlank() }
 
     /**
      * 요청 헤더에서 Base64로 인코딩된 값을 가져와 UTF-8로 디코딩한 문자열을 반환합니다.
@@ -41,11 +43,12 @@ object HeaderUtils {
      */
     fun getBase64Header(
         headerName: String,
-        request: ServerRequest
+        request: ServerRequest,
     ): String {
-        val encodedValue = request.headers().firstHeader(headerName)
-            ?.takeIf { it.isNotBlank() }
-            ?: throw ValidationException(ErrorCode.VAL_0001, "Missing $headerName header")
+        val encodedValue =
+            request.headers().firstHeader(headerName)
+                ?.takeIf { it.isNotBlank() }
+                ?: throw ValidationException(ErrorCode.VAL_0001, "Missing $headerName header")
 
         return try {
             String(Base64.getDecoder().decode(encodedValue), Charsets.UTF_8).trim()
