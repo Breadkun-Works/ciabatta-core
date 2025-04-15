@@ -9,20 +9,20 @@ import org.springframework.stereotype.Component
 
 @Component
 class CafeCartItemSseEventPublisher(
-    private val sseService: SseService
+    private val sseService: SseService,
 ) {
-    suspend fun publishCreated(
-        domains: List<CafeCartItem>
-    ): Unit = sseService.publish(
-        topic = SseEventTopic.cafeCartItem(domains.first().cafeCartId),
-        data = ResponseUtils.sse(GlobalEnums.EventType.CREATED, domains, "cafeCartItem")
-    )
+    suspend fun publishCreated(domains: List<CafeCartItem>): Unit =
+        sseService.publish(
+            topic = SseEventTopic.cafeCartItem(domains.first().cafeCartId),
+            data = ResponseUtils.sse(GlobalEnums.EventType.CREATED, domains, "cafeCartItem"),
+        )
 
     suspend fun publishDeleted(
         cafeCartId: String,
-        cafeCartItemIds: List<String>
-    ): Unit = sseService.publish(
-        topic = SseEventTopic.cafeCartItem(cafeCartId),
-        data = ResponseUtils.sse(GlobalEnums.EventType.DELETED, cafeCartItemIds, "id")
-    )
+        cafeCartItemIds: List<String>,
+    ): Unit =
+        sseService.publish(
+            topic = SseEventTopic.cafeCartItem(cafeCartId),
+            data = ResponseUtils.sse(GlobalEnums.EventType.DELETED, cafeCartItemIds, "id"),
+        )
 }

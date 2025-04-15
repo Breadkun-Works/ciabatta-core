@@ -8,14 +8,15 @@ import org.springframework.web.reactive.function.server.coRouter
 
 @Configuration
 class CafeMenuRouter(
-    private val cafeMenuQueryHandler: CafeMenuQueryHandler
+    private val cafeMenuQueryHandler: CafeMenuQueryHandler,
 ) {
     @Bean
-    fun cafeMenuRoutes() = coRouter {
-        "/api/cafe/menus".nest {
-            accept(MediaType.valueOf("application/vnd.breadkun.v1+json")).nest {
-                GET("/board", cafeMenuQueryHandler::getCafeMenuBoardByOptions)
+    fun cafeMenuRoutes() =
+        coRouter {
+            "/api/cafe/menus".nest {
+                accept(MediaType.valueOf("application/vnd.breadkun.v1+json")).nest {
+                    GET("/board", cafeMenuQueryHandler::getCafeMenuBoardByOptions)
+                }
             }
         }
-    }
 }

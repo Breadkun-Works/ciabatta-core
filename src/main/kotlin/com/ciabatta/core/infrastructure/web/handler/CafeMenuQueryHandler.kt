@@ -5,18 +5,16 @@ import com.ciabatta.core.domain.model.enums.CafeEnums
 import com.ciabatta.core.global.enums.GlobalEnums
 import com.ciabatta.core.global.util.PaginationUtils
 import com.ciabatta.core.global.util.ResponseUtils
+import kotlin.jvm.optionals.getOrNull
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
-import kotlin.jvm.optionals.getOrNull
 
 @Component
 class CafeMenuQueryHandler(
-    private val cafeMenuQueryUseCase: CafeMenuQueryUseCase
+    private val cafeMenuQueryUseCase: CafeMenuQueryUseCase,
 ) {
-    suspend fun getCafeMenuBoardByOptions(
-        request: ServerRequest
-    ): ServerResponse {
+    suspend fun getCafeMenuBoardByOptions(request: ServerRequest): ServerResponse {
         val cafeLocation =
             request.queryParam("cafeLocation").getOrNull()?.takeIf { it.isNotBlank() }
                 ?.let { GlobalEnums.Location.valueOf(it) }

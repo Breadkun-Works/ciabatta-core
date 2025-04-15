@@ -10,9 +10,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class CafeCartValidator() {
-    suspend fun assertCartIsActive(
-        cafeCart: CafeCart
-    ): Unit {
+    suspend fun assertCartIsActive(cafeCart: CafeCart) {
         if (cafeCart.status != CafeEnums.Cart.Status.ACTIVE) {
             throw BusinessException(ErrorCode.CA_2002, "CafeCart must be ACTIVE")
         }
@@ -20,22 +18,22 @@ class CafeCartValidator() {
 
     suspend fun assertCartAndMenuLocationMatch(
         cafeCart: CafeCart,
-        cafeMenu: CafeMenu
-    ): Unit {
+        cafeMenu: CafeMenu,
+    ) {
         if (cafeCart.cafeLocation != cafeMenu.cafeLocation) {
             throw BusinessException(
                 ErrorCode.CA_2003,
                 "CafeCart location and CafeMenu location do not match. " +
-                        "Cart location: ${cafeCart.cafeLocation}, " +
-                        "Menu location: ${cafeMenu.cafeLocation}"
+                    "Cart location: ${cafeCart.cafeLocation}, " +
+                    "Menu location: ${cafeMenu.cafeLocation}",
             )
         }
     }
 
     suspend fun assertCartOwnership(
         userUUID: String,
-        cafeCart: CafeCart
-    ): Unit {
+        cafeCart: CafeCart,
+    ) {
         if (cafeCart.createdById != userUUID) {
             throw BusinessException(ErrorCode.CA_2004, "CafeCart creator ID does not match the provided UUID.")
         }
@@ -43,8 +41,8 @@ class CafeCartValidator() {
 
     suspend fun assertCartItemOwnership(
         userUUID: String,
-        cafeCartItem: CafeCartItem
-    ): Unit {
+        cafeCartItem: CafeCartItem,
+    ) {
         if (cafeCartItem.createdById != userUUID) {
             throw BusinessException(ErrorCode.CA_3002, "CafeCartItem creator ID does not match the provided UUID.")
         }

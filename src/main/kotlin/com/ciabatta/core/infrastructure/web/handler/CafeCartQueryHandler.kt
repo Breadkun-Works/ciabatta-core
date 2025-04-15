@@ -11,11 +11,9 @@ import org.springframework.web.reactive.function.server.ServerResponse
 @Component
 class CafeCartQueryHandler(
     private val cafeCartQueryUseCase: CafeCartQueryUseCase,
-    @Value("\${secure.ssr-secret-key}") private val ssrSecretKey: String
+    @Value("\${secure.ssr-secret-key}") private val ssrSecretKey: String,
 ) {
-    suspend fun getCafeCartById(
-        request: ServerRequest
-    ): ServerResponse {
+    suspend fun getCafeCartById(request: ServerRequest): ServerResponse {
         val cafeCartId = request.pathVariable("cafeCartId")
         val includeSecureKey = HeaderUtils.getOptionalHeader("X-SSR-Token", request) == ssrSecretKey
 

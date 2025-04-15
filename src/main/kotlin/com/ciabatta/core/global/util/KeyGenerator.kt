@@ -11,17 +11,14 @@ object KeyGenerator {
      * Base64 인코딩된 256비트 키를 생성하며, 프론트에서는 WebCrypto API 등으로 복호화에 사용됨.
      * @return Base64 인코딩된 256bit (32 bytes) 랜덤 키
      */
-    fun generateSecureShareKey(): String =
-        generateBase64Key(32)
+    fun generateSecureShareKey(): String = generateBase64Key(32)
 
     /**
      * 범용 Base64 키 생성기
      * @param size 바이트 단위 크기
      * @return Base64 인코딩된 문자열
      */
-    fun generateBase64Key(
-        size: Int
-    ): String {
+    fun generateBase64Key(size: Int): String {
         require(size > 0) { "Key size must be greater than 0" }
         val keyBytes = ByteArray(size)
         secureRandom.nextBytes(keyBytes)

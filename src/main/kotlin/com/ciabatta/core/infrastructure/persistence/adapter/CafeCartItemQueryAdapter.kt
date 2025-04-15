@@ -8,13 +8,11 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class CafeCartItemQueryAdapter(
-    private val cafeCartItemCoroutineCrudRepository: CafeCartItemCoroutineCrudRepository
+    private val cafeCartItemCoroutineCrudRepository: CafeCartItemCoroutineCrudRepository,
 ) : CafeCartItemQueryPort {
-    override suspend fun findById(
-        cafeCartItemId: String
-    ): CafeCartItemEntity? = cafeCartItemCoroutineCrudRepository.findById(cafeCartItemId)
+    override suspend fun findById(cafeCartItemId: String): CafeCartItemEntity? =
+        cafeCartItemCoroutineCrudRepository.findById(cafeCartItemId)
 
-    override fun findByCafeCartId(
-        cafeCartId: String
-    ): Flow<CafeCartItemEntity> = cafeCartItemCoroutineCrudRepository.findByCafeCartIdOrderByCreatedAtAsc(cafeCartId)
+    override fun findByCafeCartId(cafeCartId: String): Flow<CafeCartItemEntity> =
+        cafeCartItemCoroutineCrudRepository.findByCafeCartIdOrderByCreatedAtAsc(cafeCartId)
 }

@@ -10,20 +10,21 @@ import org.springframework.web.reactive.function.server.coRouter
 @Configuration
 class CafeCartItemRouter(
     private val cafeCartItemCommandHandler: CafeCartItemCommandHandler,
-    private val cafeCartItemQueryHandler: CafeCartItemQueryHandler
+    private val cafeCartItemQueryHandler: CafeCartItemQueryHandler,
 ) {
     @Bean
-    fun cafeCartItemRoutes() = coRouter {
-        "/api/cafe/carts".nest {
-            accept(MediaType.valueOf("application/vnd.breadkun.v1+json")).nest {
-                "/items".nest {
-                    POST("/delete", cafeCartItemCommandHandler::deleteCafeCartItems)
-                }
-                "/{cafeCartId}/items".nest {
-                    GET("", cafeCartItemQueryHandler::findCafeCartItemsByCafeCartId)
-                    POST("", cafeCartItemCommandHandler::createCafeCartItems)
+    fun cafeCartItemRoutes() =
+        coRouter {
+            "/api/cafe/carts".nest {
+                accept(MediaType.valueOf("application/vnd.breadkun.v1+json")).nest {
+                    "/items".nest {
+                        POST("/delete", cafeCartItemCommandHandler::deleteCafeCartItems)
+                    }
+                    "/{cafeCartId}/items".nest {
+                        GET("", cafeCartItemQueryHandler::findCafeCartItemsByCafeCartId)
+                        POST("", cafeCartItemCommandHandler::createCafeCartItems)
+                    }
                 }
             }
         }
-    }
 }

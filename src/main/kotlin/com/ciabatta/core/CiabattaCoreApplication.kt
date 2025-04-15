@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class CiabattaCoreApplication
 
 fun main(args: Array<String>) {
-	runApplication<CiabattaCoreApplication>(*args)
+    runApplication<CiabattaCoreApplication>(*args)
 }

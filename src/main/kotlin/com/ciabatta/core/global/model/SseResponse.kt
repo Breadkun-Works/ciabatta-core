@@ -5,14 +5,11 @@ import java.time.LocalDateTime
 
 data class SseResponse<T>(
     val event: GlobalEnums.EventType,
-
     val meta: SseMetaData,
-
-    val data: T
+    val data: T,
 )
 
 data class SseMetaData(
     val totalItems: Int,
-
-    val timestamp: LocalDateTime = LocalDateTime.now()
+    val timestamp: LocalDateTime = LocalDateTime.now(),
 )

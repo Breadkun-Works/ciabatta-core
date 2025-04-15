@@ -9,11 +9,11 @@ interface CafeCartItemCommandUseCase {
         cartId: String,
         userUUID: String,
         userName: String,
-        dtos: List<CafeCartItemCreateDTO>
+        dtos: List<CafeCartItemCreateDTO>,
     ): List<CafeCartItem>
 
     suspend fun deleteCafeCartItems(
         userUUID: String,
-        dto: DeleteIdsDTO
+        dto: DeleteIdsDTO,
     ): Unit
 }

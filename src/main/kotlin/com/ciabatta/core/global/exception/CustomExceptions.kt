@@ -6,7 +6,7 @@ abstract class CustomException(
     open val errorCode: String,
     open val status: HttpStatus,
     override val message: String? = null,
-    override val cause: Throwable? = null
+    override val cause: Throwable? = null,
 ) : RuntimeException(message, cause)
 
 /**
@@ -15,7 +15,7 @@ abstract class CustomException(
  */
 class ValidationException(
     private val error: ErrorCode,
-    override val message: String? = error.code
+    override val message: String? = error.code,
 ) : CustomException(error.code, error.httpStatus, message)
 
 /**
@@ -25,7 +25,7 @@ class ValidationException(
 class BusinessException(
     private val error: ErrorCode,
     override val message: String? = error.code,
-    override val cause: Throwable? = null
+    override val cause: Throwable? = null,
 ) : CustomException(error.code, error.httpStatus, message, cause)
 
 /**
@@ -35,5 +35,5 @@ class BusinessException(
 class SseException(
     private val error: ErrorCode,
     override val message: String? = error.code,
-    override val cause: Throwable? = null
+    override val cause: Throwable? = null,
 ) : CustomException(error.code, error.httpStatus, message, cause)

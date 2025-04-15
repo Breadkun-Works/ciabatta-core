@@ -5,6 +5,6 @@ import com.ciabatta.core.domain.model.CafeCart
 fun interface CafeCartQueryUseCase {
     suspend fun getCafeCartById(
         cafeCartId: String,
-        includeSecureKey: Boolean
+        includeSecureKey: Boolean,
     ): CafeCart
 }

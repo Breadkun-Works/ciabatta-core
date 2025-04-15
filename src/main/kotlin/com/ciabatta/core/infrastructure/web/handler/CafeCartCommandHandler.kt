@@ -6,18 +6,16 @@ import com.ciabatta.core.global.util.HeaderUtils
 import com.ciabatta.core.global.util.ResponseUtils
 import com.ciabatta.core.global.util.awaitValidatedBody
 import org.springframework.stereotype.Component
+import org.springframework.validation.Validator
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
-import org.springframework.validation.Validator
 
 @Component
 class CafeCartCommandHandler(
     private val cafeCartCommandUseCase: CafeCartCommandUseCase,
-    private val validator: Validator
+    private val validator: Validator,
 ) {
-    suspend fun createCafeCart(
-        request: ServerRequest
-    ): ServerResponse {
+    suspend fun createCafeCart(request: ServerRequest): ServerResponse {
         val userUUID = HeaderUtils.getHeader("X-User-UUID", request)
 
         val cafeCartCreateDTO = request.awaitValidatedBody<CafeCartCreateDTO>(validator)
@@ -27,9 +25,7 @@ class CafeCartCommandHandler(
         return ResponseUtils.created(createdCart, "cafeCart")
     }
 
-    suspend fun expireCafeCart(
-        request: ServerRequest
-    ): ServerResponse {
+    suspend fun expireCafeCart(request: ServerRequest): ServerResponse {
         val userUUID = HeaderUtils.getHeader("X-User-UUID", request)
 
         val cafeCartId = request.pathVariable("cafeCartId")

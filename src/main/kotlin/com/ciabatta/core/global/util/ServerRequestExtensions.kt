@@ -10,18 +10,17 @@ import org.springframework.web.reactive.function.server.awaitBody
 /**
  * 개별 DTO 단위의 유효성 검사를 실행하는 확장 함수
  */
-suspend inline fun <reified T : Any> ServerRequest.awaitValidatedBody(
-    validator: Validator
-): T {
-    val body = try {
-        this.awaitBody<T>()  // Jackson JSON 변환 오류 발생 시
-    } catch (ex: Exception) {
-        // Jackson DTO 맵핑 오류 (JSON 파싱 실패)
-        throw ValidationException(
-            error = ErrorCode.VAL_0002,
-            message = "The request body (JSON) format is invalid or missing required fields."
-        )
-    }
+suspend inline fun <reified T : Any> ServerRequest.awaitValidatedBody(validator: Validator): T {
+    val body =
+        try {
+            this.awaitBody<T>() // Jackson JSON 변환 오류 발생 시
+        } catch (ex: Exception) {
+            // Jackson DTO 맵핑 오류 (JSON 파싱 실패)
+            throw ValidationException(
+                error = ErrorCode.VAL_0002,
+                message = "The request body (JSON) format is invalid or missing required fields.",
+            )
+        }
 
     val errors = BeanPropertyBindingResult(body, T::class.java.name)
     validator.validate(body, errors)
@@ -39,17 +38,16 @@ suspend inline fun <reified T : Any> ServerRequest.awaitValidatedBody(
 /**
  * 리스트 형태의 DTO 개별 요소에 대해 유효성 검사를 실행하는 확장 함수
  */
-suspend inline fun <reified T : Any> ServerRequest.awaitValidatedBodyList(
-    validator: Validator
-): List<T> {
-    val body = try {
-        this.awaitBody<List<T>>() // JSON 파싱 단계에서 오류가 발생하면 예외 발생
-    } catch (ex: Exception) {
-        throw ValidationException(
-            error = ErrorCode.VAL_0002,
-            message = "The request body (JSON) format is invalid or missing required fields."
-        )
-    }
+suspend inline fun <reified T : Any> ServerRequest.awaitValidatedBodyList(validator: Validator): List<T> {
+    val body =
+        try {
+            this.awaitBody<List<T>>() // JSON 파싱 단계에서 오류가 발생하면 예외 발생
+        } catch (ex: Exception) {
+            throw ValidationException(
+                error = ErrorCode.VAL_0002,
+                message = "The request body (JSON) format is invalid or missing required fields.",
+            )
+        }
 
     val errors = mutableListOf<String>()
 
@@ -67,7 +65,7 @@ suspend inline fun <reified T : Any> ServerRequest.awaitValidatedBodyList(
     if (errors.isNotEmpty()) {
         throw ValidationException(
             error = ErrorCode.VAL_0003,
-            message = errors.joinToString("; ")
+            message = errors.joinToString("; "),
         )
     }
 

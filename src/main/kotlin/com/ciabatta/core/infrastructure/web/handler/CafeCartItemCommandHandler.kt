@@ -9,16 +9,15 @@ import com.ciabatta.core.global.util.awaitValidatedBody
 import com.ciabatta.core.global.util.awaitValidatedBodyList
 import org.springframework.stereotype.Component
 import org.springframework.validation.Validator
-import org.springframework.web.reactive.function.server.*
+import org.springframework.web.reactive.function.server.ServerRequest
+import org.springframework.web.reactive.function.server.ServerResponse
 
 @Component
 class CafeCartItemCommandHandler(
     private val cafeCartItemCommandUseCase: CafeCartItemCommandUseCase,
-    private val validator: Validator
+    private val validator: Validator,
 ) {
-    suspend fun createCafeCartItems(
-        request: ServerRequest
-    ): ServerResponse {
+    suspend fun createCafeCartItems(request: ServerRequest): ServerResponse {
         val cafeCartId = request.pathVariable("cafeCartId")
 
         val userUUID = HeaderUtils.getHeader("X-User-UUID", request)
@@ -32,9 +31,7 @@ class CafeCartItemCommandHandler(
         return ResponseUtils.created(createdCartItems, "cafeCartItem")
     }
 
-    suspend fun deleteCafeCartItems(
-        request: ServerRequest
-    ): ServerResponse {
+    suspend fun deleteCafeCartItems(request: ServerRequest): ServerResponse {
         val userUUID = HeaderUtils.getHeader("X-User-UUID", request)
 
         val dto = request.awaitValidatedBody<DeleteIdsDTO>(validator)

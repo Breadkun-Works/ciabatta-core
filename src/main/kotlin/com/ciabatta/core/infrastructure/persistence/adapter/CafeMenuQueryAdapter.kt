@@ -1,8 +1,8 @@
 package com.ciabatta.core.infrastructure.persistence.adapter
 
+import com.ciabatta.core.application.port.output.CafeMenuQueryPort
 import com.ciabatta.core.domain.model.CafeMenuBoard
 import com.ciabatta.core.domain.model.CafeMenuBoardOptionDTO
-import com.ciabatta.core.application.port.output.CafeMenuQueryPort
 import com.ciabatta.core.domain.model.enums.CafeEnums
 import com.ciabatta.core.global.enums.GlobalEnums
 import com.ciabatta.core.infrastructure.persistence.entity.CafeMenuEntity
@@ -20,15 +20,11 @@ import org.springframework.stereotype.Repository
 class CafeMenuQueryAdapter(
     private val cafeMenuCoroutineCrudRepository: CafeMenuCoroutineCrudRepository,
     private val databaseClient: DatabaseClient,
-    private val objectMapper: ObjectMapper
+    private val objectMapper: ObjectMapper,
 ) : CafeMenuQueryPort {
-    override suspend fun findById(
-        id: Long
-    ): CafeMenuEntity? = cafeMenuCoroutineCrudRepository.findById(id)
+    override suspend fun findById(id: Long): CafeMenuEntity? = cafeMenuCoroutineCrudRepository.findById(id)
 
-    override fun findByIds(
-        ids: Set<Long>
-    ): Flow<CafeMenuEntity> {
+    override fun findByIds(ids: Set<Long>): Flow<CafeMenuEntity> {
         if (ids.isEmpty()) return emptyFlow()
 
         return cafeMenuCoroutineCrudRepository.findByIds(ids)
@@ -39,9 +35,10 @@ class CafeMenuQueryAdapter(
         name: String?,
         category: CafeEnums.Menu.Category?,
         page: Int?,
-        size: Int?
+        size: Int?,
     ): Flow<CafeMenuBoard> {
-        val baseQuery = """
+        val baseQuery =
+            """
             WITH grouped_data AS (
                 SELECT cafe_location, name, category,
                     json_agg(
@@ -68,7 +65,7 @@ class CafeMenuQueryAdapter(
             SELECT * FROM grouped_data
             ORDER BY cafe_location, category, name
             ${if (page != null && size != null) "LIMIT :size OFFSET :offset" else ""};
-        """.trimIndent()
+            """.trimIndent()
 
         var querySpec = databaseClient.sql(baseQuery)
         cafeLocation?.let { querySpec = querySpec.bind("cafeLocation", it.name) }
@@ -80,15 +77,19 @@ class CafeMenuQueryAdapter(
         }
 
         return querySpec.map { row, _ ->
-            val options: List<CafeMenuBoardOptionDTO> = objectMapper.readValue(
-                (row["options"] as Json).asString(),
-                objectMapper.typeFactory.constructCollectionType(List::class.java, CafeMenuBoardOptionDTO::class.java)
-            )
+            val options: List<CafeMenuBoardOptionDTO> =
+                objectMapper.readValue(
+                    (row["options"] as Json).asString(),
+                    objectMapper.typeFactory.constructCollectionType(
+                        List::class.java,
+                        CafeMenuBoardOptionDTO::class.java,
+                    ),
+                )
             CafeMenuBoard(
                 cafeLocation = GlobalEnums.Location.valueOf(row["cafe_location"] as String),
                 name = row["name"] as String,
                 category = CafeEnums.Menu.Category.valueOf(row["category"] as String),
-                options = options
+                options = options,
             )
         }
             .all()
@@ -98,9 +99,10 @@ class CafeMenuQueryAdapter(
     override suspend fun countByMultipleOptionsWithGrouping(
         cafeLocation: GlobalEnums.Location?,
         name: String?,
-        category: CafeEnums.Menu.Category?
+        category: CafeEnums.Menu.Category?,
     ): Long {
-        val baseQuery = """
+        val baseQuery =
+            """
             SELECT COUNT(*) AS count
             FROM (
                 SELECT cafe_location, name, category
@@ -111,7 +113,7 @@ class CafeMenuQueryAdapter(
                 ${if (category != null) "AND category = :category" else ""}
                 GROUP BY cafe_location, name, category
             ) AS grouped_data
-        """.trimIndent()
+            """.trimIndent()
 
         var querySpec = databaseClient.sql(baseQuery)
         cafeLocation?.let { querySpec = querySpec.bind("cafeLocation", it.name) }

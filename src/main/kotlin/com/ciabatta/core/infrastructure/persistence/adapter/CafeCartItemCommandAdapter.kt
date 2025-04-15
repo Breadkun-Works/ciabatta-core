@@ -6,14 +6,11 @@ import com.ciabatta.core.infrastructure.persistence.repository.CafeCartItemCorou
 import org.springframework.stereotype.Repository
 
 @Repository
-class CafeCartItemCommandRepositoryImpl(
-    private val cafeCartItemCoroutineCrudRepository: CafeCartItemCoroutineCrudRepository
+class CafeCartItemCommandAdapter(
+    private val cafeCartItemCoroutineCrudRepository: CafeCartItemCoroutineCrudRepository,
 ) : CafeCartItemCommandPort {
-    override suspend fun save(
-        entity: CafeCartItemEntity
-    ): CafeCartItemEntity = cafeCartItemCoroutineCrudRepository.save(entity)
+    override suspend fun save(entity: CafeCartItemEntity): CafeCartItemEntity =
+        cafeCartItemCoroutineCrudRepository.save(entity)
 
-    override suspend fun deleteAll(
-        ids: List<String>
-    ): Unit = cafeCartItemCoroutineCrudRepository.deleteAllByIds(ids)
+    override suspend fun deleteAll(ids: List<String>): Unit = cafeCartItemCoroutineCrudRepository.deleteAllByIds(ids)
 }

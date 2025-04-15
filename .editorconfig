@@ -1,0 +1,25 @@
+root = true
+
+[*.{kt,kts}]
+# 기본 Kotlin 코딩 컨벤션
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+
+# 길이 120자
+max_line_length = 120
+
+# IntelliJ 전용 추가 설정
+# import 정렬 순서: java → javax → kotlin → com → org → 기타(*)
+# 원하는 순서로 재배치 가능합니다.
+ij_kotlin_imports_layout = java.,javax.,kotlin.,^com,^org,*
+
+# 중첩 클래스 import 여부(false면 풀네임 사용)
+ij_kotlin_import_nested_classes = false
+
+# 특정 개수 이상의 import가 있을 때 *로 치환 (99로 설정하면 사실상 사용 안 함)
+ij_kotlin_name_count_to_use_star_import = 99
+ij_kotlin_name_count_to_use_star_import_for_members = 99

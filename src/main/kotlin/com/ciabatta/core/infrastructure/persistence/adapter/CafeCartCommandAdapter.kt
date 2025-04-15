@@ -7,9 +7,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class CafeCartCommandAdapter(
-    private val cafeCartCoroutineCrudRepository: CafeCartCoroutineCrudRepository
+    private val cafeCartCoroutineCrudRepository: CafeCartCoroutineCrudRepository,
 ) : CafeCartCommandPort {
-    override suspend fun save(
-        entity: CafeCartEntity
-    ): CafeCartEntity = cafeCartCoroutineCrudRepository.save(entity)
+    override suspend fun save(entity: CafeCartEntity): CafeCartEntity = cafeCartCoroutineCrudRepository.save(entity)
 }
