@@ -15,11 +15,13 @@ data class CafeCartItemCreateDTO(
     val quantity: Int,
     @field:NotBlank(message = "Cart item image is required")
     @field:Size(max = 255, message = "Cart item image must be within 255 characters")
-    @field:Pattern( // Url은 항상 지정된 스토리지 경로에 위치해야 함
-        regexp = "^https://ax40oxk5pwva\\.objectstorage\\.ap-chuncheon-1\\.oci\\.customer-oci\\.com" +
-            "/p/ggBWzbdG5d85FYMMw0ox2fgAuITiYbFVcSJRa2f4is_rp69RHi1H3-HSMMUpU1el" +
-            "/n/ax40oxk5pwva/b/BreadFiles/o/images/cafe/cart/character/.*\$",
-        message = "URL must always be located in the designated storage path."
+    @field:Pattern(
+        // imageUrl은 항상 지정된 스토리지 경로에 위치해야 함
+        regexp =
+            "^https://ax40oxk5pwva\\.objectstorage\\.ap-chuncheon-1\\.oci\\.customer-oci\\.com" +
+                "/p/ggBWzbdG5d85FYMMw0ox2fgAuITiYbFVcSJRa2f4is_rp69RHi1H3-HSMMUpU1el" +
+                "/n/ax40oxk5pwva/b/BreadFiles/o/images/cafe/cart/character/.*\$",
+        message = "URL must always be located in the designated storage path.",
     )
     val imageUrl: String,
 )
