@@ -50,7 +50,7 @@ object CafeCartMapper {
             title = dto.title,
             description = dto.description,
             createdAt = createdAt,
-            expiresAt = createdAt.plusHours(2),
+            expiresAt = createdAt.plusHours(3),
             secureShareKey = secureShareKey,
             createdById = userUUID,
         )
