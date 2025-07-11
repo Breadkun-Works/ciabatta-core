@@ -29,6 +29,7 @@ jobs:
           export BREADKUN_DB_USERNAME=${{ secrets.BREADKUN_DB_USERNAME }}
           export BREADKUN_DB_PASSWORD=${{ secrets.BREADKUN_DB_PASSWORD }}
           export SSR_SECRET_KEY=${{ secrets.SSR_SECRET_KEY }}
+          export BREADKUN_MONGO_DB_URL=${{ secrets.BREADKUN_MONGO_DB_URL }}
           ./gradlew build --no-daemon -Dspring.profiles.active=master
 
       # 루트 경로의 Dockerfile로 이미지 굽기

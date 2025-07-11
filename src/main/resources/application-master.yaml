@@ -11,6 +11,9 @@ spring:
     url: r2dbc:postgresql://${BREADKUN_DB_URL}/ciabatta
     username: ${BREADKUN_DB_USERNAME}
     password: ${BREADKUN_DB_PASSWORD}
+  data:
+    mongodb:
+      uri: ${BREADKUN_MONGO_DB_URL}/breadkun_db
 
 secure:
   ssr-secret-key: ${SSR_SECRET_KEY}
