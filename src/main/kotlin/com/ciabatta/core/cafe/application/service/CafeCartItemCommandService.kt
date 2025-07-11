@@ -7,7 +7,7 @@ import com.ciabatta.core.cafe.application.port.input.CafeCartItemQueryUseCase
 import com.ciabatta.core.cafe.application.port.input.CafeCartQueryUseCase
 import com.ciabatta.core.cafe.application.port.input.CafeMenuQueryUseCase
 import com.ciabatta.core.cafe.application.port.output.CafeCartItemCommandPort
-import com.ciabatta.core.cafe.application.validator.CafeCartValidator
+import com.ciabatta.core.cafe.application.validator.CafeValidator
 import com.ciabatta.core.cafe.domain.model.CafeCartItem
 import com.ciabatta.core.global.dto.DeleteIdsDTO
 import com.ciabatta.core.global.exception.BusinessException
@@ -22,7 +22,7 @@ class CafeCartItemCommandService(
     private val cafeMenuQueryUseCase: CafeMenuQueryUseCase,
     private val cafeCartQueryUseCase: CafeCartQueryUseCase,
     private val cafeCartItemSseEventPublisher: CafeCartItemSseEventPublisher,
-    private val cafeCartValidator: CafeCartValidator,
+    private val cafeValidator: CafeValidator,
 ) : CafeCartItemCommandUseCase {
     @Transactional
     override suspend fun createCafeCartItems(
@@ -32,12 +32,14 @@ class CafeCartItemCommandService(
         dtos: List<CafeCartItemCreateDTO>,
     ): List<CafeCartItem> {
         val cafeCart = cafeCartQueryUseCase.getCafeCartById(cartId, false)
-        cafeCartValidator.assertCartIsActive(cafeCart)
+        cafeValidator.assertCartIsActive(cafeCart)
 
         val createdItems =
-            dtos.map { dto ->
+            dtos.mapNotNull { dto ->
                 val cafeMenu = cafeMenuQueryUseCase.findCafeMenuById(dto.cafeMenuId)
-                cafeCartValidator.assertCartAndMenuLocationMatch(cafeCart, cafeMenu)
+                if (!cafeMenu.available) return@mapNotNull null // 사용 불가 메뉴(available == false)는 스킵
+
+                cafeValidator.assertCartAndMenuLocationMatch(cafeCart, cafeMenu)
 
                 val domain = CafeCartItemMapper.mapCreateDTOToDomain(cartId, userUUID, userName, dto)
                 val entity = CafeCartItemMapper.mapDomainToEntity(domain)
@@ -73,11 +75,11 @@ class CafeCartItemCommandService(
 
         // 카페 장바구니가 활성 상태 확인
         val cafeCart = cafeCartQueryUseCase.getCafeCartById(cafeCartId, false)
-        cafeCartValidator.assertCartIsActive(cafeCart)
+        cafeValidator.assertCartIsActive(cafeCart)
 
         // 카페 장바구니 아이템이 현재 사용자의 소유인지 확인
         cafeCartItems.filter { it.id in idsToDelete }.forEach {
-            cafeCartValidator.assertCartItemOwnership(
+            cafeValidator.assertCartItemOwnership(
                 userUUID,
                 it,
             )

@@ -5,7 +5,7 @@ import com.ciabatta.core.cafe.application.mapper.CafeCartMapper
 import com.ciabatta.core.cafe.application.port.input.CafeCartCommandUseCase
 import com.ciabatta.core.cafe.application.port.input.CafeCartQueryUseCase
 import com.ciabatta.core.cafe.application.port.output.CafeCartCommandPort
-import com.ciabatta.core.cafe.application.validator.CafeCartValidator
+import com.ciabatta.core.cafe.application.validator.CafeValidator
 import com.ciabatta.core.cafe.domain.model.CafeCart
 import com.ciabatta.core.global.util.KeyGenerator
 import java.time.LocalDateTime
@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional
 class CafeCartCommandService(
     private val cafeCartCommandPort: CafeCartCommandPort,
     private val cafeCartQueryUseCase: CafeCartQueryUseCase,
-    private val cafeCartValidator: CafeCartValidator,
+    private val cafeValidator: CafeValidator,
 ) : CafeCartCommandUseCase {
     override suspend fun createCafeCart(
         userUUID: String,
@@ -37,8 +37,8 @@ class CafeCartCommandService(
         cafeCartId: String,
     ): CafeCart {
         val cafeCart = cafeCartQueryUseCase.getCafeCartById(cafeCartId, true)
-        cafeCartValidator.assertCartIsActive(cafeCart)
-        cafeCartValidator.assertCartOwnership(userUUID, cafeCart)
+        cafeValidator.assertCartIsActive(cafeCart)
+        cafeValidator.assertCartOwnership(userUUID, cafeCart)
 
         val entity = CafeCartMapper.mapDomainToEntity(cafeCart.copy(expiresAt = LocalDateTime.now()))
         val savedEntity = cafeCartCommandPort.save(entity)
