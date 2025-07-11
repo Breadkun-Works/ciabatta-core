@@ -9,7 +9,7 @@ import com.ciabatta.core.global.exception.ErrorCode
 import org.springframework.stereotype.Component
 
 @Component
-class CafeCartValidator() {
+class CafeValidator() {
     suspend fun assertCartIsActive(cafeCart: CafeCart) {
         if (cafeCart.status != CafeEnums.Cart.Status.ACTIVE) {
             throw BusinessException(ErrorCode.CA_2002, "CafeCart must be ACTIVE")

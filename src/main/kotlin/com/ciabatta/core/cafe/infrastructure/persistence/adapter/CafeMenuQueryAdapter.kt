@@ -60,6 +60,7 @@ class CafeMenuQueryAdapter(
                 ${if (cafeLocation != null) "AND cafe_location = :cafeLocation" else ""}
                 ${if (name != null) "AND name LIKE :name" else ""}
                 ${if (category != null) "AND category = :category" else ""}
+                AND available = TRUE
                 GROUP BY cafe_location, name, category
             )
             SELECT * FROM grouped_data
@@ -111,6 +112,7 @@ class CafeMenuQueryAdapter(
                 ${if (cafeLocation != null) "AND cafe_location = :cafeLocation" else ""}
                 ${if (name != null) "AND name LIKE :name" else ""}
                 ${if (category != null) "AND category = :category" else ""}
+                AND available = TRUE
                 GROUP BY cafe_location, name, category
             ) AS grouped_data
             """.trimIndent()

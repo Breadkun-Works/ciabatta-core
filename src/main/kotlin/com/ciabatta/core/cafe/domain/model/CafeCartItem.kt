@@ -36,6 +36,9 @@ data class CafeCartItem(
     @JsonInclude(JsonInclude.Include.NON_NULL)
     var drinkImageUrl: String? = null
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var available: Boolean? = null
+
     fun attachDetails(cafeMenu: CafeMenu): CafeCartItem =
         this.apply {
             drinkName = cafeMenu.name
@@ -45,5 +48,6 @@ data class CafeCartItem(
             drinkTemperature = cafeMenu.drinkTemperature
             drinkImageFilename = cafeMenu.imageFilename
             drinkImageUrl = cafeMenu.imageUrl
+            available = cafeMenu.available
         }
 }
