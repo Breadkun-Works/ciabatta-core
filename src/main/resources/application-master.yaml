@@ -1,4 +1,6 @@
 spring:
+  main:
+    banner-mode: off
   codec:
     log-request-details: true
   config:
@@ -18,7 +20,22 @@ spring:
 secure:
   ssr-secret-key: ${SSR_SECRET_KEY}
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+
 logging:
   level:
     ROOT: info
-    web: debug
+    org.springframework.boot.autoconfigure: warn
+    org.springframework.boot.actuate: warn
+    org.springframework.web: info
+    reactor.netty: warn
+    org.mongodb.driver: warn
+    logging.level.org.springframework.data.r2dbc: warn
+    logging.level.org.springframework.data.mongodb: warn

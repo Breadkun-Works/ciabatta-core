@@ -1,0 +1,28 @@
+spring:
+  codec:
+    log-request-details: true
+  config:
+    activate:
+      on-profile: local-master
+  jackson:
+    serialization:
+      write_dates_as_timestamps: false
+  r2dbc:
+    url: r2dbc:postgresql://${BREADKUN_DB_URL}/ciabatta
+    username: ${BREADKUN_DB_USERNAME}
+    password: ${BREADKUN_DB_PASSWORD}
+  data:
+    mongodb:
+      uri: ${BREADKUN_MONGO_DB_URL}/breadkun_db
+
+secure:
+  ssr-secret-key: ${SSR_SECRET_KEY}
+
+logging:
+  level:
+    ROOT: info
+    org.springframework.web: debug
+    org.springframework.http.codec: debug
+    reactor.netty: debug
+    org.springframework.data.r2dbc: debug
+    org.springframework.data.mongodb: debug
