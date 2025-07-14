@@ -16,6 +16,7 @@ spring:
   data:
     mongodb:
       uri: ${BREADKUN_MONGO_DB_URL}/breadkun_db
+      field-naming-strategy: org.springframework.data.mapping.model.SnakeCaseFieldNamingStrategy
 
 secure:
   ssr-secret-key: ${SSR_SECRET_KEY}

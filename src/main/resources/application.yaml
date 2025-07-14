@@ -2,7 +2,7 @@ spring:
   application:
     name: ciabatta-core
   profiles:
-    active: master
+    active: local-master
 
 management:
   endpoints:
