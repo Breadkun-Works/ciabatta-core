@@ -30,13 +30,22 @@ management:
     health:
       show-details: when-authorized
 
+#logging:
+#  level:
+#    ROOT: info
+#    org.springframework.boot.autoconfigure: warn
+#    org.springframework.boot.actuate: warn
+#    org.springframework.web: info
+#    reactor.netty: warn
+#    org.mongodb.driver: warn
+#    logging.level.org.springframework.data.r2dbc: warn
+#    logging.level.org.springframework.data.mongodb: warn
+
 logging:
   level:
     ROOT: info
-    org.springframework.boot.autoconfigure: warn
-    org.springframework.boot.actuate: warn
-    org.springframework.web: info
-    reactor.netty: warn
-    org.mongodb.driver: warn
-    logging.level.org.springframework.data.r2dbc: warn
-    logging.level.org.springframework.data.mongodb: warn
+    org.springframework.web: debug
+    org.springframework.http.codec: debug
+    reactor.netty: debug
+    org.springframework.data.r2dbc: debug
+    org.springframework.data.mongodb: debug
