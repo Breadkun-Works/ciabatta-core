@@ -13,7 +13,7 @@ import org.springframework.web.reactive.function.server.ServerResponse
 @Component
 class CafeCartCommandHandler(
     private val cafeCartCommandUseCase: CafeCartCommandUseCase,
-    private val validator: Validator,
+    private val validator: Validator ,
 ) {
     suspend fun createCafeCart(request: ServerRequest): ServerResponse {
         val userUUID = HeaderUtils.getHeader("X-User-UUID", request)
