@@ -12,7 +12,7 @@ management:
       base-path: /management
 
 server:
-  port: 65477
+  port: 8080
   servlet:
     encoding:
       charset: UTF-8
