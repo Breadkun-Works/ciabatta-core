@@ -1,4 +1,4 @@
-package com.ciabatta.core.dashboard.infrastructure.persistence.entity
+package com.ciabatta.core.feed.infrastructure.persistence.entity
 
 import java.time.LocalDateTime
 import org.springframework.data.annotation.Id

@@ -14,13 +14,7 @@ class SseRepository {
     suspend fun publish(
         topic: String,
         data: Any,
-    ): Unit =
-        getOrCreateFlow(topic).emit(
-            ServerSentEvent.builder<Any>()
-                .event(topic)
-                .data(data)
-                .build(),
-        )
+    ): Unit = getOrCreateFlow(topic).emit(ServerSentEvent.builder<Any>().event(topic).data(data).build())
 
     private val flows = ConcurrentHashMap<String, MutableSharedFlow<ServerSentEvent<Any>>>()
 

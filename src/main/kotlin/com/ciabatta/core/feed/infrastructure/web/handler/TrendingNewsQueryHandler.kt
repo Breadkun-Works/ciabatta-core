@@ -1,6 +1,6 @@
-package com.ciabatta.core.dashboard.infrastructure.web.handler
+package com.ciabatta.core.feed.infrastructure.web.handler
 
-import com.ciabatta.core.dashboard.application.port.input.TrendingNewsQueryUseCase
+import com.ciabatta.core.feed.application.port.input.TrendingNewsQueryUseCase
 import com.ciabatta.core.global.util.ResponseUtils
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.ServerRequest

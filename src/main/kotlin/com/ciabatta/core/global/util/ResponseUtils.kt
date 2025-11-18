@@ -34,10 +34,15 @@ object ResponseUtils {
 
         val wrappedData = wrapData(data, dataKey)
 
-        return ServerResponse
-            .ok()
+        return ServerResponse.ok()
             .contentType(MediaType.APPLICATION_JSON)
-            .bodyValueAndAwait(ApiResponse(success = true, meta = meta, data = wrappedData))
+            .bodyValueAndAwait(
+                ApiResponse(
+                    success = true,
+                    meta = meta,
+                    data = wrappedData,
+                ),
+            )
     }
 
     suspend fun <T> ok(
@@ -54,10 +59,15 @@ object ResponseUtils {
 
         val wrappedData = if (pageable.content.isEmpty()) null else mapOf(dataKey to pageable.content)
 
-        return ServerResponse
-            .ok()
+        return ServerResponse.ok()
             .contentType(MediaType.APPLICATION_JSON)
-            .bodyValueAndAwait(ApiResponse(success = true, meta = meta, data = wrappedData))
+            .bodyValueAndAwait(
+                ApiResponse(
+                    success = true,
+                    meta = meta,
+                    data = wrappedData,
+                ),
+            )
     }
 
     suspend fun <T> created(
@@ -78,15 +88,19 @@ object ResponseUtils {
 
         val wrappedData = wrapData(data, dataKey)
 
-        return ServerResponse
-            .status(HttpStatus.CREATED)
+        return ServerResponse.status(HttpStatus.CREATED)
             .contentType(MediaType.APPLICATION_JSON)
-            .bodyValueAndAwait(ApiResponse(success = true, meta = meta, data = wrappedData))
+            .bodyValueAndAwait(
+                ApiResponse(
+                    success = true,
+                    meta = meta,
+                    data = wrappedData,
+                ),
+            )
     }
 
     suspend fun noContent(): ServerResponse =
-        ServerResponse
-            .noContent()
+        ServerResponse.noContent()
             .buildAndAwait()
 
     suspend fun error(
@@ -94,8 +108,7 @@ object ResponseUtils {
         errorCode: String,
         errorMessage: String,
     ): ServerResponse =
-        ServerResponse
-            .status(code)
+        ServerResponse.status(code)
             .contentType(MediaType.APPLICATION_JSON)
             .bodyValueAndAwait(
                 ApiResponse(
@@ -108,8 +121,7 @@ object ResponseUtils {
             )
 
     suspend fun <T : Any> sseHandshake(flow: Flow<T>): ServerResponse =
-        ServerResponse
-            .ok()
+        ServerResponse.ok()
             .contentType(MediaType.TEXT_EVENT_STREAM)
             .bodyAndAwait(flow as Flow<Any>)
 
@@ -128,5 +140,9 @@ object ResponseUtils {
         data: T?,
         dataKey: String,
     ): Map<String, Any>? =
-        if (data == null || (data is Collection<*> && data.isEmpty())) null else mapOf(dataKey to data)
+        if (data == null || (data is Collection<*> && data.isEmpty())) {
+            null
+        } else {
+            mapOf(dataKey to data)
+        }
 }

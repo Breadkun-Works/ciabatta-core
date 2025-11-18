@@ -37,7 +37,8 @@ class SseService(
      */
     @OptIn(kotlinx.coroutines.FlowPreview::class)
     fun subscribe(topic: String): Flow<ServerSentEvent<Any>> =
-        sseRepository.subscribe(topic)
+        sseRepository
+            .subscribe(topic)
             .timeout(20.minutes) // 20분 동안 이벤트가 없으면 타임아웃
             .catch { e ->
                 when (e) {
@@ -47,6 +48,7 @@ class SseService(
                             message = "SSE connection timed out due to inactivity",
                         )
                     }
+
                     else -> {
                         throw SseException(
                             error = ErrorCode.SSE_1002,

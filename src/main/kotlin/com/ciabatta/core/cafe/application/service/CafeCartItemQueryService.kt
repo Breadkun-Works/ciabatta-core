@@ -20,9 +20,7 @@ class CafeCartItemQueryService(
     private val cafeCartQueryUseCase: CafeCartQueryUseCase,
 ) : CafeCartItemQueryUseCase {
     override suspend fun findCafeCartItemsById(id: String): CafeCartItem? =
-        cafeCartItemQueryPort.findById(id)?.let {
-            CafeCartItemMapper.mapEntityToDomain(it)
-        }
+        cafeCartItemQueryPort.findById(id)?.let { CafeCartItemMapper.mapEntityToDomain(it) }
 
     override suspend fun findCafeCartItemsByCafeCartId(
         cafeCartId: String,
@@ -43,14 +41,14 @@ class CafeCartItemQueryService(
 
     override suspend fun fetchDetails(cafeCartItems: List<CafeCartItem>): List<CafeCartItem> {
         val cafeMenuMap =
-            cafeMenuQueryUseCase
-                .findCafeMenusByIds(cafeCartItems.map { it.cafeMenuId }.toSet())
+            cafeMenuQueryUseCase.findCafeMenusByIds(cafeCartItems.map { it.cafeMenuId }.toSet())
                 .associateBy { it.id }
 
         return cafeCartItems.map { item ->
             val menu =
                 cafeMenuMap[item.cafeMenuId]
                     ?: throw BusinessException(ErrorCode.CA_1001, "CafeMenu not found with id: $item.cafeMenuId")
+
             item.attachDetails(menu)
         }
     }

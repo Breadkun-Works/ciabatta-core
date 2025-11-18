@@ -19,16 +19,21 @@ object HeaderUtils {
         headerName: String,
         request: ServerRequest,
     ): String =
-        request.headers().firstHeader(headerName)
+        request.headers()
+            .firstHeader(headerName)
             ?.trim()
             ?.takeIf { it.isNotBlank() }
-            ?: throw ValidationException(ErrorCode.VAL_0001, "Missing $headerName header")
+            ?: throw ValidationException(
+                ErrorCode.VAL_0001,
+                "Missing $headerName header",
+            )
 
     fun getOptionalHeader(
         headerName: String,
         request: ServerRequest,
     ): String? =
-        request.headers().firstHeader(headerName)
+        request.headers()
+            .firstHeader(headerName)
             ?.trim()
             ?.takeIf { it.isNotBlank() }
 
@@ -46,14 +51,24 @@ object HeaderUtils {
         request: ServerRequest,
     ): String {
         val encodedValue =
-            request.headers().firstHeader(headerName)
+            request.headers()
+                .firstHeader(headerName)
                 ?.takeIf { it.isNotBlank() }
-                ?: throw ValidationException(ErrorCode.VAL_0001, "Missing $headerName header")
+                ?: throw ValidationException(
+                    ErrorCode.VAL_0001,
+                    "Missing $headerName header",
+                )
 
         return try {
-            String(Base64.getDecoder().decode(encodedValue), Charsets.UTF_8).trim()
+            String(
+                Base64.getDecoder().decode(encodedValue),
+                Charsets.UTF_8,
+            ).trim()
         } catch (e: IllegalArgumentException) {
-            throw ValidationException(ErrorCode.VAL_0001, "Invalid Base64 encoding in $headerName header")
+            throw ValidationException(
+                ErrorCode.VAL_0001,
+                "Invalid Base64 encoding in $headerName header",
+            )
         }
     }
 }

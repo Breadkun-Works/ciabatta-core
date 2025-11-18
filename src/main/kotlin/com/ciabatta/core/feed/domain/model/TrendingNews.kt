@@ -1,4 +1,4 @@
-package com.ciabatta.core.dashboard.domain.model
+package com.ciabatta.core.feed.domain.model
 
 import java.time.LocalDateTime
 

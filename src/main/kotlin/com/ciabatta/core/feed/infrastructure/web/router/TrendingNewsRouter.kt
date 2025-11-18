@@ -1,6 +1,6 @@
-package com.ciabatta.core.dashboard.infrastructure.web.router
+package com.ciabatta.core.feed.infrastructure.web.router
 
-import com.ciabatta.core.dashboard.infrastructure.web.handler.TrendingNewsQueryHandler
+import com.ciabatta.core.feed.infrastructure.web.handler.TrendingNewsQueryHandler
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.MediaType
@@ -13,7 +13,7 @@ class TrendingNewsRouter(
     @Bean
     fun trendingNewsRoutes() =
         coRouter {
-            "/api/dashboard/trending-news".nest {
+            "/api/feed/trending-news".nest {
                 accept(MediaType.valueOf("application/vnd.breadkun.v1+json")).nest {
                     GET("", trendingNewsQueryHandler::findAllTrendingNewsItems)
                 }
