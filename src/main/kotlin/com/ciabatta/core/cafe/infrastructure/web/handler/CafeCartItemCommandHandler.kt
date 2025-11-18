@@ -25,8 +25,7 @@ class CafeCartItemCommandHandler(
 
         val dtos = request.awaitValidatedBodyList<CafeCartItemCreateDTO>(validator)
 
-        val createdCartItems =
-            cafeCartItemCommandUseCase.createCafeCartItems(cafeCartId, userUUID, userName, dtos)
+        val createdCartItems = cafeCartItemCommandUseCase.createCafeCartItems(cafeCartId, userUUID, userName, dtos)
 
         return ResponseUtils.created(createdCartItems, "cafeCartItem")
     }

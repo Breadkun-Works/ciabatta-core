@@ -10,7 +10,7 @@ import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories
     basePackages = ["com.ciabatta.core.cafe.infrastructure.persistence.repository"],
 )
 @EnableReactiveMongoRepositories(
-    basePackages = ["com.ciabatta.core.dashboard.infrastructure.persistence.repository"],
+    basePackages = ["com.ciabatta.core.feed.infrastructure.persistence.repository"],
 )
 class CiabattaCoreApplication
 

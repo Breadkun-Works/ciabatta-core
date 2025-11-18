@@ -1,8 +1,8 @@
-package com.ciabatta.core.dashboard.infrastructure.persistence.adapter
+package com.ciabatta.core.feed.infrastructure.persistence.adapter
 
-import com.ciabatta.core.dashboard.application.port.output.TrendingNewsQueryPort
-import com.ciabatta.core.dashboard.infrastructure.persistence.entity.TrendingNewsEntity
-import com.ciabatta.core.dashboard.infrastructure.persistence.repository.TrendingNewsCoroutineCrudRepository
+import com.ciabatta.core.feed.application.port.output.TrendingNewsQueryPort
+import com.ciabatta.core.feed.infrastructure.persistence.entity.TrendingNewsEntity
+import com.ciabatta.core.feed.infrastructure.persistence.repository.TrendingNewsCoroutineCrudRepository
 import kotlinx.coroutines.flow.Flow
 import org.springframework.stereotype.Repository
 

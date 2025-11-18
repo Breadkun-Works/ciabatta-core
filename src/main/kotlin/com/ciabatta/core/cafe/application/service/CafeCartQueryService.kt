@@ -17,7 +17,5 @@ class CafeCartQueryService(
         includeSecureKey: Boolean,
     ): CafeCart =
         cafeCartQueryPort.findById(cafeCartId)?.let { CafeCartMapper.mapEntityToDomain(it, includeSecureKey) }
-            ?: throw BusinessException(
-                ErrorCode.CA_2001, "CafeCart not found with id: $cafeCartId",
-            )
+            ?: throw BusinessException(ErrorCode.CA_2001, "CafeCart not found with id: $cafeCartId")
 }

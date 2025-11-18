@@ -2,7 +2,10 @@ package com.ciabatta.core.global.exception
 
 import org.springframework.http.HttpStatus
 
-enum class ErrorCode(val code: String, val httpStatus: HttpStatus) {
+enum class ErrorCode(
+    val code: String,
+    val httpStatus: HttpStatus,
+) {
     /**
      * Validation 관련 에러 코드
      * DTO 혹은 핸들러 계층에서 발생하는 입력 검증 오류

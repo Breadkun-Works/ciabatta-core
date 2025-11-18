@@ -78,12 +78,7 @@ class CafeCartItemCommandService(
         cafeValidator.assertCartIsActive(cafeCart)
 
         // 카페 장바구니 아이템이 현재 사용자의 소유인지 확인
-        cafeCartItems.filter { it.id in idsToDelete }.forEach {
-            cafeValidator.assertCartItemOwnership(
-                userUUID,
-                it,
-            )
-        }
+        cafeCartItems.filter { it.id in idsToDelete }.forEach { cafeValidator.assertCartItemOwnership(userUUID, it) }
 
         cafeCartItemCommandPort.deleteAll(idsToDelete) // cafeItem 실제 삭제
         cafeCartItemSseEventPublisher.publishDeleted(cafeCart.id!!, idsToDelete) // Sse 이벤트 발행

@@ -23,10 +23,8 @@ class CafeMenuQueryService(
     private val cafeMenuQueryPort: CafeMenuQueryPort,
 ) : CafeMenuQueryUseCase {
     override suspend fun findCafeMenuById(cafeMenuId: Long): CafeMenu =
-        cafeMenuQueryPort.findById(cafeMenuId)
-            ?.let {
-                CafeMenuMapper.mapEntityToDomain(it)
-            } ?: throw BusinessException(ErrorCode.CA_1001, "CafeMenu not found with id: $cafeMenuId")
+        cafeMenuQueryPort.findById(cafeMenuId)?.let { CafeMenuMapper.mapEntityToDomain(it) }
+            ?: throw BusinessException(ErrorCode.CA_1001, "CafeMenu not found with id: $cafeMenuId")
 
     override suspend fun findCafeMenusByIds(cafeMenuIds: Set<Long>): List<CafeMenu> {
         if (cafeMenuIds.isEmpty()) return emptyList()

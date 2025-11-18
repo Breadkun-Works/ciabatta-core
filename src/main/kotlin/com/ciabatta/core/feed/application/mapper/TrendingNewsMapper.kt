@@ -1,7 +1,7 @@
-package com.ciabatta.core.dashboard.application.mapper
+package com.ciabatta.core.feed.application.mapper
 
-import com.ciabatta.core.dashboard.domain.model.TrendingNews
-import com.ciabatta.core.dashboard.infrastructure.persistence.entity.TrendingNewsEntity
+import com.ciabatta.core.feed.domain.model.TrendingNews
+import com.ciabatta.core.feed.infrastructure.persistence.entity.TrendingNewsEntity
 
 object TrendingNewsMapper {
     fun mapEntityToDomain(entity: TrendingNewsEntity): TrendingNews =
